@@ -20,7 +20,10 @@ export const BirdCage = () => {
   const handleChange = (event) => {
     setMyCar(event.target.value)
   }
-
+  function convertVND(price) {
+    if (price != null && price != undefined && price != '') return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
+    else return 0
+  }
 
   return (
     <div className='all'>
@@ -43,9 +46,9 @@ export const BirdCage = () => {
           <p style={{ fontWeight: 600, color: '#353535', fontSize: 16 }}>SẢN PHẨM</p>
           <p className='lineCage'></p>
         </div>
-        <div className='borderBlogOne' style={{height: 434}}>
+        <div className='borderBlogOne' style={{ height: 489 }}>
           {list.slice(0, 6).map(i => (
-            <div>
+            <div className='box-birdCage'>
               <div className='blog' >
                 <div>
                   <img className='imgList' src={i.img} />
@@ -53,10 +56,10 @@ export const BirdCage = () => {
                 <div style={{ justifyContent: 'space-around' }}>
                   <span className='nameList'>{i.name}</span>
                   <br />
-                  <p className='priceProduct'>{i.price}đ</p>
+                  <p className='priceProduct'>{convertVND(i.price)}</p>
                 </div>
               </div>
-              <div className='lineList'></div>
+              {/* <div className='lineList'></div> */}
             </div>
           ))}
         </div>
@@ -83,7 +86,7 @@ export const BirdCage = () => {
               <div className='card'>
                 <img className='img-birdCage' src={i.img} alt="" />
                 <p className='nameBirdCage'>{i.name}</p>
-                <h4>{i.price}</h4>
+                <h4>{convertVND(i.price)}</h4>
               </div>
             </div>
           ))}

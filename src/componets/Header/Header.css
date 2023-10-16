@@ -15,6 +15,7 @@
 .navbar {
   height: 58px;
   font-size: 15px;
+  padding-left: 20px;
 }
 
 .bridge {
@@ -44,6 +45,7 @@
 .list2 {
   position: absolute;
   left: 75%;
+  text-align: left;
 }
 
 .navbar li {
@@ -58,7 +60,8 @@
   padding: 16.25px 5px;
   text-decoration: none;
   white-space: nowrap;
-  color: #fff;
+  color: black;
+  text-align: left;
 }
 
 .navbar li ul {
@@ -66,7 +69,7 @@
 }
 
 .navbar li:hover li {
-  background-color: black;
+  background-color: white;
   float: none;
 }
 
@@ -75,7 +78,7 @@
 }
 
 .navbar li:hover li a:hover {
-  background: #214a5c;
+  background: rgb(100, 190, 67);
 }
 
 .navbar li:hover>ul {
@@ -84,7 +87,7 @@
 }
 
 .navbar li li:hover li {
-  background: #134e67;
+  background: white;
 }
 
 .navbar li ul li {
@@ -94,4 +97,10 @@
 .navbar ul ul {
   /* left: 100%; */
   top: 0;
+}
+
+.line-cage {
+  width: 160px;
+  height: 0.5px;
+  background-color: rgb(218, 218, 218);
 }

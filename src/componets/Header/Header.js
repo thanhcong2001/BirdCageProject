@@ -12,31 +12,55 @@ export const Header = () => {
             <AppBar style={{ backgroundColor: '#64BE43', height: 100, justifyContent: 'center', paddingLeft: 120 }}>
                 <Toolbar variant="dense" >
                     <Link style={{ textDecoration: 'none' }} to={'/'}><img className='logo' src='http://mauweb.monamedia.net/birdshop/wp-content/uploads/2018/04/logo-robin-white.png' /></Link>
-                    <p className='category'>Giới Thiệu</p>
+                    <Link style={{ textDecoration: 'none' }} to={'/intro'}>
+                        <p className='category'>Giới Thiệu</p>
+                    </Link>
                     <ul class="navbar">
                         <li className='bridge'>
-                            <p className='category' style={{marginLeft:0}} href="#">Thiết Kế Lồng</p>
+                            <p className='category' style={{ marginLeft: 0 }} href="#">Thiết Kế Lồng</p>
                             <ul className='list1'>
                                 <li className='parent2'>
-                                    <a href="">Web Development</a>
+                                    <a href="">Lồng Chim Vẹt</a>
+                                    <div className='line-cage'></div>
                                     <ul className='list2'>
-                                        <li><a onClick={() => navigate('/designCage')}>PHP</a></li>
-                                        <li><a href="#">HTML/CSS</a></li>
-                                        <li><a href="#">JavaScript</a></li>
+                                        <li><a onClick={() => navigate('/designCage')}>Lồng Avi</a></li>
+                                        <div className='line-cage'></div>
+                                        <li><a href="#">Lồng Chim Lực</a></li>
+                                        <div className='line-cage'></div>
+                                        <li><a href="#">Lồng Chim Sing</a></li>
+                                        <div className='line-cage'></div>
                                     </ul>
                                 </li>
                                 <li className='parent2'>
-                                    <a href="">Mobile Development</a>
+                                    <a href="">Lồng Chim Sáo</a>
+                                    <div className='line-cage'></div>
                                     <ul className='list2'>
-                                        <li><a href="#">Andriod Apps</a></li>
-                                        <li><a href="#">iOS Apps</a></li>
+                                        <li><a href="#">Lồng Chim Lực</a></li>
+                                        <div className='line-cage'></div>
+                                        <li><a href="#">Lồng Chim Sing</a></li>
+                                        <div className='line-cage'></div>
+                                        <li><a href="#">Lồng Chim Inox</a></li>
                                     </ul>
                                 </li>
                                 <li className='parent2'>
-                                    <a href="">Hosting Services</a>
+                                    <a href="">Lồng Chim Khuyên</a>
+                                    <div className='line-cage'></div>
                                     <ul className='list2'>
-                                        <li><a href="#">Dedicated Server</a></li>
-                                        <li><a href="#">Reseller Hosting</a></li>
+                                        <li><a href="#">Lồng Chim Sing</a></li>
+                                        <div className='line-cage'></div>
+                                        <li><a href="#">Lồng Chim Inox</a></li>
+                                    </ul>
+                                </li>
+                                <li className='parent2'>
+                                    <a href="">Lồng Chim Khướu</a>
+                                    <ul className='list2'>
+                                        <li><a href="#">Lồng Lực</a></li>
+                                        <div className='line-cage'></div>
+                                        <li><a href="#">Lồng Chim Vuông</a></li>
+                                        <div className='line-cage'></div>
+                                        <li><a href="#">Lồng Chim Tròn</a></li>
+                                        <div className='line-cage'></div>
+                                        <li><a href="#">Lồng Chim Bẫy</a></li>
                                     </ul>
                                 </li>
                             </ul>

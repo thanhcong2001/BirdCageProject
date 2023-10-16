@@ -68,3 +68,7 @@
 .img-birdCage:hover{
     transform: scale(1.05);
 }
+.box-birdCage:not(:last-of-type) {
+    margin-bottom: 10px;
+    border-bottom: 0.5px solid rgb(218, 218, 218);  ;
+}

@@ -25,7 +25,7 @@ export const Details = ({ initialQuantity, onQuantityChange }) => {
     useEffect(() => {
         axios.get('https://6507a9f63a38daf4803fa131.mockapi.io/api/v1/birdCage')
             .then(response => {
-                setdata(response.data)
+                setdata(response.data) 
             })
         axios.get('https://6509117cf6553137159aecfc.mockapi.io/api/v1/Cage')
             .then(response => {
@@ -44,7 +44,7 @@ export const Details = ({ initialQuantity, onQuantityChange }) => {
                                 <div>
                                     <img className='imgList' src={i.img} />
                                 </div>
-                                <div style={{ justifyContent: 'space-around' }}>
+                                <div style={{marginTop:2}}>
                                     <span className='nameList'>{i.name}</span>
                                     <br />
                                     <p className='priceProduct'>{convertVND(i.price)}</p>
