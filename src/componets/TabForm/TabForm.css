@@ -1,0 +1,20 @@
+.form {
+    border-width: 1px;
+    border-style: solid;
+    border-top: 0px;
+    border-color: #dddddd;
+    padding-left: 10px;
+    height: 425px;
+    border-top-color: #dddddd;
+}
+.description{
+    color: '#353535';
+    line-Height: 2.2;
+    font-Size: 20px;
+    margin: 0;
+    padding-top: 10px;
+}
+.react-tabs__tab-list {
+    margin: 0px;
+    padding: 0;
+}

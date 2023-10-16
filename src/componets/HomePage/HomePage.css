@@ -1,0 +1,46 @@
+.information {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+h1 {
+    color: #3c3451;
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 32px;
+    margin-bottom: 16px;
+    padding-bottom: 25px;
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    clear: both;
+    font-family: "Josefin Sans", serif;
+}
+
+h1::before {
+    content: "";
+    left: 0;
+    bottom: 8px;
+    display: block;
+    margin: 0 auto;
+    position: absolute;
+    right: 0;
+    width: 100px;
+    z-index: 1;
+    height: 5px;
+    background: linear-gradient(
+        to right,
+        #fe908b 0%,
+        #fe908b 33.4%,
+        #85d6df 33.41%,
+        #85d6df 66.7%,
+        #ffd27a 66.71%,
+        #ffd27a 100%
+    );
+}
+
+.list {
+    padding-bottom: 50px;
+}
+

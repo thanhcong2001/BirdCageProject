@@ -1,0 +1,58 @@
+
+.App {
+    align-items: center;
+    font-family: "Roboto", sans-serif;
+}
+
+.img {
+    width: 1200px;
+    height: 300px;
+}
+
+.subtitle {
+    font-size: 17px;
+}
+
+.icon-cus {
+    border-radius: 50%;
+    border-width: 2px;
+    border-color: #8bfe92;
+    width: 50px;
+    border-style: solid;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #8bfe92;
+    transition: 0.3s ease-in;
+}
+
+.icon-cusone {
+    border-radius: 50%;
+    border-width: 2px;
+    border-color: #75d4f9;
+    width: 50px;
+    border-style: solid;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #75d4f9;
+    transition: 0.3s ease-in;
+}
+
+.blog {
+    font-size: 1em;
+    font-weight: 600;
+    color: #353535;
+    font-family: "Roboto", sans-serif;
+}
+
+.test {
+    margin-left: 15px;
+}
+
+.test:hover {
+    color: #64be43;
+    cursor: pointer;
+}

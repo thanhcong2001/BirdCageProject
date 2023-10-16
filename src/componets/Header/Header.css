@@ -1,0 +1,12 @@
+.category {
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    transition: .3s ease-in;
+    cursor: pointer;
+    margin-left: 20px;
+  }
+  
+  .category:hover {
+    color: black;
+  }
