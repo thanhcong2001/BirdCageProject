@@ -1,13 +1,15 @@
 import './App.css';
-import { Header } from './componets/Header/Header';
+
 import { Intro } from './componets/Intro/Intro';
 import { News } from './componets/News/News';
 import  {Routes, Route} from 'react-router-dom'
-import { Details } from './componets/Details/Details';
+
 import { Footer } from './componets/Footer/Footer';
 import HomePage from './componets/HomePage/HomePage';
 import { BirdCage } from './componets/BirdCage/BirdCage';
 import Cart from './componets/Cart/Cart.jsx';
+import Details from 'componets/Details/Details.js';
+import Header from 'componets/Header/Header.js';
 
 function App() {
   return (

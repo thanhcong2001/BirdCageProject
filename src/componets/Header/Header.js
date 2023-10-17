@@ -1,31 +1,29 @@
+import styled from '@emotion/styled';
+import { AccountCircle, Close } from '@mui/icons-material';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import PersonIcon from '@mui/icons-material/Person';
 import SearchIcon from '@mui/icons-material/Search';
-import { AppBar, Box, IconButton, Menu, MenuItem, Toolbar } from '@mui/material';
+import { AppBar, Badge, Box, Menu, MenuItem, Toolbar } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import '../Header/Header.css';
+import IconButton from '@mui/material/IconButton';
 import Login from 'componets/Auth/components/Login/Login.jsx';
-import { useDispatch, useSelector } from 'react-redux';
-import styled from '@emotion/styled';
-import { logout } from 'componets/Auth/userSlice.js';
-import { AccountCircle, Close } from '@mui/icons-material';
 import Register from 'componets/Auth/components/Register/index.jsx';
+import { logout } from 'componets/Auth/userSlice.js';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import '../Header/Header.css';
+import { cartItemsCountSelector } from './../Cart/seletors';
+import {useNavigate} from 'react-router-dom';
 
 const MODE = {
     LOGIN: 'login',
     REGISTER: 'register',
 }
 
-export const Header = () => {
-
-    const DemoButton = styled(Button)(() => ({
-        color: '#fff',
-    }))
+function Header() {
 
     const CloseButton = styled(IconButton)(() => ({
         position: 'absolute',
@@ -40,6 +38,8 @@ export const Header = () => {
     const [open, setOpen] = useState(false);
     const [mode, setMode] = useState(MODE.LOGIN);
     const [anchorEl, setAnchorEl] = useState(null)
+    const cartItemsCount = useSelector(cartItemsCountSelector)
+    const history = useNavigate();
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -62,6 +62,10 @@ export const Header = () => {
         dispatch(action)
     }
 
+    const handleCartClick = () => {
+        history('/cart')
+    }
+
     return (
         <div style={{ marginBottom: 120 }}>
             <AppBar style={{ backgroundColor: '#64BE43', height: 100, justifyContent: 'center', paddingLeft: 120 }}>
@@ -76,10 +80,14 @@ export const Header = () => {
                     <Link style={{ textDecoration: 'none' }} to={'/news'}><p className='category'>Tin Tức</p></Link>
                     <p className='category'>Liên Hệ</p>
                     <div style={{ marginLeft: 80 }}>
-                        <SearchIcon style={{ marginRight: 15, marginLeft: 20 }} />
-                        {/* <PersonIcon onClick={handleClickOpen} style={{ marginRight: 15 }} /> */}
+                        <IconButton color="inherit">
+                            <SearchIcon />
+                        </IconButton>
+
                         {!isLoggedIn && (
-                            <PersonIcon onClick={handleClickOpen} style={{ marginRight: 15 }} />
+                            <IconButton color="inherit" onClick={handleClickOpen}>
+                                <PersonIcon />
+                            </IconButton>
                         )}
 
                         {isLoggedIn && (
@@ -87,7 +95,16 @@ export const Header = () => {
                                 <AccountCircle />
                             </IconButton>
                         )}
-                        <LocalMallIcon />
+
+                        <IconButton
+                            color="inherit"
+                            onClick={handleCartClick}
+                        >
+                            <Badge badgeContent={cartItemsCount} color="error">
+                                <LocalMallIcon color="inherit" />
+                            </Badge>
+                        </IconButton>
+
                     </div>
                 </Toolbar>
             </AppBar>
@@ -144,6 +161,8 @@ export const Header = () => {
                     )}
                 </DialogContent>
             </Dialog>
-        </div>
+        </div >
     )
 }
+
+export default Header;
