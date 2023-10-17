@@ -1,0 +1,23 @@
+.title {
+    text-align: center;
+    height: 100px;
+    width: 350px;
+    justify-content: space-evenly;
+}
+
+.title:hover .icon-cus {
+    background-color: #8bfe92;
+    color: #fff;
+}
+
+.title:hover .icon-cusone {
+    background-color: #75d4f9;
+    color: #fff;
+}
+
+.nameStore {
+    font-size: 20px;
+    color: #1c1c1c;
+    font-weight: 700;
+    font-family: "Roboto", sans-serif;
+}

@@ -1,0 +1,27 @@
+h2 {
+    color: #3c3451;
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 32px;
+    margin-bottom: 16px;
+    padding-bottom: 25px;
+    text-align: center;
+    text-transform: uppercase;
+}
+.list {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+.homePage-title{
+    color: #3c3451;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 32px;
+    margin-bottom: 16px;
+    padding-bottom: 25px;
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    clear: both;
+}
