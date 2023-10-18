@@ -100,7 +100,6 @@ function Details({ initialQuantity, onQuantityChange }) {
                             <a href=''>Lồng Chim</a>
                         </div>
                         <h1 style={{ fontSize: 27 }}>Lồng bầu chạm Biên Hòa làm kỹ.<br /> MSP: LB1400</h1>
-                        <div className='lineCircleOne' style={{ marginBottom: 17 }}></div>
                         <span className='priceProduct' style={{ fontSize: 24 }}>1,400,000 ₫</span>
                         <p style={{ color: '#353535', fontSize: 18 }}>Sản phẩm được sản xuất từ tre già loại 1.</p>
                         <p style={{ color: '#353535', lineHeight: 2.2, fontSize: 18, }}>– Phù hợp với nuôi chào mào có tật bu lồng, ngoái, lộn.

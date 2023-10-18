@@ -44,10 +44,10 @@
 }
 
 .nameList-Design {
-    color: #1c1c1c;
+    color: #3c3451;
     text-align: center;
     width: 200px;
-    font-weight: 100;
+    font-weight: bold;
     font-size: 14px;
 }
 
@@ -145,6 +145,10 @@ a {
     cursor: pointer;
     margin-bottom: 0px;
 }  
-.custom-dropdown{
-   height: 10px;
+.custom-dropdown span{
+    padding-left: 10px;
+    margin-top: 15px;
+}
+.custom-dropdown1 span{
+    padding-left: 25px;
 }

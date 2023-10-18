@@ -30,17 +30,21 @@ function AddToCartForm({ onSubmit = null }) {
     }
 
     return (
-
-        <form onSubmit={form.handleSubmit(handleSubmit)}>
+    <div>
+        <form style={{display:'flex'}} onSubmit={form.handleSubmit(handleSubmit)}>
+            <div>
             <QuantityField name="quantity" label="Quantity" form={form}></QuantityField>
+            </div>
+            <div>
             <button
-                style={{ height: 40, backgroundColor: '#8dc63f', marginTop: 18, fontSize: 16, fontWeight: 'bold',}}
+                style={{ height: 40, marginLeft:30,backgroundColor: '#8dc63f', marginTop: 15, fontSize: 16, fontWeight: 'bold',}}
                 type="submit"
-                variant="contained"
-            >
+                variant="contained">
                 Thêm vào giỏ
             </button>
+            </div>
         </form>
+    </div>
     );
 }
 

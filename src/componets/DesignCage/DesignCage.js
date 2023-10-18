@@ -5,9 +5,19 @@ import TabForm from '../TabForm/TabForm'
 import Dropdown from 'react-dropdown-select';
 export const DesignCage = ({ initialQuantity, onQuantityChange, clicked }) => {
     const options = [
-        { label: 'Option 1', value: 'option1' },
-        { label: 'Option 2', value: 'option2' },
-        { label: 'Option 3', value: 'option3' },
+        { label: '50x80', value: '50x80' },
+        { label: '60x80', value: '60x80' },
+        { label: '60x90', value: '60x90' },
+    ];
+    const optionsNan = [
+        { label: '50', value: '50x80' },
+        { label: '60', value: '60x80' },
+        { label: '70', value: '60x90' },
+    ];
+    const optionsColor = [
+        { label: 'Black', value: '50x80' },
+        { label: 'Violet', value: '60x80' },
+        { label: 'Orange    ', value: '60x90' },
     ];
 
     function convertVND(price) {
@@ -26,7 +36,6 @@ export const DesignCage = ({ initialQuantity, onQuantityChange, clicked }) => {
         { id: 2, clicked: false, text: 'Blue' },
         { id: 3, clicked: false, text: 'Yellow' },
         { id: 4, clicked: false, text: 'Grey' },
-        { id: 5, clicked: false, text: 'Green' },
 
     ]);
     const [color, setColor] = useState([
@@ -41,7 +50,6 @@ export const DesignCage = ({ initialQuantity, onQuantityChange, clicked }) => {
         { id: 2, clicked: false, text: '25' },
         { id: 3, clicked: false, text: '30' },
         { id: 4, clicked: false, text: '40' },
-        { id: 5, clicked: false, text: '50' },
 
     ]);
 
@@ -129,12 +137,12 @@ export const DesignCage = ({ initialQuantity, onQuantityChange, clicked }) => {
                         <img className='picProduct-Design' src='http://mauweb.monamedia.net/birdshop/wp-content/uploads/2018/04/4-9.jpg' />
                     </div>
                     <div>
-                        <div style={{ marginTop: 25, textDecoration: 'none' }}>
-                            <a href=''>Trang Chủ  /</a>
-                            <a href=''>Thiết kế lồng</a>
-                        </div>
+                            {/* <div style={{ marginTop: 25, textDecoration: 'none' }}>
+                                <a href=''>Trang Chủ  /</a>
+                                <a href=''>Thiết kế lồng</a>
+                            </div> */}
                         <h1 style={{ fontSize: 27, lineHeight: 1.3 }}>Lồng bầu chạm Biên Hòa<br /> 1.400.000 ₫</h1>
-                        <div className='lineCircleOne-Design' style={{ marginBottom: 10 }}></div>
+                        {/* <div className='lineCircleOne-Design' style={{ marginBottom: 10 }}></div> */}
                         <div>
                             <div>
                                 <p style={{ fontWeight: 'bold' }}>Kích Thước Của Lồng:</p>
@@ -149,7 +157,9 @@ export const DesignCage = ({ initialQuantity, onQuantityChange, clicked }) => {
                                     ))}
                                     <Dropdown
                                         options={options}
-                                        placeholder="Select an option"
+                                        placeholder="Others"
+                                        style={{width:90,height:52,borderColor:'black',justifyContent:'center',alignItems:'center',borderRadius:10}}
+                                        className="custom-dropdown"
                                     />
                                 </div>
 
@@ -165,6 +175,12 @@ export const DesignCage = ({ initialQuantity, onQuantityChange, clicked }) => {
                                             onClick={() => handleNanNumberClick(nanNumber.id)}
                                         />
                                     ))}
+                                    <Dropdown
+                                        options={optionsNan}
+                                        placeholder="Others"
+                                        style={{width:90,height:52,borderColor:'black',justifyContent:'center',alignItems:'center',borderRadius:10}}
+                                        className="custom-dropdown1"
+                                    />
                                 </div>
                             </div>
                             <div>
@@ -178,6 +194,12 @@ export const DesignCage = ({ initialQuantity, onQuantityChange, clicked }) => {
                                             onClick={() => handleButtonClick(button.id)}
                                         />
                                     ))}
+                                    <Dropdown
+                                        options={optionsColor}
+                                        placeholder="Others"
+                                        style={{width:90,height:52,borderColor:'black',justifyContent:'center',alignItems:'center',borderRadius:10}}
+                                        className="custom-dropdown"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -188,7 +210,7 @@ export const DesignCage = ({ initialQuantity, onQuantityChange, clicked }) => {
                     </div>
 
                 </div>
-                <div style={{ marginLeft: 640 }}>
+                <div style={{ marginLeft: 660 }}>
                     <button style={{ backgroundColor: '#f1f1f1', color: 'black', height: 40, width: 30, borderRadius: 0, borderWidth: 1, borderStyle: 'solid', borderColor: '#dddddd' }} onClick={handleDecrease}>-</button>
                     <span style={{ paddingLeft: 18, paddingRight: 18, borderTopWidth: 1, borderStyle: 'solid', borderBottomWidth: 1, borderLeftWidth: 0, borderRightWidth: 0, paddingBottom: 12, paddingTop: 9, borderColor: '#dddddd' }}>{quantity}</span>
                     <button style={{ backgroundColor: '#f1f1f1', color: 'black', height: 40, width: 32, borderRadius: 0, borderWidth: 1, borderStyle: 'solid', borderColor: '#dddddd' }} className='quatity' onClick={handleIncrease}>+</button>

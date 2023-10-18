@@ -11,7 +11,7 @@ export const Footer = () => {
             })
     }, [])
     return (
-        <div>
+        <div style={{marginTop:50}}>
             <div className='lineFooter'></div>
             <div className='footer'>
                 <div style={{ width: 278 }}>

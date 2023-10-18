@@ -21,7 +21,7 @@ function QuantityField(props) {
         display: 'flex',
         flexFlow: 'nowrap',
         alignItems: 'center',
-        maxWidth: 140,
+        maxWidth: 123,
     }))
 
     const IconNum = styled(IconButton)(() => ({
@@ -32,7 +32,7 @@ function QuantityField(props) {
         borderRadius: 0, 
         borderWidth: 1, 
         borderStyle: 'solid', 
-        borderColor: '#dddddd'
+        borderColor: '#dddddd',
     }))
 
     return (
