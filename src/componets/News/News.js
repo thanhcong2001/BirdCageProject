@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Header } from '../Header/Header'
+import Header  from '../Header/Header'
 import '../News/News.css'
 import axios from 'axios'
 import SearchIcon from '@mui/icons-material/Search';

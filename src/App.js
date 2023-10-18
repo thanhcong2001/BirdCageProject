@@ -7,10 +7,9 @@ import  {Routes, Route} from 'react-router-dom'
 import { Footer } from './componets/Footer/Footer';
 import HomePage from './componets/HomePage/HomePage';
 import { BirdCage } from './componets/BirdCage/BirdCage';
-import Cart from './componets/Cart/Cart.jsx';
 import Details from 'componets/Details/Details.js';
 import Header from 'componets/Header/Header.js';
-
+ 
 function App() {
   return (
     <div className='App'>

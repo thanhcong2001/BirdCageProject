@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { AccountCircle, Close } from '@mui/icons-material';
-import LocalMallIcon from '@mui/icons-material/LocalMall';
 import PersonIcon from '@mui/icons-material/Person';
 import SearchIcon from '@mui/icons-material/Search';
 import { AppBar, Badge, Box, Menu, MenuItem, Toolbar } from '@mui/material';
@@ -13,14 +12,9 @@ import Register from 'componets/Auth/components/Register/index.jsx';
 import { logout } from 'componets/Auth/userSlice.js';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
 import '../Header/Header.css';
 import { cartItemsCountSelector } from './../Cart/seletors';
-import { useNavigate } from 'react-router-dom';
 import React from 'react'
-import { AppBar, Toolbar } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import PersonIcon from '@mui/icons-material/Person';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import '../Header/Header.css'
 import { Link, useNavigate } from 'react-router-dom';
@@ -46,6 +40,7 @@ function Header() {
     const [anchorEl, setAnchorEl] = useState(null)
     const cartItemsCount = useSelector(cartItemsCountSelector)
     const history = useNavigate();
+    const navigate = useNavigate()
 
     const handleClickOpen = () => {
         setOpen(true);

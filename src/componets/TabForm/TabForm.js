@@ -10,9 +10,10 @@ function TabForm() {
         <div>
             <Tabs selectedIndex={selectedTab} onSelect={index => setSelectedTab(index)}>
                 <TabList>
-                    <Tab style={{fontSize:20}}>Mô Tả</Tab>
-                    <Tab style={{fontSize:20}}>Đánh Giá</Tab>
-                    <Tab style={{fontSize:20}}>Chính Sách</Tab>
+                    <Tab style={{ fontSize: 20 }}>Mô Tả</Tab>
+                    <Tab style={{ fontSize: 20 }}>Đánh Giá</Tab>
+                    <Tab style={{ fontSize: 20 }}>Chính Sách</Tab>
+                </TabList>
                 <div className='form'>
                     <TabPanel>
                         {<p className='description'>– Phù hợp với nuôi chào mào có tật bu lồng, ngoái, lộn.
@@ -31,22 +32,22 @@ function TabForm() {
                     <TabPanel>
                         {
                             <div>
-                                <div style={{marginLeft:20}}>
-                                    <p style={{fontSize:22,fontWeight:'bold'}}>Đánh giá</p>
+                                <div style={{ marginLeft: 20 }}>
+                                    <p style={{ fontSize: 22, fontWeight: 'bold' }}>Đánh giá</p>
                                     <p>Chưa có đánh giá nào.</p>
                                 </div>
                                 <div className='form-feedBackCage'>
-                                    <p style={{fontSize:15,fontWeight:'bold'}}>Hãy là người đầu tiên nhận xét “Lồng Vành Khuyên” </p>
-                                    <p style={{fontSize:15,fontWeight:'bold'}}>Nhận xét của bạn *</p>
+                                    <p style={{ fontSize: 15, fontWeight: 'bold' }}>Hãy là người đầu tiên nhận xét “Lồng Vành Khuyên” </p>
+                                    <p style={{ fontSize: 15, fontWeight: 'bold' }}>Nhận xét của bạn *</p>
                                     <input className='input-feedBack' />
-                                    <div style={{display:'flex',justifyContent:'space-between'}}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                         <div>
-                                            <p style={{fontSize:15,fontWeight:'bold'}}>Tên *</p>
+                                            <p style={{ fontSize: 15, fontWeight: 'bold' }}>Tên *</p>
                                             <input className='input-inFo' />
                                         </div>
                                         <div>
-                                            <p style={{fontSize:15,fontWeight:'bold'}}>Email *</p>
-                                            <input className='input-inFo' style={{marginRight:32}} />
+                                            <p style={{ fontSize: 15, fontWeight: 'bold' }}>Email *</p>
+                                            <input className='input-inFo' style={{ marginRight: 32 }} />
                                         </div>
                                     </div>
                                     <div>
