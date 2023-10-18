@@ -1,14 +1,13 @@
 .card {
-    width:303px;
+    width: 300px;
     border-style: dashed;
     border-width: 2px;
     border-color: #dddddd;
-    margin-bottom: 10px;
-    margin-right: 20px;
-    height: 447px;
+    margin-bottom: 15px;
 }
 
-.card h3,h4 {
+.card h3,
+h4 {
     text-align: center;
 }
 
@@ -20,3 +19,21 @@ h4 {
     font-size: 15px;
     text-transform: uppercase;
 }
+
+.product {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+
+
+.flash {
+    padding: 50px 0;
+}
+
+.product_list {
+    padding-top: 25px;
+}
+
+

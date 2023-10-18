@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../Footer/Footer.css';
 import axios from 'axios';
 export const Footer = () => {
+    
     const [blog, setBlog] = useState([])
     useEffect(() => {
         axios.get('https://6507a9f63a38daf4803fa131.mockapi.io/api/v1/birdCage')

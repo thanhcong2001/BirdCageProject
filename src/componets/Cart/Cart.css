@@ -1,7 +1,7 @@
 .cart-items {
     background: #f6f9fc;
     height: auto;
-    padding: 50px 0;
+    padding-bottom: 50px;
 }
 
 .cart-items .cart-details {
@@ -17,7 +17,7 @@
 
 th,
 td {
-    padding: 3em;
+    padding: 1.2rem;
     text-align: center;
     border-bottom: 2px solid #e4e1e1;
     line-height: 1.3;
@@ -68,14 +68,31 @@ product_name {
     font-size: 0.9em;
 }
 
-.cart-total{
+.cart-total {
     margin-right: 100px;
 }
-
 
 .table-total {
     width: 100%;
     margin-bottom: 1em;
     border-color: #ececec;
     border-spacing: 0;
+}
+
+.btn-voucher {
+    overflow: hidden;
+    position: relative;
+    background-color: #f9f9f9;
+    text-shadow: 1px 1px 1px #fff;
+    color: #666;
+    border: 1px solid #ddd;
+    text-transform: none;
+    font-weight: normal;
+}
+.btn-voucher:hover {
+    background-color: #c7c7c7;
+}
+
+.money {
+    font-weight: bold;
 }

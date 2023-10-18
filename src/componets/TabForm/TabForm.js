@@ -10,10 +10,9 @@ function TabForm() {
         <div>
             <Tabs selectedIndex={selectedTab} onSelect={index => setSelectedTab(index)}>
                 <TabList>
-                    <Tab style={{ fontSize: 20 }}>Mô Tả</Tab>
-                    <Tab style={{ fontSize: 20 }}>Đánh Giá</Tab>
-                    <Tab style={{ fontSize: 20 }}>Chính Sách</Tab>
-                </TabList>
+                    <Tab style={{fontSize:20}}>Mô Tả</Tab>
+                    <Tab style={{fontSize:20}}>Đánh Giá</Tab>
+                    <Tab style={{fontSize:20}}>Chính Sách</Tab>
                 <div className='form'>
                     <TabPanel>
                         {<p className='description'>– Phù hợp với nuôi chào mào có tật bu lồng, ngoái, lộn.

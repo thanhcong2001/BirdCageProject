@@ -2,11 +2,20 @@ import React, { useEffect, useState } from 'react'
 import '../Details/Details.css'
 import axios from 'axios'
 import TabForm from '../TabForm/TabForm'
+import AddToCartForm from './../Cart/AddToCartForm';
+import { useDispatch } from 'react-redux';
+import { addToCart } from 'componets/Cart/cartSlice.js';
 
-export const Details = ({ initialQuantity, onQuantityChange }) => {
+Details.propTypes = {
+
+};
+
+function Details({ initialQuantity, onQuantityChange }) {
     const [data, setdata] = useState([])
     const [quantity, setQuantity] = useState(initialQuantity || 1);
     const [list, setList] = useState([])
+
+    const dispatch = useDispatch();
 
     const handleIncrease = () => {
         setQuantity(quantity + 1);
@@ -22,10 +31,21 @@ export const Details = ({ initialQuantity, onQuantityChange }) => {
             setQuantity(quantity - 1);
         }
     };
+
+    const handleAddToCartSubmit = ({quantity }) => {
+        // console.log('Form Submit', formValues);
+        const action = addToCart({
+            id: list.id,
+            quantity: quantity,
+        })
+        console.log(action)
+        dispatch(action)
+    }
+
     useEffect(() => {
         axios.get('https://6507a9f63a38daf4803fa131.mockapi.io/api/v1/birdCage')
             .then(response => {
-                setdata(response.data) 
+                setdata(response.data)
             })
         axios.get('https://6509117cf6553137159aecfc.mockapi.io/api/v1/Cage')
             .then(response => {
@@ -96,13 +116,10 @@ export const Details = ({ initialQuantity, onQuantityChange }) => {
 
                             – Đáy lồng làm bằng tre, đẹp, sang trọng.</p>
                         <div>
-                            <button style={{ backgroundColor: '#f1f1f1', color: 'black', height: 40, width: 30, borderRadius: 0, borderWidth: 1, borderStyle: 'solid', borderColor: '#dddddd' }} onClick={handleDecrease}>-</button>
-                            <span style={{ paddingLeft: 18, paddingRight: 18, borderTopWidth: 1, borderStyle: 'solid', borderBottomWidth: 1, borderLeftWidth: 0, borderRightWidth: 0, paddingBottom: 12, paddingTop: 9, borderColor: '#dddddd' }}>{quantity}</span>
-                            <button style={{ backgroundColor: '#f1f1f1', color: 'black', height: 40, width: 32, borderRadius: 0, borderWidth: 1, borderStyle: 'solid', borderColor: '#dddddd' }} className='quatity' onClick={handleIncrease}>+</button>
-                            <button style={{ height: 40, backgroundColor: '#8dc63f', marginLeft: 20, fontSize: 16, fontWeight: 'bold' }}>Thêm vào giỏ</button>
+                            <AddToCartForm onSubmit={handleAddToCartSubmit} />
                         </div>
                         <div className='horizontaline' style={{ width: 427, marginTop: 30, marginBottom: 10 }}></div>
-                        <span style={{ color: '#353535' }}>Danh Mục:<a className='type'>Lồng Chim</a></span>
+                        <span style={{ color: '#353535' }}>Danh Mục: <a className='type'>Lồng Chim</a></span>
                     </div>
                 </div>
                 <TabForm />
@@ -111,3 +128,5 @@ export const Details = ({ initialQuantity, onQuantityChange }) => {
         </div>
     )
 }
+
+export default Details;

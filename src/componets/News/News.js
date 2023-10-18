@@ -3,6 +3,7 @@ import { Header } from '../Header/Header'
 import '../News/News.css'
 import axios from 'axios'
 import SearchIcon from '@mui/icons-material/Search';
+import NewsCard from './NewsCard.jsx';
 export const News = () => {
   const [data, setdata] = useState([])
   useEffect(() => {
