@@ -2,8 +2,14 @@ import React, { useEffect, useState } from 'react'
 import '../DesignCage/DesignCage.css'
 import axios from 'axios'
 import TabForm from '../TabForm/TabForm'
-
+import Dropdown from 'react-dropdown-select';
 export const DesignCage = ({ initialQuantity, onQuantityChange, clicked }) => {
+    const options = [
+        { label: 'Option 1', value: 'option1' },
+        { label: 'Option 2', value: 'option2' },
+        { label: 'Option 3', value: 'option3' },
+    ];
+
     function convertVND(price) {
         if (price != null && price != undefined && price != '') return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
         else return 0
@@ -27,8 +33,7 @@ export const DesignCage = ({ initialQuantity, onQuantityChange, clicked }) => {
         { id: 1, clicked: false, text: '20x40' },
         { id: 2, clicked: false, text: '40x35' },
         { id: 3, clicked: false, text: '40x60' },
-        { id: 4, clicked: false, text: 'Khướu' },
-        { id: 5, clicked: false, text: 'Khướu' },
+        { id: 4, clicked: false, text: '50x70' },
 
     ]);
     const [nanNumber, setNanNumber] = useState([
@@ -128,7 +133,7 @@ export const DesignCage = ({ initialQuantity, onQuantityChange, clicked }) => {
                             <a href=''>Trang Chủ  /</a>
                             <a href=''>Thiết kế lồng</a>
                         </div>
-                        <h1 style={{ fontSize: 27 }}>Lồng bầu chạm Biên Hòa<br /> MSP: LB1400</h1>
+                        <h1 style={{ fontSize: 27, lineHeight: 1.3 }}>Lồng bầu chạm Biên Hòa<br /> 1.400.000 ₫</h1>
                         <div className='lineCircleOne-Design' style={{ marginBottom: 10 }}></div>
                         <div>
                             <div>
@@ -142,7 +147,12 @@ export const DesignCage = ({ initialQuantity, onQuantityChange, clicked }) => {
                                             onClick={() => handleColorClick(color.id)}
                                         />
                                     ))}
+                                    <Dropdown
+                                        options={options}
+                                        placeholder="Select an option"
+                                    />
                                 </div>
+
                             </div>
                             <div>
                                 <p style={{ fontWeight: 'bold' }}>Số Nan Của Lồng:</p>
@@ -178,7 +188,7 @@ export const DesignCage = ({ initialQuantity, onQuantityChange, clicked }) => {
                     </div>
 
                 </div>
-                <div style={{ marginLeft: 545 }}>
+                <div style={{ marginLeft: 640 }}>
                     <button style={{ backgroundColor: '#f1f1f1', color: 'black', height: 40, width: 30, borderRadius: 0, borderWidth: 1, borderStyle: 'solid', borderColor: '#dddddd' }} onClick={handleDecrease}>-</button>
                     <span style={{ paddingLeft: 18, paddingRight: 18, borderTopWidth: 1, borderStyle: 'solid', borderBottomWidth: 1, borderLeftWidth: 0, borderRightWidth: 0, paddingBottom: 12, paddingTop: 9, borderColor: '#dddddd' }}>{quantity}</span>
                     <button style={{ backgroundColor: '#f1f1f1', color: 'black', height: 40, width: 32, borderRadius: 0, borderWidth: 1, borderStyle: 'solid', borderColor: '#dddddd' }} className='quatity' onClick={handleIncrease}>+</button>

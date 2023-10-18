@@ -5,6 +5,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import '../Header/Header.css'
 import { Link, useNavigate } from 'react-router-dom';
+
 export const Header = () => {
     const navigate = useNavigate()
     return (
@@ -23,12 +24,11 @@ export const Header = () => {
                                     <a href="">Lồng Chim Vẹt</a>
                                     <div className='line-cage'></div>
                                     <ul className='list2'>
-                                        <li><a onClick={() => navigate('/designCage')}>Lồng Avi</a></li>
+                                        <li><a onClick={() => navigate('/designCage')}>Lồng bầu chạm</a></li>
                                         <div className='line-cage'></div>
                                         <li><a href="#">Lồng Chim Lực</a></li>
                                         <div className='line-cage'></div>
                                         <li><a href="#">Lồng Chim Sing</a></li>
-                                        <div className='line-cage'></div>
                                     </ul>
                                 </li>
                                 <li className='parent2'>
@@ -66,7 +66,7 @@ export const Header = () => {
                             </ul>
                         </li>
                     </ul>
-                    <p className='category'>Gà Cảnh</p>
+                    <p className='category'>Chim Cảnh</p>
                     <Link style={{ textDecoration: 'none' }} to={'/birdCage'}><p className='category'>Lồng Chim</p></Link>
                     <p className='category'>Cám Chim</p>
                     <p className='category'>Phụ Kiện</p>

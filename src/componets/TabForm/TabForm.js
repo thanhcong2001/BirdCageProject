@@ -31,19 +31,27 @@ function TabForm() {
                     </TabPanel>
                     <TabPanel>
                         {
-                            <div >
-                                <div>
-                                    <p>Đánh giá</p>
+                            <div>
+                                <div style={{marginLeft:20}}>
+                                    <p style={{fontSize:22,fontWeight:'bold'}}>Đánh giá</p>
                                     <p>Chưa có đánh giá nào.</p>
                                 </div>
                                 <div className='form-feedBackCage'>
-                                    <p>Hãy là người đầu tiên nhận xét “Lồng Vành Khuyên” </p>
-                                    <p>Đánh giá của bạn</p>
-                                    <p>Nhận xét của bạn *</p>
+                                    <p style={{fontSize:15,fontWeight:'bold'}}>Hãy là người đầu tiên nhận xét “Lồng Vành Khuyên” </p>
+                                    <p style={{fontSize:15,fontWeight:'bold'}}>Nhận xét của bạn *</p>
                                     <input className='input-feedBack' />
+                                    <div style={{display:'flex',justifyContent:'space-between'}}>
+                                        <div>
+                                            <p style={{fontSize:15,fontWeight:'bold'}}>Tên *</p>
+                                            <input className='input-inFo' />
+                                        </div>
+                                        <div>
+                                            <p style={{fontSize:15,fontWeight:'bold'}}>Email *</p>
+                                            <input className='input-inFo' style={{marginRight:32}} />
+                                        </div>
+                                    </div>
                                     <div>
-                                        <p>Tên *</p>
-                                        <input className='input-inFo' />
+                                        <p className='button-feedBack'>Gửi Đi</p>
                                     </div>
                                 </div>
                             </div>
