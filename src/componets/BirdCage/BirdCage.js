@@ -6,6 +6,7 @@ export const BirdCage = () => {
   const [data, setdata] = useState([])
   const [list, setList] = useState([])
 
+
   useEffect(() => {
     axios.get('https://6509117cf6553137159aecfc.mockapi.io/api/v1/Cage')
       .then(res => {
@@ -20,6 +21,7 @@ export const BirdCage = () => {
   const handleChange = (event) => {
     setMyCar(event.target.value)
   }
+
   function convertVND(price) {
     if (price != null && price != undefined && price != '') return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
     else return 0
