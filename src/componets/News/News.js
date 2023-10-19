@@ -35,7 +35,7 @@ export const News = () => {
         </div>
         <div style={{ width: '30%' }}>
           <form className="search-bar">
-            <input className='input'
+            <input className='input-search'
               type="text"
               placeholder="Tìm kiếm..."
             />

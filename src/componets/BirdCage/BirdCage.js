@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import '../BirdCage/BirdCage.css'
 import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+
 export const BirdCage = () => {
   const [myCar, setMyCar] = useState("Thứ tự mặc định");
   const [data, setdata] = useState([])
   const [list, setList] = useState([])
-
+  const navigate = useNavigate()
   useEffect(() => {
     axios.get('https://6509117cf6553137159aecfc.mockapi.io/api/v1/Cage')
       .then(res => {
@@ -46,7 +48,7 @@ export const BirdCage = () => {
           <p style={{ fontWeight: 600, color: '#353535', fontSize: 16 }}>SẢN PHẨM</p>
           <p className='lineCage'></p>
         </div>
-        <div className='borderBlogOne' style={{ height: 489 }}>
+        <div className='borderBlogOne' style={{ height: 489 }} >
           {list.slice(0, 6).map(i => (
             <div className='box-birdCage'>
               <div className='blog' >
@@ -59,7 +61,6 @@ export const BirdCage = () => {
                   <p className='priceProduct'>{convertVND(i.price)}</p>
                 </div>
               </div>
-              {/* <div className='lineList'></div> */}
             </div>
           ))}
         </div>
@@ -82,7 +83,7 @@ export const BirdCage = () => {
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden' }}>
           {data.map(i => (
-            <div key={i?.id}>
+            <div onClick={() => navigate(`/details/${i.id}`)} key={i?.id}>
               <div className='card'>
                 <img className='img-birdCage' src={i.img} alt="" />
                 <p className='nameBirdCage'>{i.name}</p>

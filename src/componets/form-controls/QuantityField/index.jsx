@@ -45,20 +45,21 @@ function QuantityField(props) {
                 <>
                     <FormControl error={isTouched && invalid} fullWidth margin="normal" variant="outlined" size='small'>
                         <BoxNum>
-                            <IconNum onClick={() => setValue(name, Number.parseInt(value) ? Number.parseInt(value) - 1 : 1)}>
+                            <IconNum onClick={() => setValue(name, Number.parseInt(value) && Number.parseInt(value) > 1 ? Number.parseInt(value) - 1 : 1)}>
                                 <RemoveIcon />
                             </IconNum>
                             <OutlinedInput
                                 id={name}
                                 error={invalid}
-                                type="number"
+                                type="text"
                                 labelWidth={70}
                                 value={value}
                                 onBlur={onBlur}
                                 onChange={onChange}
+                                style={{paddingLeft:'9px'}}
                             />
 
-                            <IconNum onClick={() => setValue(name, Number.parseInt(value) ? Number.parseInt(value) + 1 : 1)}>
+                            <IconNum onClick={() => setValue(name, Number.parseInt(value) && Number.parseInt(value) > 0 ? Number.parseInt(value) + 1 : 1)}>
                                 <AddIcon />
                             </IconNum>
 

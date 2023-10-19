@@ -5,12 +5,14 @@ import TabForm from '../TabForm/TabForm'
 import AddToCartForm from './../Cart/AddToCartForm';
 import { useDispatch } from 'react-redux';
 import { addToCart } from 'componets/Cart/cartSlice.js';
+import { useParams } from 'react-router-dom';
 
 Details.propTypes = {
 
 };
 
 function Details({ initialQuantity, onQuantityChange }) {
+    const{id}= useParams();
     const [data, setdata] = useState([])
     const [quantity, setQuantity] = useState(initialQuantity || 1);
     const [list, setList] = useState([])

@@ -68,11 +68,13 @@
     display: flex;
 }
 
-input[type="text"] {
+.input-search{
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-right: 5px;
+    width: 200px;
+
 }
 
 .input {
