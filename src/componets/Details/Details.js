@@ -12,7 +12,7 @@ Details.propTypes = {
 };
 
 function Details({ initialQuantity, onQuantityChange }) {
-    const{id}= useParams();
+    const { id } = useParams();
     const [data, setdata] = useState([])
     const [quantity, setQuantity] = useState(initialQuantity || 1);
     const [list, setList] = useState([])
@@ -34,7 +34,7 @@ function Details({ initialQuantity, onQuantityChange }) {
         }
     };
 
-    const handleAddToCartSubmit = ({quantity }) => {
+    const handleAddToCartSubmit = ({ quantity }) => {
         // console.log('Form Submit', formValues);
         const action = addToCart({
             id: list.id,
@@ -60,19 +60,18 @@ function Details({ initialQuantity, onQuantityChange }) {
                 <p className='listProduct'>SẢN PHẨM</p>
                 <div className='lineCircleOne'></div>
                 <div className='borderBlogOne'>
-                    {list.slice(0,5).map(i => (
+                    {list.slice(0, 5).map(i => (
                         <div className='box'>
                             <div className='blog'>
                                 <div>
                                     <img className='imgList' src={i.img} />
                                 </div>
-                                <div style={{marginTop:2}}>
+                                <div style={{ marginTop: 2 }}>
                                     <span className='nameList'>{i.name}</span>
                                     <br />
                                     <p className='priceProduct'>{convertVND(i.price)}</p>
                                 </div>
                             </div>
-                            {/* <div className='lineList'></div> */}
                         </div>
                     ))}
                 </div>
@@ -80,13 +79,12 @@ function Details({ initialQuantity, onQuantityChange }) {
                 <div className='lineCircleOne'></div>
                 <div className='borderBlogOne'>
                     {data.slice(0, 4).map(i => (
-                        <div>
+                        <div className='box-blogDetails'>
                             <div style={{ display: 'flex' }} key={i?.id}>
                                 <img className='imgCircle' src={i.img} />
                                 <p className='test'>
                                     {i.title}</p>
                             </div>
-                            <div className='lineCircle'></div>
                         </div>
                     ))}
                 </div>

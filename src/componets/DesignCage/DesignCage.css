@@ -24,6 +24,7 @@
 
 .blog-Design {
     display: flex;
+    margin-bottom: 10px;
 }
 
 .borderBlogOne-Design {
@@ -49,6 +50,7 @@
     width: 200px;
     font-weight: bold;
     font-size: 14px;
+
 }
 
 .nameList-Design:hover {
@@ -151,4 +153,12 @@ a {
 }
 .custom-dropdown1 span{
     padding-left: 25px;
+}
+.box-designCage:not(:last-of-type) {
+    margin-bottom: 10px;
+    border-bottom: 0.5px solid rgb(218, 218, 218);  ;
+}
+.box-blogDesignCage:not(:last-of-type) {
+    margin-bottom: 10px;
+    border-bottom: 0.5px solid rgb(218, 218, 218);  ;
 }

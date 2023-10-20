@@ -37,7 +37,7 @@ function TabForm() {
                                     <p>Chưa có đánh giá nào.</p>
                                 </div>
                                 <div className='form-feedBackCage'>
-                                    <p style={{ fontSize: 15, fontWeight: 'bold' }}>Hãy là người đầu tiên nhận xét “Lồng Vành Khuyên” </p>
+                                    <p style={{ fontSize: 15, fontWeight: 'bold' }}>Hãy là người đầu tiên nhận xét “Lồng Bầu Chạm” </p>
                                     <p style={{ fontSize: 15, fontWeight: 'bold' }}>Nhận xét của bạn *</p>
                                     <input className='input-feedBack' />
                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>

@@ -133,3 +133,7 @@ a {
     margin-bottom: 10px;
     border-bottom: 0.5px solid rgb(218, 218, 218);  ;
 }
+.box-blogDetails:not(:last-of-type) {
+    margin-bottom: 10px;
+    border-bottom: 0.5px solid rgb(218, 218, 218);
+}

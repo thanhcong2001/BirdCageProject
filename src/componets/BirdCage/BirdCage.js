@@ -5,13 +5,14 @@ import { Link, useNavigate } from 'react-router-dom';
 
 export const BirdCage = () => {
   const [myCar, setMyCar] = useState("Thứ tự mặc định");
-  const [data, setdata] = useState([])
+  const [data, setdata] = useState([]) 
   const [list, setList] = useState([])
   const navigate = useNavigate()
   useEffect(() => {
     axios.get('https://6509117cf6553137159aecfc.mockapi.io/api/v1/Cage')
       .then(res => {
         setdata(res.data)
+        console.log(res.data);
       })
     axios.get('https://6509117cf6553137159aecfc.mockapi.io/api/v1/foodBird')
       .then(response => {
