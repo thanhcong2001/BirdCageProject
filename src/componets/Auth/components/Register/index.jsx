@@ -1,8 +1,5 @@
-import { unwrapResult } from '@reduxjs/toolkit';
 import { useSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-import { register } from '../../userSlice.js';
 import RegisterForm from '../RegisterForm/index.jsx';
 
 Register.propTypes = {
@@ -10,7 +7,7 @@ Register.propTypes = {
 };
 
 function Register(props) {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const { enqueueSnackbar } = useSnackbar();
 
     const handleSubmit = async (value) => {
@@ -19,10 +16,9 @@ function Register(props) {
         try {
             //auto set username = email
             value.username = value.email;
-
-            const action = register(value);
-            const resultAction = await dispatch(action)
-            const user = unwrapResult(resultAction);
+            // const action = register(value);
+            // const resultAction = await dispatch(action)
+            // const user = unwrapResult(resultAction);
 
             //close dialog
             const { closeDialog } = props;

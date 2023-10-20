@@ -37,25 +37,12 @@ const queryClient = useQueryClient()
     },
 });
 
-
-    // const [data, setdata] = useState([])
-    const [quantity, setQuantity] = useState(1);
+    const [borderBlogOne, setBorderBlogOne] = useState()
     const [list, setList] = useState([])
     function convertVND(price) {
         if (price != null && price !== undefined && price !== '') return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
         else return 0
     }
-
-    // const handleIncrease = () => {
-    //     setQuantity(quantity + 1);
-    // };
-
-
-    // const handleDecrease = () => {
-    //     if (quantity > 1) {
-    //         setQuantity(quantity - 1);
-    //     }
-    // };
 
     const handleAddToCartSubmit = ({quantity }) => {
 
@@ -68,10 +55,10 @@ const queryClient = useQueryClient()
     }
 
     useEffect(() => {
-        // axios.get('https://6507a9f63a38daf4803fa131.mockapi.io/api/v1/birdCage')
-        //     .then(response => {
-        //         setdata(response.data)
-        //     })
+        axios.get('https://6507a9f63a38daf4803fa131.mockapi.io/api/v1/birdCage')
+        .then(response => {
+            setBorderBlogOne(response.data) 
+        })
         axios.get('https://6509117cf6553137159aecfc.mockapi.io/api/v1/Cage')
             .then(response => {
                 setList(response.data)
@@ -83,8 +70,8 @@ const queryClient = useQueryClient()
                 <p className='listProduct'>SẢN PHẨM</p>
                 <div className='lineCircleOne'></div>
                 <div className='borderBlogOne'>
-                    {list.slice(0,5).map(i => (
-                        <div className='box'>
+                    {list?.slice(0,5).map((i, index) => (
+                        <div className='box' key={index}>
                             <div className='blog'>
                                 <div>
                                     <img className='imgList' src={i.img} alt={`hinh anh`}/>
@@ -101,18 +88,18 @@ const queryClient = useQueryClient()
                 </div>
                 <p className='listProduct'>BÀI VIẾT MỚI NHẤT</p>
                 <div className='lineCircleOne'></div>
-                {/* <div className='borderBlogOne'>
-                    {data.slice(0, 4).map(i => (
+                <div className='borderBlogOne'>
+                    {borderBlogOne?.slice(0, 4).map(i => (
                         <div>
                             <div style={{ display: 'flex' }} key={i?.id}>
-                                <img className='imgCircle' src={i.img} />
+                                <img className='imgCircle' src={i.img} alt='hinh anh cam'/>
                                 <p className='test'>
                                     {i.title}</p>
                             </div>
                             <div className='lineCircle'></div>
                         </div>
                     ))}
-                </div> */}
+                </div>
             </div>
             {birdIdLoading ? <Box sx={{ display: 'flex', height: '500px', justifyContent: 'center', alignItems: 'center' }}>
       <CircularProgress />

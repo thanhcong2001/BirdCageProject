@@ -67,7 +67,7 @@ function Header() {
         <div style={{ marginBottom: 120 }}>
             <AppBar style={{ backgroundColor: '#64BE43', height: 100, justifyContent: 'center', paddingLeft: 120 }}>
                 <Toolbar variant="dense" >
-                    <Link style={{ textDecoration: 'none' }} to={'/'}><img className='logo' src='http://mauweb.monamedia.net/birdshop/wp-content/uploads/2018/04/logo-robin-white.png' /></Link>
+                    <Link style={{ textDecoration: 'none' }} to={'/'}><img alt='' className='logo' src='http://mauweb.monamedia.net/birdshop/wp-content/uploads/2018/04/logo-robin-white.png' /></Link>
                     <Link style={{ textDecoration: 'none', marginLeft: 30 }} to={'/intro'}><p className='category'>Giới Thiệu</p></Link>
                     <ul class="navbar">
                         <li className='bridge'>
