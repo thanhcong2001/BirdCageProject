@@ -1,33 +1,29 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { LinearProgress } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
+import { LinearProgress, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
 import InputField from 'componets/form-controls/InputField/index.jsx';
-import PasswordField from 'componets/form-controls/PasswordField/index.jsx';
 import { useForm } from 'react-hook-form';
 import * as yup from "yup";
 
 const defaultTheme = createTheme();
 
-function LoginForm(props) {
+
+const OTPForm = (props) => {
 
     const schema = yup.object().shape({
-        identifier: yup.string()
-            .required('Please enter your username.'),
-        password: yup.string()
-            .required('Please enter your password.'),
+        code: yup.string()
+            .matches(/^\d{6}$/, 'Please enter a 6-digit code.')
+            .required('Please enter your code.'),
+        username: yup.string()
+            .required('Please enter your username.')
     });
-
     const form = useForm({
         defaultValues: {
-            identifier: '',
-            password: '',
+            code: ''
         },
         reValidateMode: 'onSubmit',
         resolver: yupResolver(schema)
@@ -41,11 +37,11 @@ function LoginForm(props) {
 
     const { isSubmitting } = form.formState
 
-
     return (
         <ThemeProvider theme={defaultTheme}>
             <Container component="main" maxWidth="xs">
                 {isSubmitting && <LinearProgress />}
+
                 <Box
                     sx={{
                         marginTop: 5,
@@ -54,23 +50,17 @@ function LoginForm(props) {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h2" variant="h5">
-                        Create account
+                    <Typography component="h2" variant="h6">
+                        We've sent you a code in your email
                     </Typography>
-
                     <form onSubmit={form.handleSubmit(handleSubmit)}>
                         <Grid container spacing={1}>
-
                             <Grid item xs={12}>
-                                <InputField name="identifier" label="Username" form={form}></InputField>
+                                <InputField name="username" label="Username" form={form}></InputField >
                             </Grid>
                             <Grid item xs={12}>
-                                <PasswordField name="password" label="Password" form={form}></PasswordField>
+                                <InputField name="code" label="Code" form={form}></InputField >
                             </Grid>
-
                         </Grid>
                         <Button
                             disabled={isSubmitting}
@@ -79,20 +69,13 @@ function LoginForm(props) {
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
-                            Đăng nhập
+                            Xác thực
                         </Button>
-                        {/* <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <Link href="#" variant="body2">
-                                    Already have an account? Sign in
-                                </Link>
-                            </Grid>
-                        </Grid> */}
                     </form>
                 </Box>
             </Container>
         </ThemeProvider>
-    );
+    )
 }
 
-export default LoginForm;
+export default OTPForm

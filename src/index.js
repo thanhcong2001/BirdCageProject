@@ -7,16 +7,19 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from "react-redux";
 import store from "./app/store.js";
 import { SnackbarProvider } from "notistack";
-
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+const queryClient = new QueryClient()
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
         <BrowserRouter>
             <SnackbarProvider autoHideDuration={3000} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
                 <App />
             </SnackbarProvider>
         </BrowserRouter>
+        </QueryClientProvider>
     </Provider>
 );
 

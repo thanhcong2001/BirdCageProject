@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
 import { Box } from '@material-ui/core';
-import { Button, FormControl, FormHelperText, IconButton, OutlinedInput } from '@mui/material';
-import PropTypes from 'prop-types';
-import { Controller } from 'react-hook-form'; import AddIcon from '@mui/icons-material/Add';
+import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { FormControl, FormHelperText, IconButton, OutlinedInput } from '@mui/material';
+import PropTypes from 'prop-types';
+import { Controller } from 'react-hook-form';
 
 QuantityField.propTypes = {
     form: PropTypes.object.isRequired,
@@ -25,13 +26,13 @@ function QuantityField(props) {
     }))
 
     const IconNum = styled(IconButton)(() => ({
-        backgroundColor: '#f1f1f1', 
-        color: 'black', 
-        height: 40, 
-        width: 35, 
-        borderRadius: 0, 
-        borderWidth: 1, 
-        borderStyle: 'solid', 
+        backgroundColor: '#f1f1f1',
+        color: 'black',
+        height: 40,
+        width: 35,
+        borderRadius: 0,
+        borderWidth: 1,
+        borderStyle: 'solid',
         borderColor: '#dddddd',
     }))
 

@@ -1,11 +1,8 @@
-import styled from '@emotion/styled';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button } from '@material-ui/core';
 import QuantityField from 'componets/form-controls/QuantityField/index.jsx';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import * as yup from "yup";
-import { Box } from '@mui/material';
 
 AddToCartForm.propTypes = {
     onSubmit: PropTypes.func,
@@ -30,21 +27,21 @@ function AddToCartForm({ onSubmit = null }) {
     }
 
     return (
-    <div>
-        <form style={{display:'flex'}} onSubmit={form.handleSubmit(handleSubmit)}>
-            <div>
-            <QuantityField name="quantity" label="Quantity" form={form}></QuantityField>
-            </div>
-            <div>
-            <button
-                style={{ height: 40, marginLeft:30,backgroundColor: '#8dc63f', marginTop: 15, fontSize: 16, fontWeight: 'bold',}}
-                type="submit"
-                variant="contained">
-                Thêm vào giỏ
-            </button>
-            </div>
-        </form>
-    </div>
+        <div>
+            <form style={{ display: 'flex' }} onSubmit={form.handleSubmit(handleSubmit)}>
+                <div>
+                    <QuantityField name="quantity" label="Quantity" form={form}></QuantityField>
+                </div>
+                <div>
+                    <button
+                        style={{ height: 40, marginLeft: 30, backgroundColor: '#8dc63f', marginTop: 15, fontSize: 16, fontWeight: 'bold', }}
+                        type="submit"
+                        variant="contained">
+                        Thêm vào giỏ
+                    </button>
+                </div>
+            </form>
+        </div>
     );
 }
 
