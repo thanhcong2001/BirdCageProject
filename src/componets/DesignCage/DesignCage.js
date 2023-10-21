@@ -145,7 +145,7 @@ export const DesignCage = ({ initialQuantity, onQuantityChange, clicked }) => {
         }
     }, [nanPrice, sizePrice]);
     return (
-        <div className='container'>
+        <div className='container-design'>
             <div>
                 <p className='listProduct-Design'>SẢN PHẨM</p>
                 <div className='lineCircleOne-Design'></div>
@@ -181,7 +181,7 @@ export const DesignCage = ({ initialQuantity, onQuantityChange, clicked }) => {
                     ))}
                 </div>
             </div>
-            <div>
+            <div style={{marginRight:66}}>
                 <div style={{ display: 'flex', marginBottom: 30 }}>
                     <div>
                         <img className='picProduct-Design' src='http://mauweb.monamedia.net/birdshop/wp-content/uploads/2018/04/4-9.jpg' />

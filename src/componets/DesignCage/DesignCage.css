@@ -1,7 +1,7 @@
-.container {
+.container-design{
     display: flex;
     justify-content: space-evenly;
-    margin-left: 140px;
+    padding-left: 120px;
 }
 
 .listProduct-Design {

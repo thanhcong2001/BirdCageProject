@@ -1,12 +1,12 @@
 .container {
     display: flex;
     justify-content: space-evenly;
-    margin-left: 140px;
+    margin-left: 120px;
 }
 
 .listProduct {
     font-size: 1em;
-    font-weight: 600;
+    font-weight: 600; 
     line-height: 1.05;
     letter-spacing: .05em;
     text-transform: uppercase;
