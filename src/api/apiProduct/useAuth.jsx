@@ -19,7 +19,10 @@ const useAuth = () => {
     const { enqueueSnackbar } = useSnackbar();
     const loginMutation = useMutation({
         mutationFn: loginQuery,
-        onSuccess: () => enqueueSnackbar("Login success", { variant: 'info' })
+        onSuccess: () => {
+            enqueueSnackbar("Login success", { variant: 'info' })
+            window.location.reload();
+        }
     })
     return { loginMona: loginMutation.mutate, loginSuccess: loginMutation.isSuccess }
 

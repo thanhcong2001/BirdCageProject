@@ -56,7 +56,8 @@ function Header() {
     }
 
     const handleLogoutClick = () => {
-  localStorage.removeItem('token');
+        localStorage.removeItem('token');
+        window.location.reload();
     }
 
     const handleCartClick = () => {
