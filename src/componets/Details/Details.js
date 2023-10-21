@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import '../Details/Details.css';
 import TabForm from '../TabForm/TabForm';
 import AddToCartForm from './../Cart/AddToCartForm';
+import { useSnackbar } from 'notistack';
 
 Details.propTypes = {
 
@@ -17,11 +18,12 @@ function Details() {
  const {id} = useParams()
 
 const {bird, birdIdLoading} =useProduct(id)
-
+const { enqueueSnackbar } = useSnackbar();
+const token = localStorage.getItem('token');
+const formattedToken = token?.replace(/"/g, '');
 const addBirdCageToCart = async (birdCageToCart) => {
     const {id, quantity} = birdCageToCart
-    const token = localStorage.getItem('token');
-    const formattedToken = token?.replace(/"/g, '');
+
     const headers = {
         Authorization: `Bearer ${formattedToken}`
     };
@@ -33,6 +35,7 @@ const queryClient = useQueryClient()
   const { mutate } = useMutation({
     mutationFn: addBirdCageToCart,
     onSuccess: () => {
+        enqueueSnackbar("Thêm vào giỏ hàng thành công", { variant: 'info' });
         queryClient.invalidateQueries({ queryKey: ['cartItem'] })
     },
 });
@@ -132,7 +135,7 @@ const queryClient = useQueryClient()
 
                             – Đáy lồng làm bằng tre, đẹp, sang trọng.</p>
                         <div>
-                            <AddToCartForm onSubmit={handleAddToCartSubmit} />
+                            <AddToCartForm  onSubmit={handleAddToCartSubmit} token={token}/>
                         </div>
                         <div className='horizontaline' style={{ width: 427, marginTop: 30, marginBottom: 10 }}></div>
                         <span style={{ color: '#353535' }}>Danh Mục: <a href='/birdCage' className='type'>Lồng Chim</a></span>

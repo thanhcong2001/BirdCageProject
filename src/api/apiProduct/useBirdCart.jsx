@@ -4,7 +4,6 @@ import axios from "axios";
 const cartUrl = 'http://tainguyen58-001-site1.ftempurl.com/api/ShoppingCart'
 
 const getDataFromCart = async (token) => {
-    console.log(token)
     const headers = {
         Authorization: `Bearer ${token}`
     };

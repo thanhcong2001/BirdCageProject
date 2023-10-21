@@ -4,9 +4,12 @@ import useBirdCart from 'api/apiProduct/useBirdCart';
 import axios from 'axios';
 import '../Cart/Cart.css';
 import CartItem from './CartItem';
+import { useEffect } from 'react';
 export const Cart = () => {
-
     const token = localStorage.getItem('token');
+    useEffect(()=> {
+        console.log('rerender')
+    }, [token])
     const formattedToken = token?.replace(/"/g, '');
     const { cartItem } = useBirdCart(formattedToken)
     const cartItems = cartItem?.shoppingCarts
@@ -42,7 +45,8 @@ export const Cart = () => {
         <div>
             <section className='cart-items'>
                 <div className='container d_flex'>
-                    <div className='cart-details'>
+                    {token ? <>
+                        <div className='cart-details'>
                         <table>
                             <thead>
                                 <td>SẢN PHẨM</td>
@@ -50,10 +54,11 @@ export const Cart = () => {
                                 <td>GIÁ</td>
                                 <td>SỐ LƯỢNG</td>
                                 <td>TỔNG CỘNG</td>
+                                <td></td>
                             </thead>
                             <tbody>
                                 {cartItems?.map((i, index)=> (
-                                      <CartItem key={index} i={i} onChange={onChange}/>
+                                      <CartItem key={index} i={i} onChange={onChange} handleDelete={handleDelete} deleteItemCart={deleteItemCart}/>
                                 ))}
                                
                                 <tr>
@@ -93,6 +98,15 @@ export const Cart = () => {
                             </div>
                         </div>
                     </div>
+                    </> : <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '50vh'
+                    }}>
+                    Đăng nhập để thấy giỏ hàng
+                    </div>}
+                   
                 </div>
             </section>
         </div>
