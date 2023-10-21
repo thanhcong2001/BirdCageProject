@@ -1,19 +1,21 @@
+import DiscountIcon from '@mui/icons-material/Discount';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import React, { useState } from 'react';
 import './Cart.css';
-import PropTypes from 'prop-types';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import DiscountIcon from '@mui/icons-material/Discount';
-import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import useBirdCart from 'api/apiProduct/useBirdCart';
 
 Cart.propTypes = {
 
 };
 
 function Cart({ initialQuantity, onQuantityChange }) {
+    const { cartItem } = useBirdCart()
+    console.log(cartItem)
 
     const [data, setdata] = useState([])
     const [quantity, setQuantity] = useState(initialQuantity || 1);
     const [list, setList] = useState([])
+
 
     const handleIncrease = () => {
         setQuantity(quantity + 1);

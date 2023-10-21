@@ -1,13 +1,52 @@
-import React from 'react'
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import DiscountIcon from '@mui/icons-material/Discount';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import useBirdCart from 'api/apiProduct/useBirdCart';
+import axios from 'axios';
 import '../Cart/Cart.css';
+import CartItem from './CartItem';
+import { useEffect } from 'react';
 export const Cart = () => {
+    const token = localStorage.getItem('token');
+    useEffect(()=> {
+        console.log('rerender')
+    }, [token])
+    const formattedToken = token?.replace(/"/g, '');
+    const { cartItem } = useBirdCart(formattedToken)
+    const cartItems = cartItem?.shoppingCarts
+    const queryClient = useQueryClient()
+    async function deleteItem(itemId) {
+        console.log(itemId)
+        const headers = {
+            Authorization: `Bearer ${formattedToken}`
+        };
+        return axios.delete(`http://tainguyen58-001-site1.ftempurl.com/api/ShoppingCart/remove-from-cart/${itemId}`, {headers})
+    }
+    const deleteItemCart = useMutation({
+        mutationFn: deleteItem,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['cartItem'] });
+        },
+        onError: (error) => {
+            console.error('Error while deleting item:', error);
+        }
+    });
+    const handleDelete = (itemId) => {
+        console.log(itemId)
+        deleteItemCart.mutate(itemId)
+    }
+    const onChange = (value, id) => {
+
+        if(value === 0) {
+            handleDelete(id)
+        }
+      };
+
     return (
         <div>
             <section className='cart-items'>
                 <div className='container d_flex'>
-                    <div className='cart-details'>
+                    {token ? <>
+                        <div className='cart-details'>
                         <table>
                             <thead>
                                 <td>SẢN PHẨM</td>
@@ -15,18 +54,13 @@ export const Cart = () => {
                                 <td>GIÁ</td>
                                 <td>SỐ LƯỢNG</td>
                                 <td>TỔNG CỘNG</td>
+                                <td></td>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td className='product-img'>
-                                        {/* <HighlightOffIcon /> */}
-                                        <img className='img_cart' src="http://mauweb.monamedia.net/birdshop/wp-content/uploads/2018/04/06-7-300x300.jpg" alt="" />
-                                    </td>
-                                    <td>LỒNG TÀU TRÚC ĐEN</td>
-                                    <td>5,050,000 ₫</td>
-                                    <td>2</td>
-                                    <td>10,100,000 ₫</td>
-                                </tr>
+                                {cartItems?.map((i, index)=> (
+                                      <CartItem key={index} i={i} onChange={onChange} handleDelete={handleDelete} deleteItemCart={deleteItemCart}/>
+                                ))}
+                               
                                 <tr>
                                     <td><button className='bt-next'>TiẾP TỤC XEM SẢN PHẨM</button></td>
                                     <td><button className='bt-update'>CẬP NHẬT GIỎ HÀNG</button></td>
@@ -64,6 +98,15 @@ export const Cart = () => {
                             </div>
                         </div>
                     </div>
+                    </> : <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '50vh'
+                    }}>
+                    Đăng nhập để thấy giỏ hàng
+                    </div>}
+                   
                 </div>
             </section>
         </div>

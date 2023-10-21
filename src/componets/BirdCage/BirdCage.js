@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import '../BirdCage/BirdCage.css'
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
-
+import useProduct from 'api/apiProduct/useProduct';
+import { Box, CircularProgress } from '@mui/material';
+import { Link } from 'react-router-dom';
 export const BirdCage = () => {
   const [myCar, setMyCar] = useState("Thứ tự mặc định");
-  const [data, setdata] = useState([]) 
+  // const [data, setdata] = useState([])
   const [list, setList] = useState([])
-  const navigate = useNavigate()
+
+
+  const { birdCage, isLoading, isError, birdCageError } = useProduct();
+
   useEffect(() => {
-    axios.get('https://6509117cf6553137159aecfc.mockapi.io/api/v1/Cage')
-      .then(res => {
-        setdata(res.data)
-        console.log(res.data);
-      })
+  //   axios.get('https://6509117cf6553137159aecfc.mockapi.io/api/v1/Cage')
+  //     .then(res => {
+  //       setdata(res.data)
+  //     })
     axios.get('https://6509117cf6553137159aecfc.mockapi.io/api/v1/foodBird')
       .then(response => {
         setList(response.data)
@@ -23,9 +26,14 @@ export const BirdCage = () => {
   const handleChange = (event) => {
     setMyCar(event.target.value)
   }
+
   function convertVND(price) {
-    if (price != null && price != undefined && price != '') return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
+    if (price != null && price !== undefined && price !== '') return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
     else return 0
+  }
+
+  if(isError) {
+    return <h2>{birdCageError.message}</h2>
   }
 
   return (
@@ -49,12 +57,12 @@ export const BirdCage = () => {
           <p style={{ fontWeight: 600, color: '#353535', fontSize: 16 }}>SẢN PHẨM</p>
           <p className='lineCage'></p>
         </div>
-        <div className='borderBlogOne' style={{ height: 489 }} >
-          {list.slice(0, 6).map(i => (
-            <div className='box-birdCage'>
+        <div className='borderBlogOne' style={{ height: 489 }}>
+          {list.slice(0, 6).map((i, index) => (
+            <div className='box-birdCage' key={index}>
               <div className='blog' >
                 <div>
-                  <img className='imgList' src={i.img} />
+                  <img className='imgList' src={i.img} alt='hinh anh'/>
                 </div>
                 <div style={{ justifyContent: 'space-around' }}>
                   <span className='nameList'>{i.name}</span>
@@ -82,17 +90,21 @@ export const BirdCage = () => {
             </form>
           </div>
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden' }}>
-          {data.map(i => (
-            <div onClick={() => navigate(`/details/${i.id}`)} key={i?.id}>
+        {isLoading ?  <Box sx={{ display: 'flex', height: '500px', alignItems: 'center' }}>
+      <CircularProgress />
+    </Box> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden' }}>
+          {birdCage?.items.map(i => (
+            <div key={i?.id}>
+                <Link to={`/details/${i.id}`}>
               <div className='card'>
-                <img className='img-birdCage' src={i.img} alt="" />
-                <p className='nameBirdCage'>{i.name}</p>
+                <img className='img-birdCage' src={i.img} alt={`hinh cua id ${i.id}`} />
+                <p className='nameBirdCage'>{i.title}</p>
                 <h4>{convertVND(i.price)}</h4>
               </div>
+                </Link>
             </div>
           ))}
-        </div>
+        </div>}
       </div>
     </div>
   )

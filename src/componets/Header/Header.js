@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { AccountCircle, Close } from '@mui/icons-material';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
 import PersonIcon from '@mui/icons-material/Person';
 import SearchIcon from '@mui/icons-material/Search';
 import { AppBar, Badge, Box, Menu, MenuItem, Toolbar } from '@mui/material';
@@ -8,19 +9,17 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import Login from 'componets/Auth/components/Login/Login.jsx';
+import OTP from 'componets/Auth/components/OTP_Auth/OTP';
 import Register from 'componets/Auth/components/Register/index.jsx';
-import { logout } from 'componets/Auth/userSlice.js';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import '../Header/Header.css';
 import { cartItemsCountSelector } from './../Cart/seletors';
-import React from 'react'
-import LocalMallIcon from '@mui/icons-material/LocalMall';
-import '../Header/Header.css'
-import { Link, useNavigate } from 'react-router-dom';
 const MODE = {
     LOGIN: 'login',
     REGISTER: 'register',
+    OTP: 'otp-auth'
 }
 
 function Header() {
@@ -32,22 +31,20 @@ function Header() {
         color: 'rgba(0, 0, 0, 0.54)'
     }))
 
-    const dispatch = useDispatch()
-    const loggedInUser = useSelector(state => state.user.current);
-    const isLoggedIn = !!loggedInUser.id
+    const isLoggedIn = localStorage.getItem('token');
     const [open, setOpen] = useState(false);
     const [mode, setMode] = useState(MODE.LOGIN);
     const [anchorEl, setAnchorEl] = useState(null)
     const cartItemsCount = useSelector(cartItemsCountSelector)
     const history = useNavigate();
     const navigate = useNavigate()
-
     const handleClickOpen = () => {
         setOpen(true);
     };
 
     const handleClose = () => {
         setOpen(false);
+        setMode(() => MODE.LOGIN)
     };
 
     const handleUserClick = (e) => {
@@ -59,8 +56,8 @@ function Header() {
     }
 
     const handleLogoutClick = () => {
-        const action = logout();
-        dispatch(action)
+        localStorage.removeItem('token');
+        window.location.reload();
     }
 
     const handleCartClick = () => {
@@ -71,7 +68,7 @@ function Header() {
         <div style={{ marginBottom: 120 }}>
             <AppBar style={{ backgroundColor: '#64BE43', height: 100, justifyContent: 'center', paddingLeft: 120 }}>
                 <Toolbar variant="dense" >
-                    <Link style={{ textDecoration: 'none' }} to={'/'}><img className='logo' src='http://mauweb.monamedia.net/birdshop/wp-content/uploads/2018/04/logo-robin-white.png' /></Link>
+                    <Link style={{ textDecoration: 'none' }} to={'/'}><img alt='' className='logo' src='http://mauweb.monamedia.net/birdshop/wp-content/uploads/2018/04/logo-robin-white.png' /></Link>
                     <Link style={{ textDecoration: 'none', marginLeft: 30 }} to={'/intro'}><p className='category'>Giới Thiệu</p></Link>
                     <ul class="navbar">
                         <li className='bridge'>
@@ -202,11 +199,20 @@ function Header() {
 
                     {mode === MODE.LOGIN && (
                         <>
-                            <Login closeDialog={handleClose} />
+                            <Login closeDialog={handleClose} setMode={setMode} MODE={MODE}/>
 
                             <Box textAlign="center">
                                 <Button color='primary' onClick={() => setMode(MODE.REGISTER)}>Don't have an account. Register here</Button>
                             </Box>
+                        </>
+                    )}
+                    {mode === MODE.OTP && (
+                        <>
+                            <OTP closeDialog={handleClose} setMode={setMode} MODE={MODE}/>
+
+                            {/* <Box textAlign="center">
+                                <Button color='primary' onClick={() => setMode(MODE.REGISTER)}>Don't have an account. Register here</Button>
+                            </Box> */}
                         </>
                     )}
                 </DialogContent>
