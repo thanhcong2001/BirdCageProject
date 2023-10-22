@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const fetchBirdCageUrl = 'http://tainguyen58-001-site1.ftempurl.com/api/Product/page?pageIndex=0&pageSize=10'

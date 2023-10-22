@@ -39,7 +39,6 @@ const queryClient = useQueryClient()
         queryClient.invalidateQueries({ queryKey: ['cartItem'] })
     },
 });
-
     const [borderBlogOne, setBorderBlogOne] = useState()
     const [list, setList] = useState([])
     function convertVND(price) {
@@ -139,7 +138,7 @@ const queryClient = useQueryClient()
                         <span style={{ color: '#353535' }}>Danh Mục: <a href='/birdCage' className='type'>Lồng Chim</a></span>
                     </div>
                 </div>
-                <TabForm />
+                <TabForm id={id} reviews={bird?.productReviews}/>
                 {/* <div className='horizontaline' style={{ width: 885,marginTop: 40}}></div> */}
             </div>}
             
