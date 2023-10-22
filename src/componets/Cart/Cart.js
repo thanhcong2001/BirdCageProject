@@ -2,17 +2,16 @@ import DiscountIcon from '@mui/icons-material/Discount';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useBirdCart from 'api/apiProduct/useBirdCart';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import '../Cart/Cart.css';
 import CartItem from './CartItem';
-import { useEffect } from 'react';
 export const Cart = () => {
     const token = localStorage.getItem('token');
-    useEffect(()=> {
-        console.log('rerender')
-    }, [token])
     const formattedToken = token?.replace(/"/g, '');
     const { cartItem } = useBirdCart(formattedToken)
     const cartItems = cartItem?.shoppingCarts
+    const totalPrice = cartItems?.reduce((total, item) => total + item.productViewModel.price*item.count, 0);
+    const shippingFee = 30000
     const queryClient = useQueryClient()
     async function deleteItem(itemId) {
         console.log(itemId)
@@ -40,14 +39,14 @@ export const Cart = () => {
             handleDelete(id)
         }
       };
-
+const nav = useNavigate()
     return (
         <div>
             <section className='cart-items'>
                 <div className='container d_flex'>
                     {token ? <>
                         <div className='cart-details'>
-                        <table>
+                        {cartItems?.length > 0 ?  <table>
                             <thead>
                                 <td>SẢN PHẨM</td>
                                 <td></td>
@@ -60,33 +59,46 @@ export const Cart = () => {
                                 {cartItems?.map((i, index)=> (
                                       <CartItem key={index} i={i} onChange={onChange} handleDelete={handleDelete} deleteItemCart={deleteItemCart}/>
                                 ))}
-                               
                                 <tr>
-                                    <td><button className='bt-next'>TiẾP TỤC XEM SẢN PHẨM</button></td>
+                                    <td><button onClick={()=>nav('/payment')} className='bt-next'>TiẾP TỤC XEM SẢN PHẨM</button></td>
                                     <td><button className='bt-update'>CẬP NHẬT GIỎ HÀNG</button></td>
                                 </tr>
                             </tbody>
                             <div className='button_cart'>
                             </div>
-                        </table>
-                    </div>
+                        </table> : 
+                         <table>
+                            <tbody>
+                                <tr>
+                                    <td><p>Chưa có sản phẩm nào trong giỏ hàng.</p></td>
+                                    <td><button onClick={()=>nav('/birdCage')} className='bt-next'>QUAY TRỞ LẠI CỬA HÀNG</button></td>
+                                </tr>
+                            </tbody>
+                        </table>}
+
+                       
+                        </div>
                     <div className='cart-total'>
                         <div>
                             <div>
                                 <h3>TỔNG SỐ LƯỢNG</h3>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #d8d8d8' }}>
-                                    <p>Tổng cộng</p>
-                                    <p>10,100,000</p>
+                                    <p>Tổng tiền hàng</p>
+                                    <p>{totalPrice} đ</p>
                                 </div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #d8d8d8' }}>
-                                    <p>Giao hàng 1</p>
-                                    <p>10,100,000</p>
+                                    <p>Giao hàng {cartItem?.total}</p>
+                                    <p>{shippingFee} đ</p>
                                 </div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '3px solid #d8d8d8' }}>
-                                    <p>Tổng cộng</p>
-                                    <p>10,100,000</p>
+                                    <p>Tổng thanh toán</p>
+                                    <p>{totalPrice + shippingFee} đ</p>
                                 </div>
-                                <button className='bt-next' style={{ width: '100%', height: '60px', marginTop: '10px', fontSize: '20px' }}>TIẾN HÀNH THANH TOÁN</button>
+                                {cartItems?.length > 0 ?
+                                <button onClick={()=>nav('/cart/payment')} className='bt-next' style={{ width: '100%', height: '60px', marginTop: '10px', fontSize: '20px' }}>TIẾN HÀNH THANH TOÁN</button>
+                                : 
+                                <button disabled={true} style={{ width: '100%', height: '60px', marginTop: '10px', fontSize: '20px' }}>TIẾN HÀNH THANH TOÁN</button>
+                                }
                             </div>
                             <div>
                                 <h5><DiscountIcon /> Mã ưu đãi</h5>

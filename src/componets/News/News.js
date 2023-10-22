@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import Header  from '../Header/Header'
-import '../News/News.css'
-import axios from 'axios'
 import SearchIcon from '@mui/icons-material/Search';
-import NewsCard from './NewsCard.jsx';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import Header from '../Header/Header';
+import '../News/News.css';
 export const News = () => {
   const [data, setdata] = useState([])
   useEffect(() => {
@@ -24,7 +23,7 @@ export const News = () => {
           {
             data.map(item => (
               <div className='newsDiv' key={item?.id}>
-                <img className='newsImage' src={item?.img} />
+                <img className='newsImage' src={item?.img} alt='hinh anh'/>
                 <p className='titleNews'> {item.title}</p>
                 <div className='lineBlog' style={{marginLeft:20}}></div>
                 <p className='desNews'>{item.description}</p>
@@ -49,7 +48,7 @@ export const News = () => {
             {data.slice(0,5).map(i => (
               <div>
                 <div style={{ display: 'flex', marginLeft: 20 }} key={i?.id}>
-                  <img className='imgCircle' src={i.img} />
+                  <img className='imgCircle' src={i.img} alt='hinh anh'/>
                   <p className='test'>
                     {i.title}</p>
                 </div>

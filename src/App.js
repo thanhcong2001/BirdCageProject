@@ -9,6 +9,7 @@ import HomePage from './componets/HomePage/HomePage';
 import { BirdCage } from './componets/BirdCage/BirdCage';
 import Details from 'componets/Details/Details.js';
 import Header from 'componets/Header/Header.js';
+import Payments from 'componets/Payments/Payments';
  
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path='/' element={<HomePage />} />
         <Route path='/intro' element={<Intro />} />
         <Route path='/news' element={<News />} />
+        <Route path='/cart/payment' element={<Payments />} />
         <Route path='/details/:id' element={<Details />} />
         <Route path='/birdCage' element={<BirdCage />} />
         <Route path='/cart' element={<Cart />} />

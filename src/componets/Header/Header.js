@@ -8,14 +8,13 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
+import useBirdCart from 'api/apiProduct/useBirdCart';
 import Login from 'componets/Auth/components/Login/Login.jsx';
 import OTP from 'componets/Auth/components/OTP_Auth/OTP';
 import Register from 'componets/Auth/components/Register/index.jsx';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import '../Header/Header.css';
-import { cartItemsCountSelector } from './../Cart/seletors';
 const MODE = {
     LOGIN: 'login',
     REGISTER: 'register',
@@ -32,10 +31,25 @@ function Header() {
     }))
 
     const isLoggedIn = localStorage.getItem('token');
+    const formattedToken = isLoggedIn?.replace(/"/g, '');
+    console.log(formattedToken)
+    const { cartItem } = useBirdCart(formattedToken)
+    const totalCount = cartItem?.total
+    
+    // const totalCount = cartItems?.reduce((total, item) => total + item.count, 0);
+
+    const handleTotalProd = (count) => {
+        if(count < 10) {
+            return count
+        } else {
+            return '9+'
+        }
+    }
+
     const [open, setOpen] = useState(false);
     const [mode, setMode] = useState(MODE.LOGIN);
     const [anchorEl, setAnchorEl] = useState(null)
-    const cartItemsCount = useSelector(cartItemsCountSelector)
+    // const cartItemsCount = useSelector(cartItemsCountSelector)
     const history = useNavigate();
     const navigate = useNavigate()
     const handleClickOpen = () => {
@@ -147,7 +161,7 @@ function Header() {
                             color="inherit"
                             onClick={handleCartClick}
                         >
-                            <Badge badgeContent={cartItemsCount} color="error">
+                            <Badge badgeContent={handleTotalProd(totalCount)} color="error">
                                 <LocalMallIcon color="inherit" />
                             </Badge>
                         </IconButton>

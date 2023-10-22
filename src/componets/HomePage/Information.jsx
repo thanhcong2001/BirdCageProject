@@ -1,7 +1,5 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import axios from 'axios'
-import { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import '../HomePage/HomePage.css';
 
 Information.propTypes = {
@@ -24,9 +22,9 @@ function Information(props) {
         <div>
             <div className='information'>
                 {
-                    data.slice(0,4).map(item => (
+                    data.slice(0, 4).map(item => (
                         <div className='newsDiv' key={item?.id}>
-                            <img className='newsImage' src={item?.img} />
+                            <img className='newsImage' src={item?.img} alt='logo' />
                             <p className='titleNews'> {item.title}</p>
                             <p className='desNews'>{item.description}</p>
                             <div className='line'></div>

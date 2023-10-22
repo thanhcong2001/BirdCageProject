@@ -1,0 +1,32 @@
+.payment-wrapper {
+    width: 80%;
+    height: fit-content;
+    margin: 0 auto;
+}
+
+.cart-tilte, .method-tilte, .information-tilte {
+    padding-top: 10px;
+    font-weight: bold;
+}
+
+.title-main {
+    font-size: 40px;
+}
+
+.price-total {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 70%;
+    margin: 0 auto;
+    font-weight: bold;
+}
+
+.line-bottom {
+    padding-top: 20px;
+    border-bottom: 1px solid #e4e1e1;
+}
+
+.method-confirm {
+    padding-top: 10px;
+}

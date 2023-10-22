@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import '../Footer/Footer.css';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+import '../Footer/Footer.css';
 export const Footer = () => {
     
     const [blog, setBlog] = useState([])
@@ -15,7 +15,7 @@ export const Footer = () => {
             <div className='lineFooter'></div>
             <div className='footer'>
                 <div style={{ width: 278 }}>
-                    <img className='logo' src='http://mauweb.monamedia.net/birdshop/wp-content/uploads/2018/04/logo-robin.png' />
+                    <img className='logo' src='http://mauweb.monamedia.net/birdshop/wp-content/uploads/2018/04/logo-robin.png' alt='hinh anhh'/>
                     <p className='info'><span>T </span>:319 c16 Lý Thường Kiệt, Phường 15, Quận 11, Tp.HCM</p>
                     <p className='info'><span>A</span>: 0126 922 0162</p>
                     <p className='info'><span>E</span>: demonhunter@gmail.com <br />mon@mona.media</p>
@@ -24,10 +24,10 @@ export const Footer = () => {
                 <div style={{ marginLeft: 20 }}>
                     <h3 style={{ marginTop: 0, marginLeft: 25 }}>BÀI VIẾT GẦN ĐÂY</h3>
                     <div>
-                        {blog.slice(0, 3).map(item => (
-                            <div>
+                        {blog.slice(0, 3).map((item, index) => (
+                            <div key={index}>
                                 <div style={{ display: 'flex', marginLeft: 20, width: 278 }} key={item?.id}>
-                                    <img className='imgCircle' src={item.img} />
+                                    <img className='imgCircle' src={item.img} alt='hinh anhh'/>
                                     <p className='test' style={{ width: 278 }}>{item.title}</p>
                                 </div>
                                 <div className='lineCircle'></div>
@@ -47,7 +47,7 @@ export const Footer = () => {
                     <div className='lineTime'></div>
                 </div>
                 <div>
-                    <img style={{ width: 278, height: 240, marginLeft: 50 }} src='https://www.google.com/maps/d/thumbnail?mid=1JwrFnS69sR3pVhdmBC1AnS4pibw&hl=en_US' />
+                    <img style={{ width: 278, height: 240, marginLeft: 50 }} src='https://www.google.com/maps/d/thumbnail?mid=1JwrFnS69sR3pVhdmBC1AnS4pibw&hl=en_US' alt='hinh anhh'/>
                 </div>
             </div>
         </div>
