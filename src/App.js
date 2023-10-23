@@ -12,6 +12,7 @@ import Header from 'componets/Header/Header.js';
 import Payments from 'componets/Payments/Payments';
 import OrderHistory from 'componets/OrderHistory/OrderHistory';
 import OrderDetailUser from 'componets/OrderDetailUser/OrderDetailUser';
+import Wishlist from 'componets/Wishlist/Wishlist';
  
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='/intro' element={<Intro />} />
+        <Route path='/wishlist' element={<Wishlist />} />
         <Route path='/news' element={<News />} />
         <Route path='/cart/payment' element={<Payments />} />
         <Route path='/details/:id' element={<Details />} />

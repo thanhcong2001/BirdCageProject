@@ -15,6 +15,7 @@ import Register from 'componets/Auth/components/Register/index.jsx';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../Header/Header.css';
+import SellIcon from '@mui/icons-material/Sell';
 const MODE = {
     LOGIN: 'login',
     REGISTER: 'register',
@@ -81,6 +82,10 @@ function Header() {
     const handleAccount = () => {
         history('/user/order-history')
         setAnchorEl(null)
+    }
+
+    const handleWishlist = () => {
+        history('/wishlist')
     }
 
     return (
@@ -159,6 +164,11 @@ function Header() {
                         {isLoggedIn && (
                             <IconButton color="inherit" onClick={handleUserClick} style={{ marginRight: 15 }}>
                                 <AccountCircle />
+                            </IconButton>
+                        )}
+                        {isLoggedIn && (
+                            <IconButton color="inherit" onClick={handleWishlist} style={{ marginRight: 15 }}>
+                                <SellIcon />
                             </IconButton>
                         )}
 
