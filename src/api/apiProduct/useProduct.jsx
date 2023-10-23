@@ -14,7 +14,6 @@ const fetchBirdCageById = async (id) => {
 }
 
 const useProduct = (id) => {
-    // const queryClient = useQueryClient();
     const { data: birdCage, isLoading, isError, error: birdCageError } = useQuery({ queryKey: ['product'], queryFn: fetchBirdCage });
 
     const { data: bird, isLoading: birdIdLoading, isError: birdIdError, error: birdError } = useQuery({ queryKey: ['birdCage', id], queryFn: () => fetchBirdCageById(id) })
@@ -32,8 +31,6 @@ const useProduct = (id) => {
     }
 
 }
-// export const useBirdCageById = async (id) => {
-//     return useQuery({ queryKey: ['birdCage', id], queryFn: () => fetchBirdCageById(id) })
-// }
+
 
 export default useProduct

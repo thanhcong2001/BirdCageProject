@@ -1,0 +1,26 @@
+.container-order-detail {
+    height: 100vh;
+}
+
+.top-block {
+    width: 60%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+}
+.order-detail {
+    width: 50%;
+}
+
+.shipping-detail {
+    width: 50%;
+}
+
+.order-title h2, .shipping-title h2, .prod-detail h2 {
+    font-size: 30px;
+}
+
+.bottom-block {
+    width: 60%;
+    margin: 0 auto;
+}

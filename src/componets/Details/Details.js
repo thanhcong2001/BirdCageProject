@@ -2,12 +2,12 @@ import { Box, CircularProgress } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useProduct from 'api/apiProduct/useProduct';
 import axios from 'axios';
+import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../Details/Details.css';
 import TabForm from '../TabForm/TabForm';
 import AddToCartForm from './../Cart/AddToCartForm';
-import { useSnackbar } from 'notistack';
 
 Details.propTypes = {
 
@@ -17,7 +17,7 @@ function Details() {
 
  const {id} = useParams()
 
-const {bird, birdIdLoading} =useProduct(id)
+const {bird, birdIdLoading} = useProduct(id)
 const { enqueueSnackbar } = useSnackbar();
 const token = localStorage.getItem('token');
 const formattedToken = token?.replace(/"/g, '');

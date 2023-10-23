@@ -10,6 +10,8 @@ import { BirdCage } from './componets/BirdCage/BirdCage';
 import Details from 'componets/Details/Details.js';
 import Header from 'componets/Header/Header.js';
 import Payments from 'componets/Payments/Payments';
+import OrderHistory from 'componets/OrderHistory/OrderHistory';
+import OrderDetailUser from 'componets/OrderDetailUser/OrderDetailUser';
  
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
         <Route path='/birdCage' element={<BirdCage />} />
         <Route path='/cart' element={<Cart />} />
         <Route path='/designCage' element={<DesignCage />} />
+        <Route path='/user/order-history' element={<OrderHistory />} />
+        <Route path='/user/order-history/:orderId' element={<OrderDetailUser />} />
       </Routes>
       <Footer />
     </div>

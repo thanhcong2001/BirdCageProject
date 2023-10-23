@@ -32,8 +32,8 @@ function Header() {
 
     const isLoggedIn = localStorage.getItem('token');
     const formattedToken = isLoggedIn?.replace(/"/g, '');
-    console.log(formattedToken)
     const { cartItem } = useBirdCart(formattedToken)
+    console.log(formattedToken)
     const totalCount = cartItem?.total
     
     // const totalCount = cartItems?.reduce((total, item) => total + item.count, 0);
@@ -76,6 +76,11 @@ function Header() {
 
     const handleCartClick = () => {
         history('/cart')
+    }
+
+    const handleAccount = () => {
+        history('/user/order-history')
+        setAnchorEl(null)
     }
 
     return (
@@ -185,7 +190,7 @@ function Header() {
                 }}
                 getContentAnchorEl={null}
             >
-                <MenuItem onClick={handleCloseMenu}>My account</MenuItem>
+                <MenuItem onClick={handleAccount}>My account</MenuItem>
                 <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
             </Menu>
 

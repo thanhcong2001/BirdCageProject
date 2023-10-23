@@ -22,6 +22,9 @@ const useAuth = () => {
         onSuccess: () => {
             enqueueSnackbar("Login success", { variant: 'info' })
             window.location.reload();
+        },
+        onError: () => {
+            enqueueSnackbar("Wrong username or password", { variant: 'error', preventDuplicate: true })
         }
     })
     return { loginMona: loginMutation.mutate, loginSuccess: loginMutation.isSuccess }

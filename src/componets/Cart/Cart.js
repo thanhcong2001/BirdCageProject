@@ -14,7 +14,6 @@ export const Cart = () => {
     const shippingFee = 30000
     const queryClient = useQueryClient()
     async function deleteItem(itemId) {
-        console.log(itemId)
         const headers = {
             Authorization: `Bearer ${formattedToken}`
         };
@@ -30,7 +29,6 @@ export const Cart = () => {
         }
     });
     const handleDelete = (itemId) => {
-        console.log(itemId)
         deleteItemCart.mutate(itemId)
     }
     const onChange = (value, id) => {

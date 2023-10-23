@@ -36,6 +36,7 @@ export const BirdCage = () => {
     return <h2>{birdCageError.message}</h2>
   }
 
+  console.log(birdCage?.items)
   return (
     <div className='all'>
       <div style={{ marginLeft: 150 }}>
@@ -95,10 +96,11 @@ export const BirdCage = () => {
       <CircularProgress />
     </Box> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden' }}>
           {birdCage?.items.map(i => (
+            
             <div key={i?.id}>
                 <Link to={`/details/${i.id}`}>
               <div className='card'>
-                <img className='img-birdCage' src={i.img} alt={`hinh cua id ${i.id}`} />
+                <img className='img-birdCage' src={i.productImages[0]?.imageUrl} alt={`hinh cua id ${i.id}`} />
                 <p className='nameBirdCage'>{i.title}</p>
                 <h4>{convertVND(i.price)}</h4>
               </div>

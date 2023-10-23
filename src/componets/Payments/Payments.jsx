@@ -3,10 +3,11 @@ import { Radio, Space } from 'antd';
 import useBirdCart from 'api/apiProduct/useBirdCart';
 import axios from 'axios';
 import CartItem from 'componets/Cart/CartItem';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './payment.css';
 import PaymentForm from './PaymentForm';
 import usePayment from './usePayment';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -17,7 +18,7 @@ const Payments = () => {
     const formattedToken = token?.replace(/"/g, '');
     const { cartItem } = useBirdCart(formattedToken)
     const cartItems = cartItem?.shoppingCarts
-
+    const nav = useNavigate()
     async function deleteItem(itemId) {
         const headers = {
             Authorization: `Bearer ${formattedToken}`
@@ -69,11 +70,7 @@ const Payments = () => {
         }
     }
     if (!token || !cartItems?.length > 0) {
-        return (
-            <div>
-                Cannot go in here
-            </div>
-        )
+        nav('/cart')
     }
 
     return (
