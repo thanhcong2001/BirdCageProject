@@ -15,10 +15,6 @@ function Login(props) {
         const { password, identifier } = value
         try {
             await loginMona({ username: identifier, password })
-            const { closeDialog } = props;
-            if (closeDialog) {
-                closeDialog();
-            }
         } catch (error) {
             console.log('Failed to login', error);
             enqueueSnackbar(error.message, { variant: 'error' });

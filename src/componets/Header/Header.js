@@ -8,18 +8,20 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
+import useBirdCart from 'api/apiProduct/useBirdCart';
 import Login from 'componets/Auth/components/Login/Login.jsx';
 import OTP from 'componets/Auth/components/OTP_Auth/OTP';
 import Register from 'componets/Auth/components/Register/index.jsx';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
 import '../Header/Header.css';
 import { cartItemsCountSelector } from './../Cart/seletors';
 import axios from 'axios'
+import { Link, useNavigate } from 'react-router-dom';
+import SellIcon from '@mui/icons-material/Sell';
 const MODE = {
     LOGIN: 'login',
-    REGISTER: 'register', 
+    REGISTER: 'register',
     OTP: 'otp-auth'
 }
 
@@ -33,10 +35,25 @@ function Header() {
     }))
 
     const isLoggedIn = localStorage.getItem('token');
+    const formattedToken = isLoggedIn?.replace(/"/g, '');
+    const { cartItem } = useBirdCart(formattedToken)
+    console.log(formattedToken)
+    const totalCount = cartItem?.total
+    
+    // const totalCount = cartItems?.reduce((total, item) => total + item.count, 0);
+
+    const handleTotalProd = (count) => {
+        if(count < 10) {
+            return count
+        } else {
+            return '9+'
+        }
+    }
+
     const [open, setOpen] = useState(false);
     const [mode, setMode] = useState(MODE.LOGIN);
     const [anchorEl, setAnchorEl] = useState(null)
-    const cartItemsCount = useSelector(cartItemsCountSelector)
+    // const cartItemsCount = useSelector(cartItemsCountSelector)
     const history = useNavigate();
     const navigate = useNavigate()
     const handleClickOpen = () => {
@@ -72,6 +89,15 @@ function Header() {
     const handleSearch = () => {
         navigate('/searchResult', { state: { searchTerm } });
     };
+
+    const handleAccount = () => {
+        history('/user/order-history')
+        setAnchorEl(null)
+    }
+
+    const handleWishlist = () => {
+        history('/wishlist')
+    }
 
     return (
         <div style={{ marginBottom: 120 }}>
@@ -154,12 +180,17 @@ function Header() {
                                 <AccountCircle/>
                             </IconButton>
                         )}
+                        {isLoggedIn && (
+                            <IconButton color="inherit" onClick={handleWishlist} style={{ marginRight: 15 }}>
+                                <SellIcon />
+                            </IconButton>
+                        )}
 
                         <IconButton
                             color="inherit"
                             onClick={handleCartClick}
                         >
-                            <Badge badgeContent={cartItemsCount} color="error">
+                            <Badge badgeContent={handleTotalProd(totalCount)} color="error">
                                 <LocalMallIcon color="inherit" />
                             </Badge>
                         </IconButton>
@@ -183,7 +214,7 @@ function Header() {
                 }}
                 getContentAnchorEl={null}
             >
-                <MenuItem onClick={handleCloseMenu}>My account</MenuItem>
+                <MenuItem onClick={handleAccount}>My account</MenuItem>
                 <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
             </Menu>
 
@@ -211,7 +242,7 @@ function Header() {
 
                     {mode === MODE.LOGIN && (
                         <>
-                            <Login closeDialog={handleClose} setMode={setMode} MODE={MODE} />
+                            <Login closeDialog={handleClose} setMode={setMode} MODE={MODE}/>
 
                             <Box textAlign="center">
                                 <Button color='primary' onClick={() => setMode(MODE.REGISTER)}>Don't have an account. Register here</Button>

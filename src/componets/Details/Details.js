@@ -2,12 +2,13 @@ import { Box, CircularProgress } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useProduct from 'api/apiProduct/useProduct';
 import axios from 'axios';
+import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../Details/Details.css';
 import TabForm from '../TabForm/TabForm';
 import AddToCartForm from './../Cart/AddToCartForm';
-import { useSnackbar } from 'notistack';
+import usePostWishlist from 'componets/Wishlist/FetchWishlist/usePostWishlist';
 
 Details.propTypes = {
 
@@ -17,10 +18,11 @@ function Details() {
 
  const {id} = useParams()
 
-const {bird, birdIdLoading} =useProduct(id)
+const {bird, birdIdLoading} = useProduct(id)
 const { enqueueSnackbar } = useSnackbar();
 const token = localStorage.getItem('token');
 const formattedToken = token?.replace(/"/g, '');
+const {wishlist, wishlistLoading} = usePostWishlist()
 const addBirdCageToCart = async (birdCageToCart) => {
     const {id, quantity} = birdCageToCart
 
@@ -32,14 +34,13 @@ const addBirdCageToCart = async (birdCageToCart) => {
 };
 const queryClient = useQueryClient()
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: addBirdCageToCart,
     onSuccess: () => {
-        enqueueSnackbar("Thêm vào giỏ hàng thành công", { variant: 'info' });
+        enqueueSnackbar("Thêm vào giỏ hàng thành công", { variant: 'info', anchorOrigin: { vertical: 'bottom', horizontal: 'center' }});
         queryClient.invalidateQueries({ queryKey: ['cartItem'] })
     },
 });
-
     const [borderBlogOne, setBorderBlogOne] = useState()
     const [list, setList] = useState([])
     function convertVND(price) {
@@ -48,13 +49,15 @@ const queryClient = useQueryClient()
     }
 
     const handleAddToCartSubmit = ({quantity }) => {
-
         const birdCageToCart = {
             id: bird?.id,
             quantity
         }
-        console.log(birdCageToCart)
         mutate(birdCageToCart)
+    }
+
+    const handleAddToWishlist = async (id) => {
+        await wishlist(id)
     }
 
     useEffect(() => {
@@ -92,8 +95,8 @@ const queryClient = useQueryClient()
                 <p className='listProduct'>BÀI VIẾT MỚI NHẤT</p>
                 <div className='lineCircleOne'></div>
                 <div className='borderBlogOne'>
-                    {borderBlogOne?.slice(0, 4).map(i => (
-                        <div>
+                    {borderBlogOne?.slice(0, 4).map((i, index) => (
+                        <div key={index}>
                             <div style={{ display: 'flex' }} key={i?.id}>
                                 <img className='imgCircle' src={i.img} alt='hinh anh cam'/>
                                 <p className='test'>
@@ -135,13 +138,13 @@ const queryClient = useQueryClient()
 
                             – Đáy lồng làm bằng tre, đẹp, sang trọng.</p>
                         <div>
-                            <AddToCartForm  onSubmit={handleAddToCartSubmit} token={token}/>
+                            <AddToCartForm isLoading={isPending}  onSubmit={handleAddToCartSubmit} token={token} id={id} handleAddToWishlist={handleAddToWishlist}  wishlistLoading={wishlistLoading}/>
                         </div>
                         <div className='horizontaline' style={{ width: 427, marginTop: 30, marginBottom: 10 }}></div>
                         <span style={{ color: '#353535' }}>Danh Mục: <a href='/birdCage' className='type'>Lồng Chim</a></span>
                     </div>
                 </div>
-                <TabForm />
+                <TabForm id={id} reviews={bird?.productReviews}/>
                 {/* <div className='horizontaline' style={{ width: 885,marginTop: 40}}></div> */}
             </div>}
             

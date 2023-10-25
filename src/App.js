@@ -12,6 +12,11 @@ import Header from 'componets/Header/Header.js';
 import Setting from './componets/Setting/Setting'
 import { SearchResult } from 'componets/Search/SearchResult';
 import { Dashboard } from 'componets/Dashboard/Dashboard';
+import Payments from 'componets/Payments/Payments';
+import OrderHistory from 'componets/OrderHistory/OrderHistory';
+import OrderDetailUser from 'componets/OrderDetailUser/OrderDetailUser';
+import Wishlist from 'componets/Wishlist/Wishlist';
+ 
 function App() {
   return (
     <div className='App'>
@@ -19,14 +24,18 @@ function App() {
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='/intro' element={<Intro />} />
+        <Route path='/wishlist' element={<Wishlist />} />
         <Route path='/news' element={<News />} />
-        <Route path='/details' element={<Details />} />
+        <Route path='/cart/payment' element={<Payments />} />
+        <Route path='/details/:id' element={<Details />} />
         <Route path='/birdCage' element={<BirdCage />} />
         <Route path='/cart' element={<Cart />} />
         <Route path='/designCage' element={<DesignCage />} />
         <Route path='/setting' element={<Setting />} />
         <Route path='/searchResult' element={<SearchResult />} />
         <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/user/order-history' element={<OrderHistory />} />
+        <Route path='/user/order-history/:orderId' element={<OrderDetailUser />} />
       </Routes>
       <Footer />
     </div>
