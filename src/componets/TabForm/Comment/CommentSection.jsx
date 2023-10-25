@@ -27,7 +27,34 @@ const CommentSection = ({ id, reviews }) => {
             {reviews?.length > 0 ?
                 <>
                     <h2 style={{ textAlign: 'center', fontWeight: 'bold' }}>COMMENTS</h2>
+                    <form className='form-feedBackCage' >
+                <p style={{ fontSize: 15, fontWeight: 'bold' }}>Nhận xét của bạn *</p>
+                <div className="comment-user-section" style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}>
+                    <input
+                        className='input-feedBack'
+                        value={feedback}
+                        onChange={(e) => setFeedback(e.target.value)}
+                    />
+                    <Rating
+                        value={star}
+                        onChange={(event, newValue) => {
+                            setStar(newValue);
+                        }}
+                    />
+                </div>
 
+                <Button onClick={handleReview} loading={isPending} style={{
+                    backgroundColor: '#64be43',
+                    color: '#fff',
+                    marginTop: '20px',
+                }}>
+
+                    Gửi Đi
+                </Button>
+            </form>
                     {reviews?.map((cmt) => (
                         <div key={cmt.id} className='comment-section'
                             style={{
@@ -83,34 +110,7 @@ const CommentSection = ({ id, reviews }) => {
                     <p>Chưa có đánh giá nào.</p>
                 </div>}
 
-            <form className='form-feedBackCage' >
-                <p style={{ fontSize: 15, fontWeight: 'bold' }}>Nhận xét của bạn *</p>
-                <div className="comment-user-section" style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                }}>
-                    <input
-                        className='input-feedBack'
-                        value={feedback}
-                        onChange={(e) => setFeedback(e.target.value)}
-                    />
-                    <Rating
-                        value={star}
-                        onChange={(event, newValue) => {
-                            setStar(newValue);
-                        }}
-                    />
-                </div>
-
-                <Button onClick={handleReview} loading={isPending} style={{
-                    backgroundColor: '#64be43',
-                    color: '#fff',
-                    marginTop: '20px',
-                }}>
-
-                    Gửi Đi
-                </Button>
-            </form>
+            
         </div>
     )
 }

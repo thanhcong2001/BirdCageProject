@@ -121,6 +121,7 @@ const Payments = () => {
                         <Radio.Group onChange={onChangeRadio} value={paymentMethod}>
                             <Space direction="vertical">
                                 <Radio value={'COD'}>Thanh toán khi nhận hàng</Radio>
+                                <Radio value={'PAY'}>Thanh toán bằng VNPay</Radio>
                             </Space>
                         </Radio.Group>
                     </div>

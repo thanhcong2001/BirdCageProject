@@ -102,7 +102,8 @@ export const BirdCage = () => {
               <div className='card'>
                 <img className='img-birdCage' src={i.productImages[0]?.imageUrl} alt={`hinh cua id ${i.id}`} />
                 <p className='nameBirdCage'>{i.title}</p>
-                <h4>{convertVND(i.price)}</h4>
+                <h3 className='discount'>{convertVND(i.priceAfterDiscount)}</h3>
+                <h4 className='price'>{convertVND(i.price)}</h4>
               </div>
                 </Link>
             </div>

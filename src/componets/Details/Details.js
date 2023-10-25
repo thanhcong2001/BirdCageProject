@@ -112,7 +112,7 @@ const queryClient = useQueryClient()
     </Box> : <div>
                 <div style={{ display: 'flex' }}>
                     <div>
-                        <img className='picProduct' src='http://mauweb.monamedia.net/birdshop/wp-content/uploads/2018/04/4-9.jpg' alt={`hinh anh ${bird?.id}`}/>
+                        <img className='picProduct' src={bird.productImages[0]?.imageUrl} alt={`hinh anh ${bird?.id}`}/>
                     </div>
                     <div>
                         <div style={{ marginTop: 25, textDecoration: 'none' }}>
