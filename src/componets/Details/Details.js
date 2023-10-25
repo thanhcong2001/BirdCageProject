@@ -47,20 +47,14 @@ const queryClient = useQueryClient()
         else return 0
     }
 
-    const handleDecrease = () => {
-        if (quantity > 1) {
-            setQuantity(quantity - 1);
-        }
-    };
+    const handleAddToCartSubmit = ({quantity }) => {
 
-    const handleAddToCartSubmit = ({ quantity }) => {
-        // console.log('Form Submit', formValues);
-        const action = addToCart({
-            id: list.id,
-            quantity: quantity,
-        })
-        console.log(action)
-        dispatch(action)
+        const birdCageToCart = {
+            id: bird?.id,
+            quantity
+        }
+        console.log(birdCageToCart)
+        mutate(birdCageToCart)
     }
 
     useEffect(() => {
@@ -85,25 +79,27 @@ const queryClient = useQueryClient()
                                 <div>
                                     <img className='imgList' src={i.img} alt={`hinh anh`}/>
                                 </div>
-                                <div style={{ marginTop: 2 }}>
+                                <div style={{marginTop:2}}>
                                     <span className='nameList'>{i.name}</span>
                                     <br />
                                     <p className='priceProduct'>{convertVND(i.price)}</p>
                                 </div>
                             </div>
+                            {/* <div className='lineList'></div> */}
                         </div>
                     ))}
                 </div>
                 <p className='listProduct'>BÀI VIẾT MỚI NHẤT</p>
                 <div className='lineCircleOne'></div>
                 <div className='borderBlogOne'>
-                    {data.slice(0, 4).map(i => (
-                        <div className='box-blogDetails'>
+                    {borderBlogOne?.slice(0, 4).map(i => (
+                        <div>
                             <div style={{ display: 'flex' }} key={i?.id}>
                                 <img className='imgCircle' src={i.img} alt='hinh anh cam'/>
                                 <p className='test'>
                                     {i.title}</p>
                             </div>
+                            <div className='lineCircle'></div>
                         </div>
                     ))}
                 </div>

@@ -1,0 +1,56 @@
+.avatarAdmin-Dashboard {
+    width: 60px;
+    height: 60px;
+    border-radius: 50px;
+    margin-right: 20px;
+}
+
+.lineAdmin-Dashboard {
+    width: 250px;
+    border-color: #D3D3D3;
+    border-width: 0.2px;
+    border-style: solid;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+}
+.ContainInfo-Dashboard{
+    padding:20px;
+    margin-left:20px;
+    display: flex;
+}
+.Option-Dashboard{
+    display: flex;
+    padding-left: 45px;
+    margin-top: 15px;
+    align-items: center;
+    text-align: center;
+}
+.Option-Dashboard:hover{
+    background-color: #D3D3D3;
+    cursor: pointer;
+}
+.line-Dashboard{
+    border-color: #D3D3D3;
+    border-width: 0.2px;
+    border-style: solid;
+    width: 210px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-bottom: 7px;
+}
+.borderTable-Dashboard{
+    border-color: #D3D3D3;
+    border-style: solid;
+    border-width: 1px;
+    padding-left: 40px;
+    padding-bottom: 20px;
+    margin-top: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.inputSearch-Dashboard{
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 5px;
+    width: 140px;
+    height: 30px;
+    padding-left: 10px;
+}

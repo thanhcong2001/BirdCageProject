@@ -1,0 +1,53 @@
+.Container-Setting{
+    display: flex;
+    border:1px solid #D3D3D3;
+    margin-left: 170px;
+    width: 1100px;
+    height: 500px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.Setting-Image{
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    margin-left: 32px;
+}
+.inputInfo-setting{
+    display: flex;
+}
+.formTextInfo{
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 270px;
+}
+.borderInfo-Setting{
+    border-right: 1px solid #D3D3D3;
+    width: 300px;
+}
+.BioInput{
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 620px;
+    padding-bottom: 80px;
+}
+.Option{
+    padding-Top:8px;
+    padding-Bottom:8px;
+    font-Size:18px;
+    margin-left: 20px;
+}
+.line-Setting{
+    width: 300px;
+    border-color: #D3D3D3;
+    border-width: 0.2px;
+    border-style: solid;
+}
+.OptionSetting{
+    background-color: 'white';
+}
+.OptionSetting:hover{
+    background-color:lightblue;
+    cursor: pointer;
+}

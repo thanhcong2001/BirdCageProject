@@ -16,9 +16,10 @@ import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import '../Header/Header.css';
 import { cartItemsCountSelector } from './../Cart/seletors';
+import axios from 'axios'
 const MODE = {
     LOGIN: 'login',
-    REGISTER: 'register',
+    REGISTER: 'register', 
     OTP: 'otp-auth'
 }
 
@@ -53,6 +54,7 @@ function Header() {
 
     const handleCloseMenu = () => {
         setAnchorEl(null)
+        navigate('/setting')
     }
 
     const handleLogoutClick = () => {
@@ -63,6 +65,13 @@ function Header() {
     const handleCartClick = () => {
         history('/cart')
     }
+    const [searchTerm, setSearchTerm] = useState('');
+    const handleSearchInputChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+    const handleSearch = () => {
+        navigate('/searchResult', { state: { searchTerm } });
+    };
 
     return (
         <div style={{ marginBottom: 120 }}>
@@ -72,7 +81,7 @@ function Header() {
                     <Link style={{ textDecoration: 'none', marginLeft: 30 }} to={'/intro'}><p className='category'>Giới Thiệu</p></Link>
                     <ul class="navbar">
                         <li className='bridge'>
-                            <p className='category' style={{ marginLeft: 0 }} href="#">Thiết Kế Lồng</p>
+                            <p className='category' style={{ marginLeft: 0 }} href='/birdCage'>Thiết Kế Lồng</p>
                             <ul className='list1'>
                                 <li className='parent2'>
                                     <a href="">Lồng Chim Vẹt</a>
@@ -120,14 +129,17 @@ function Header() {
                             </ul>
                         </li>
                     </ul>
-                    <p className='category'>Gà Cảnh</p>
                     <Link style={{ textDecoration: 'none' }} to={'/birdCage'}><p className='category'>Lồng Chim</p></Link>
-                    <p className='category'>Cám Chim</p>
                     <p className='category'>Phụ Kiện</p>
                     <Link style={{ textDecoration: 'none' }} to={'/news'}><p className='category'>Tin Tức</p></Link>
                     <p className='category'>Liên Hệ</p>
-                    <div style={{ marginLeft: 80 }}>
-                        <IconButton color="inherit">
+                    <div style={{ marginLeft: 50 }}>
+                        <input className='inputSearch-header'
+                            placeholder='Tìm Kiếm'
+                            value={searchTerm}
+                            onChange={handleSearchInputChange}
+                        />
+                        <IconButton color="inherit" onClick={handleSearch}>
                             <SearchIcon />
                         </IconButton>
 
@@ -139,7 +151,7 @@ function Header() {
 
                         {isLoggedIn && (
                             <IconButton color="inherit" onClick={handleUserClick} style={{ marginRight: 15 }}>
-                                <AccountCircle />
+                                <AccountCircle/>
                             </IconButton>
                         )}
 
@@ -199,7 +211,7 @@ function Header() {
 
                     {mode === MODE.LOGIN && (
                         <>
-                            <Login closeDialog={handleClose} setMode={setMode} MODE={MODE}/>
+                            <Login closeDialog={handleClose} setMode={setMode} MODE={MODE} />
 
                             <Box textAlign="center">
                                 <Button color='primary' onClick={() => setMode(MODE.REGISTER)}>Don't have an account. Register here</Button>
@@ -208,11 +220,7 @@ function Header() {
                     )}
                     {mode === MODE.OTP && (
                         <>
-                            <OTP closeDialog={handleClose} setMode={setMode} MODE={MODE}/>
-
-                            {/* <Box textAlign="center">
-                                <Button color='primary' onClick={() => setMode(MODE.REGISTER)}>Don't have an account. Register here</Button>
-                            </Box> */}
+                            <OTP closeDialog={handleClose} setMode={setMode} MODE={MODE} />
                         </>
                     )}
                 </DialogContent>

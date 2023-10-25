@@ -92,12 +92,12 @@ export const BirdCage = () => {
         </div>
         {isLoading ?  <Box sx={{ display: 'flex', height: '500px', alignItems: 'center' }}>
       <CircularProgress />
-    </Box> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden' }}>
+    </Box> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden',marginRight: 59 }}>
           {birdCage?.items.map(i => (
             <div key={i?.id}>
                 <Link to={`/details/${i.id}`}>
               <div className='card'>
-                <img className='img-birdCage' src={i.img} alt={`hinh cua id ${i.id}`} />
+                <img className='img-birdCage' src={i.productImages.imageUrl}/>
                 <p className='nameBirdCage'>{i.title}</p>
                 <h4>{convertVND(i.price)}</h4>
               </div>
