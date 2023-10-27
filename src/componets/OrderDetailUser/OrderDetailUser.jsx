@@ -8,6 +8,7 @@ import { Tag } from 'antd'
 const OrderDetailUser = () => {
 
     const { orderId } = useParams()
+    const shippingFee = 30000
 
     const { orderDetail, isLoading } = useFetchOrderById(orderId)
 
@@ -64,7 +65,7 @@ const OrderDetailUser = () => {
                             </tr >
                             <tr style={{ height: '50px' }}>
                                 <th style={{ padding: '5px', textAlign: 'left' }}>Giá trị đơn hàng</th>
-                                <td style={{ padding: '5px', textAlign: 'left' }}>{orderDetail.totalPrice} VNĐ</td>
+                                <td style={{ padding: '5px', textAlign: 'left' }}>{orderDetail.totalPrice + shippingFee} VNĐ</td>
                             </tr>
                         </table>
                     </div>

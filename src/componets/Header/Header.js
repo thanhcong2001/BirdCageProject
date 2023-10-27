@@ -162,12 +162,12 @@ function Header() {
                         )}
 
                         {isLoggedIn && (
-                            <IconButton color="inherit" onClick={handleUserClick} style={{ marginRight: 15 }}>
+                            <IconButton color="inherit" onClick={handleUserClick}>
                                 <AccountCircle />
                             </IconButton>
                         )}
                         {isLoggedIn && (
-                            <IconButton color="inherit" onClick={handleWishlist} style={{ marginRight: 15 }}>
+                            <IconButton color="inherit" onClick={handleWishlist}>
                                 <SellIcon />
                             </IconButton>
                         )}
@@ -200,7 +200,7 @@ function Header() {
                 }}
                 getContentAnchorEl={null}
             >
-                <MenuItem onClick={handleAccount}>My account</MenuItem>
+                <MenuItem onClick={handleAccount}>Purchase history</MenuItem>
                 <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
             </Menu>
 

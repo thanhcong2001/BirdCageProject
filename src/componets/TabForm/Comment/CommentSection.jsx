@@ -29,7 +29,6 @@ const CommentSection = ({ id, reviews }) => {
             {reviews?.length > 0 ?
                 <>
                     <h2 style={{ textAlign: 'center', fontWeight: 'bold' }}>COMMENTS</h2>
-
                     {reviews?.map((cmt) => (
                         <div key={cmt.id} className='comment-section'
                             style={{

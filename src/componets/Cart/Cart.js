@@ -19,7 +19,7 @@ export const Cart = () => {
         };
         return axios.delete(`http://tainguyen58-001-site1.ftempurl.com/api/ShoppingCart/remove-from-cart/${itemId}`, {headers})
     }
-     const deleteItemCart = useMutation({
+    const deleteItemCart = useMutation({
         mutationFn: deleteItem,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['cartItem'] });
