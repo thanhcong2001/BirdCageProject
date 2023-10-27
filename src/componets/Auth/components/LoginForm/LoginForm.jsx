@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { LinearProgress } from '@mui/material';
+import { CircularProgress, LinearProgress } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -72,7 +72,13 @@ function LoginForm(props) {
                             </Grid>
 
                         </Grid>
-                        <Button
+                        {props.loginPending ? <Button
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2, opacity: 0.5 }}
+                        >
+                            <CircularProgress size={20} color='inherit' />
+                        </Button> : <Button
                             disabled={isSubmitting}
                             type="submit"
                             fullWidth
@@ -80,14 +86,8 @@ function LoginForm(props) {
                             sx={{ mt: 3, mb: 2 }}
                         >
                             Đăng nhập
-                        </Button>
-                        {/* <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <Link href="#" variant="body2">
-                                    Already have an account? Sign in
-                                </Link>
-                            </Grid>
-                        </Grid> */}
+                        </Button>}
+
                     </form>
                 </Box>
             </Container>

@@ -13,6 +13,7 @@ const checkoutQuery = async (data) => {
     };
     try {
         const response = await axios.post(checkoutURL, data, { headers })
+        console.log(response.data)
         return response.data
     } catch (error) {
         throw error
@@ -25,10 +26,14 @@ const usePayment = (data) => {
     const nav = useNavigate()
     const checkoutMutation = useMutation({
         mutationFn: checkoutQuery,
-        onSuccess: () => {
-            enqueueSnackbar("Đặt hàng thành công", { variant: 'info' })
-            queryClient.invalidateQueries({ queryKey: ['cartItem'] });
-            nav('/intro')
+        onSuccess: (data) => {
+            if (data.sessionId) {
+                window.location.href = data.redirectTo;
+            } else {
+                enqueueSnackbar("Đặt hàng thành công", { variant: 'info' })
+                queryClient.invalidateQueries({ queryKey: ['cartItem'] });
+                nav('/intro')
+            }
         }
     })
     return { checkout: checkoutMutation.mutate, isLoading: checkoutMutation.isPending }

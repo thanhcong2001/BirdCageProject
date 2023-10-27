@@ -1,4 +1,4 @@
-import DiscountIcon from '@mui/icons-material/Discount';
+// import DiscountIcon from '@mui/icons-material/Discount';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useBirdCart from 'api/apiProduct/useBirdCart';
 import axios from 'axios';
@@ -96,17 +96,17 @@ const nav = useNavigate()
                                 {cartItems?.length > 0 ?
                                 <button onClick={()=>nav('/cart/payment')} className='bt-next' style={{ width: '100%', height: '60px', marginTop: '10px', fontSize: '20px' }}>TIẾN HÀNH THANH TOÁN</button>
                                 : 
-                                <button disabled={true} style={{ width: '100%', height: '60px', marginTop: '10px', fontSize: '20px' }}>TIẾN HÀNH THANH TOÁN</button>
+                                <button  disabled={true} style={{ width: '100%', height: '60px', marginTop: '10px', fontSize: '20px', opacity: 0.5 }}>TIẾN HÀNH THANH TOÁN</button>
                                 }
                             </div>
-                            <div>
+                            {/* <div>
                                 <h5><DiscountIcon /> Mã ưu đãi</h5>
                                 <div style={{ borderTop: '3px solid #d8d8d8' }}>
 
                                 </div>
                                 <input style={{ width: '97%', height: '30px', marginTop: '15px' }} type="text" placeholder="Mã ưu đãi" />
-                                <button style={{ width: '100%', height: '60px', marginTop: '10px', fontSize: '20px' }}>Áp dụng mã ưu đãi</button>
-                            </div>
+                                <button style={{ width: '100%', height: '60px', marginTop: '10px', fontSize: '20px' }}>Áp dụng Voucher</button>
+                            </div> */}
                         </div>
                     </div>
                     </> : <div style={{

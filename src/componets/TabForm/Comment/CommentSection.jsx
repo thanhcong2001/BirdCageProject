@@ -4,6 +4,8 @@ import { DateTime } from 'luxon';
 import { useState } from 'react';
 import useCommentPost from './useCommentPost';
 const CommentSection = ({ id, reviews }) => {
+    const token = localStorage.getItem('token');
+
     const [feedback, setFeedback] = useState('');
     const [star, setStar] = useState(0);
     const { comment, isPending } = useCommentPost()
@@ -101,15 +103,23 @@ const CommentSection = ({ id, reviews }) => {
                         }}
                     />
                 </div>
-
-                <Button onClick={handleReview} loading={isPending} style={{
+                {token ? <Button onClick={handleReview} loading={isPending} style={{
                     backgroundColor: '#64be43',
                     color: '#fff',
                     marginTop: '20px',
                 }}>
 
                     Gửi Đi
-                </Button>
+                </Button> : <Button disabled style={{
+                    backgroundColor: '#64be43',
+                    color: '#fff',
+                    marginTop: '20px',
+                    opacity: 0.5
+                }}>
+
+                    Đăng nhập để đánh giá sản phẩm
+                </Button>}
+
             </form>
         </div>
     )

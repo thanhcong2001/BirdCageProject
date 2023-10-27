@@ -147,7 +147,7 @@ function Header() {
                     <p className='category'>Gà Cảnh</p>
                     <Link style={{ textDecoration: 'none' }} to={'/birdCage'}><p className='category'>Lồng Chim</p></Link>
                     <p className='category'>Cám Chim</p>
-                    <p className='category'>Phụ Kiện</p>
+                    <Link style={{ textDecoration: 'none' }} to={'/accessory'}><p className='category'>Phụ Kiện</p></Link>
                     <Link style={{ textDecoration: 'none' }} to={'/news'}><p className='category'>Tin Tức</p></Link>
                     <p className='category'>Liên Hệ</p>
                     <div style={{ marginLeft: 80 }}>

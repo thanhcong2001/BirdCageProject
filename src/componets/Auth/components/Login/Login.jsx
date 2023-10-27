@@ -8,7 +8,7 @@ Login.propTypes = {
 
 function Login(props) {
 
-    const { loginMona } = useAuth()
+    const { loginMona, loginPending } = useAuth()
     const { enqueueSnackbar } = useSnackbar();
 
     const handleSubmit = async (value) => {
@@ -25,7 +25,7 @@ function Login(props) {
 
     return (
         <div>
-            <LoginForm onSubmit={handleSubmit} />
+            <LoginForm onSubmit={handleSubmit} loginPending={loginPending} />
         </div>
     );
 }

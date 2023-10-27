@@ -20,10 +20,10 @@ const OrderDetailUser = () => {
     }
     const getStatusTagColor = (orderStatus) => {
         switch (orderStatus) {
+            case 'Pending':
+                return 'yellow';
             case 'Approved':
                 return 'green';
-            case 'Processing':
-                return 'yellow';
             case 'Shiped':
                 return 'blue';
             default:
@@ -75,7 +75,7 @@ const OrderDetailUser = () => {
                         <table style={{ width: '95%', border: '1px solid black', borderCollapse: 'collapse' }}>
                             <tr style={{ height: '50px' }}>
                                 <th style={{ padding: '5px', textAlign: 'left' }}>Tên người nhận</th>
-                                <td style={{ padding: '5px', textAlign: 'left' }}>{orderDetail.userName}</td>
+                                <td style={{ padding: '5px', textAlign: 'left' }}>{orderDetail.nameRecieved}</td>
                             </tr>
                             <tr style={{ height: '50px' }}>
                                 <th style={{ padding: '5px', textAlign: 'left' }}>Số điện thoại nhận hàng</th>

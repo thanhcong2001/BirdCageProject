@@ -13,6 +13,8 @@ import Payments from 'componets/Payments/Payments';
 import OrderHistory from 'componets/OrderHistory/OrderHistory';
 import OrderDetailUser from 'componets/OrderDetailUser/OrderDetailUser';
 import Wishlist from 'componets/Wishlist/Wishlist';
+import { Accessory } from 'componets/Accessory/Accessory';
+import PaymentMethod from 'componets/Payments/PaymentMethod';
  
 function App() {
   return (
@@ -24,8 +26,10 @@ function App() {
         <Route path='/wishlist' element={<Wishlist />} />
         <Route path='/news' element={<News />} />
         <Route path='/cart/payment' element={<Payments />} />
+        <Route path='/cart/payment/payment-methods' element={<PaymentMethod />} />
         <Route path='/details/:id' element={<Details />} />
         <Route path='/birdCage' element={<BirdCage />} />
+        <Route path='/accessory' element={<Accessory />} />
         <Route path='/cart' element={<Cart />} />
         <Route path='/designCage' element={<DesignCage />} />
         <Route path='/user/order-history' element={<OrderHistory />} />
