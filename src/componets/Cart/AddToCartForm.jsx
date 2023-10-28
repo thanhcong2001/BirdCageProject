@@ -1,9 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CircularProgress } from '@mui/material';
 import { Button } from 'antd';
+import LoginForm from 'componets/Auth/components/LoginForm/LoginForm';
 import QuantityField from 'componets/form-controls/QuantityField/index.jsx';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
+import { Navigate } from 'react-router-dom';
 import * as yup from "yup";
 
 AddToCartForm.propTypes = {
@@ -25,6 +27,9 @@ function AddToCartForm({ onSubmit = null, isLoading, token, id, handleAddToWishl
         if (onSubmit) {
             await onSubmit(values);
         }
+    }
+    const handleLoginCart =()=>{
+        Navigate('/login')
     }
 
 
@@ -63,6 +68,7 @@ function AddToCartForm({ onSubmit = null, isLoading, token, id, handleAddToWishl
                             style={{ height: 40, marginLeft: 30, backgroundColor: '#5b8029', marginTop: 15, fontSize: 16, fontWeight: 'bold' }}
                             type="submit"
                             disabled="true"
+                            onClick={handleLoginCart}
                         >
                             Đăng nhập để thêm vào giỏ hàng
                         </button>}

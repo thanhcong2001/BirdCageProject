@@ -16,10 +16,21 @@ import Payments from 'componets/Payments/Payments';
 import OrderHistory from 'componets/OrderHistory/OrderHistory';
 import OrderDetailUser from 'componets/OrderDetailUser/OrderDetailUser';
 import Wishlist from 'componets/Wishlist/Wishlist';
- 
+import { useEffect, useState } from 'react';
+import Compare from 'componets/Compare/Compare';
+
 function App() {
+  const [authen, setAuthen] = useState(null)
+  useEffect(() => {
+
+    const token = localStorage.getItem('token') || null
+    setAuthen(token)
+
+  }, [])
+
   return (
     <div className='App'>
+      {/* {authen != null ? '' : <Header />} */}
       <Header />
       <Routes>
         <Route path='/' element={<HomePage />} />
@@ -36,7 +47,9 @@ function App() {
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/user/order-history' element={<OrderHistory />} />
         <Route path='/user/order-history/:orderId' element={<OrderDetailUser />} />
+        <Route path='/compare' element={<Compare />} />
       </Routes>
+      {/* {authen != null ? '' : <Footer />} */}
       <Footer />
     </div>
   );

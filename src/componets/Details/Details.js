@@ -112,7 +112,7 @@ const queryClient = useQueryClient()
     </Box> : <div>
                 <div style={{ display: 'flex' }}>
                     <div>
-                        <img className='picProduct' src='http://mauweb.monamedia.net/birdshop/wp-content/uploads/2018/04/4-9.jpg' alt={`hinh anh ${bird?.id}`}/>
+                        <img className='picProduct' src={bird?.productImages[0].imageUrl} alt={`hinh anh ${bird?.id}`}/>
                     </div>
                     <div>
                         <div style={{ marginTop: 25, textDecoration: 'none' }}>
@@ -124,9 +124,9 @@ const queryClient = useQueryClient()
                         {/* price here */}
                         <span className='priceProduct' style={{ fontSize: 24 }}>{bird?.price} ₫</span>
                         {/* descipriton here */}
-                        <p style={{ color: '#353535', fontSize: 18 }}>{bird?.description}</p>
-                        <p style={{ color: '#353535', lineHeight: 2.2, fontSize: 18, }}>– Phù hợp với nuôi chào mào có tật bu lồng, ngoái, lộn.
-                            <br />
+                        {/* <p style={{ color: '#353535', fontSize: 18 }}>{bird?.description}</p> */}
+                        <p style={{ color: '#353535', lineHeight: 2.2, fontSize: 18,marginTop:2,marginBottom:0 }}>– Phù hợp với nuôi chào mào có tật bu lồng, ngoái, lộn.
+                            <br /> 
                             – Móc lồng bằng tre, cứng, đẹp.
                             <br />
 

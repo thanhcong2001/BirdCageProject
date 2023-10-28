@@ -11,8 +11,8 @@ HomePage.propTypes = {
 
 function HomePage() {
     return (
-        <div>
-            <Banner />
+        <div style={{ padding: '0 0 50px 0', margin: 0 }}>
+            <Banner/>
             <h1 className="title_home">Lồng chim</h1>
             <div className="list"><CageList /></div>
             <h1 className="title_home">Lồng chim</h1>

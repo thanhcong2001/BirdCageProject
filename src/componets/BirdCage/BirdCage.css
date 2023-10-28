@@ -5,10 +5,9 @@
 
 .result {
     display: flex;
-    padding-right: 130px;
     margin-bottom: 20px;
     justify-content: end;
-    padding-right: 81px;
+    padding-right: 96px;
 }
 
 .txtCage {

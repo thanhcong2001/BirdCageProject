@@ -77,9 +77,9 @@ export const BirdCage = () => {
       </div>
       <div>
         <div className='result'>
-          <div style={{ fontSize: 16, paddingTop: 20, marginRight: 20 }}>Xem tất cả 9 kết quả</div>
+          <div style={{ fontSize: 16, paddingTop: 20, marginRight: 20}}>Xem tất cả 9 kết quả</div>
           <div>
-            <form >
+            <form>
               <select className='select' value={myCar} onChange={handleChange}>
                 <option value="1">Thứ tự mặc định</option>
                 <option value="2">Thứ tự theo mức độ phổ biến</option>
@@ -93,7 +93,7 @@ export const BirdCage = () => {
         </div>
         {isLoading ?  <Box sx={{ display: 'flex', height: '500px', alignItems: 'center' }}>
       <CircularProgress />
-    </Box> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden' }}>
+    </Box> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden',marginRight:25 }}>
           {birdCage?.items.map(i => (
             <div key={i?.id}>
                 <Link to={`/details/${i.id}`}>

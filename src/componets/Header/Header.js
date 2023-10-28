@@ -17,7 +17,8 @@ import { useSelector } from 'react-redux';
 import '../Header/Header.css';
 import { cartItemsCountSelector } from './../Cart/seletors';
 import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import SellIcon from '@mui/icons-material/Sell';
 const MODE = {
     LOGIN: 'login',
@@ -34,16 +35,18 @@ function Header() {
         color: 'rgba(0, 0, 0, 0.54)'
     }))
 
+    const [searchList, setSearchList] = useState([])
+    const [isShow, setIsShow] = useState(false)
     const isLoggedIn = localStorage.getItem('token');
     const formattedToken = isLoggedIn?.replace(/"/g, '');
     const { cartItem } = useBirdCart(formattedToken)
     console.log(formattedToken)
     const totalCount = cartItem?.total
-    
+
     // const totalCount = cartItems?.reduce((total, item) => total + item.count, 0);
 
     const handleTotalProd = (count) => {
-        if(count < 10) {
+        if (count < 10) {
             return count
         } else {
             return '9+'
@@ -55,7 +58,6 @@ function Header() {
     const [anchorEl, setAnchorEl] = useState(null)
     // const cartItemsCount = useSelector(cartItemsCountSelector)
     const history = useNavigate();
-    const navigate = useNavigate()
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -71,6 +73,8 @@ function Header() {
 
     const handleCloseMenu = () => {
         setAnchorEl(null)
+    }
+    const handleProfile = () => {
         navigate('/setting')
     }
 
@@ -83,11 +87,20 @@ function Header() {
         history('/cart')
     }
     const [searchTerm, setSearchTerm] = useState('');
+
     const handleSearchInputChange = (e) => {
         setSearchTerm(e.target.value);
+        handleSearch(e.target.value)
     };
-    const handleSearch = () => {
-        navigate('/searchResult', { state: { searchTerm } });
+
+    const handleSearch = (data) => {
+        axios.get(`http://tainguyen58-001-site1.ftempurl.com/api/Product/search-by-title?title=${data}&pageIndex=0&pageSize=10`)
+            .then(response => {
+                setSearchList(response.data)
+            })
+            .catch((er) => {
+                setSearchList([])
+            })
     };
 
     const handleAccount = () => {
@@ -98,16 +111,26 @@ function Header() {
     const handleWishlist = () => {
         history('/wishlist')
     }
+    const navigate = useNavigate();
+
+    const handleItemClick = (id) => {
+        navigate(`/detail/${id}`);
+    };
+    const handleItemDetailClick = () => {
+        setIsShow(false);
+        setSearchTerm('');
+        handleSearch('')
+    };
 
     return (
-        <div style={{ marginBottom: 120 }}>
-            <AppBar style={{ backgroundColor: '#64BE43', height: 100, justifyContent: 'center', paddingLeft: 120 }}>
+        <div style={{ position: 'sticky', top: 0, left: 0, right: 0, zIndex: 999, marginBottom: 100 }}>
+            <AppBar style={{ backgroundColor: '#64BE43', height: 100, justifyContent: 'center', paddingLeft: 120, }}>
                 <Toolbar variant="dense" >
                     <Link style={{ textDecoration: 'none' }} to={'/'}><img alt='' className='logo' src='http://mauweb.monamedia.net/birdshop/wp-content/uploads/2018/04/logo-robin-white.png' /></Link>
                     <Link style={{ textDecoration: 'none', marginLeft: 30 }} to={'/intro'}><p className='category'>Giới Thiệu</p></Link>
                     <ul class="navbar">
                         <li className='bridge'>
-                            <p className='category' style={{ marginLeft: 0 }} href='/birdCage'>Thiết Kế Lồng</p>
+                            <p className='category' style={{ marginLeft: 0, marginTop: 18 }} href='/birdCage'>Thiết Kế Lồng</p>
                             <ul className='list1'>
                                 <li className='parent2'>
                                     <a href="">Lồng Chim Vẹt</a>
@@ -159,12 +182,33 @@ function Header() {
                     <p className='category'>Phụ Kiện</p>
                     <Link style={{ textDecoration: 'none' }} to={'/news'}><p className='category'>Tin Tức</p></Link>
                     <p className='category'>Liên Hệ</p>
-                    <div style={{ marginLeft: 50 }}>
-                        <input className='inputSearch-header'
-                            placeholder='Tìm Kiếm'
-                            value={searchTerm}
-                            onChange={handleSearchInputChange}
-                        />
+                    <div style={{ marginLeft: 50, display: 'flex' }}>
+                        <div style={{ width: '200px', position: 'relative', marginRight: 15 }}>
+                            <input className='inputSearch-header'
+                                placeholder='Tìm Kiếm'
+                                value={searchTerm}
+                                onChange={handleSearchInputChange}
+                                onFocus={() => setIsShow(true)}
+                            />
+                            {isShow == true
+                                ?
+                                <div>
+                                    {searchList?.items?.length > 0
+                                        ? <div className='search-value'>
+                                            {searchList?.items && searchList?.items.map(i => (
+                                                <Link to={`/details/${i.id}`} key={i.id} onClick={handleItemDetailClick}>
+                                                    <div className='search-item'
+                                                    >
+                                                        <img style={{ width: '40px', height: '40px', marginRight: 20, borderRadius: 10 }} alt='' src={i?.productImages[0]?.imageUrl} />
+                                                        <span>{i?.title}</span>
+                                                    </div>
+                                                </Link>
+                                            ))}
+                                        </div>
+                                        : <div className='search-value'></div>}
+                                </div>
+                                : null}
+                        </div>
                         <IconButton color="inherit" onClick={handleSearch}>
                             <SearchIcon />
                         </IconButton>
@@ -177,7 +221,7 @@ function Header() {
 
                         {isLoggedIn && (
                             <IconButton color="inherit" onClick={handleUserClick} style={{ marginRight: 15 }}>
-                                <AccountCircle/>
+                                <AccountCircle />
                             </IconButton>
                         )}
                         {isLoggedIn && (
@@ -214,7 +258,8 @@ function Header() {
                 }}
                 getContentAnchorEl={null}
             >
-                <MenuItem onClick={handleAccount}>My account</MenuItem>
+                <MenuItem onClick={handleProfile}>My Account</MenuItem>
+                <MenuItem onClick={handleAccount}>My Order</MenuItem>
                 <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
             </Menu>
 
@@ -242,7 +287,7 @@ function Header() {
 
                     {mode === MODE.LOGIN && (
                         <>
-                            <Login closeDialog={handleClose} setMode={setMode} MODE={MODE}/>
+                            <Login closeDialog={handleClose} setMode={setMode} MODE={MODE} />
 
                             <Box textAlign="center">
                                 <Button color='primary' onClick={() => setMode(MODE.REGISTER)}>Don't have an account. Register here</Button>

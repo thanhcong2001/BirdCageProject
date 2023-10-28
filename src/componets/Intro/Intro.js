@@ -23,7 +23,7 @@ export const Intro = () => {
     return (
         <Stack>
             <Box>
-                <Typography style={{ marginBottom: 10, textAlign: 'center', marginLeft: 30, fontWeight: '900', color: '#3c3451', fontFamily: "cursive" }} fontSize={35}>MONA MEDIA</Typography>
+                <Typography style={{ marginBottom: 10, textAlign: 'center', marginLeft: 30, fontWeight: '900', color: '#3c3451', fontFamily: "cursive",marginTop:10 }} fontSize={35}>MONA MEDIA</Typography>
                 <img style={{ marginLeft: 150, height: 306, width: 1200, objectFit: 'fill' }} src='https://www.ferplast.co.uk/cdn/shop/collections/3000x750px_04_UCCELLI_Sottocategorie-1_ACCESSORI_1200x630.jpg?v=1604571800' alt='This is bird image' />
             </Box>
             {

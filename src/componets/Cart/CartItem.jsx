@@ -7,7 +7,7 @@ const CartItem = ({ i, onChange, handleDelete }) => {
         <tr key={i.id}>
             <td className='product-img'>
                 {/* <HighlightOffIcon /> */}
-                <img className='img_cart' src="http://mauweb.monamedia.net/birdshop/wp-content/uploads/2018/04/06-7-300x300.jpg" alt="" />
+                <img className='img_cart' src='http://mauweb.monamedia.net/birdshop/wp-content/uploads/2018/04/4-9.jpg' alt="" />
             </td>
             <td>{i.productViewModel.title}</td>
             <td>{i.productViewModel.price}₫</td>

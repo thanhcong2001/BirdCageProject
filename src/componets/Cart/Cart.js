@@ -94,7 +94,7 @@ const nav = useNavigate()
                                     <p>{totalPrice + shippingFee} đ</p>
                                 </div>
                                 {cartItems?.length > 0 ?
-                                <button onClick={()=>nav('/cart/payment')} className='bt-next' style={{ width: '100%', height: '60px', marginTop: '10px', fontSize: '20px' }}>TIẾN HÀNH THANH TOÁN</button>
+                                <button onClick={()=>nav('/cart/payment')} className='bt-next' style={{ width: '100%', height: '60px', marginTop: '10px', fontSize: '20px'}}>TIẾN HÀNH THANH TOÁN</button>
                                 : 
                                 <button disabled={true} style={{ width: '100%', height: '60px', marginTop: '10px', fontSize: '20px' }}>TIẾN HÀNH THANH TOÁN</button>
                                 }
