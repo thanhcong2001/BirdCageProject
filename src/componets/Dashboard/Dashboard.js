@@ -3,6 +3,7 @@ import '../Dashboard/Dashboard.css'
 import SearchIcon from '@mui/icons-material/Search';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import axios from 'axios';
+import { format } from 'date-fns';
 export const Dashboard = () => {
   const [data, setdata] = useState([])
   const [productData, setProductData] = useState([])
@@ -75,7 +76,7 @@ export const Dashboard = () => {
                     <td>{i.email}</td>
                     <td>{i.gender}</td>
                     <td>{i.phoneNumber}</td>
-                    <td>{i.doB}</td>
+                    <td>{format(new Date(i.doB), 'dd/MM/yyyy')}</td>
                     <td>{i.isDelete}</td>
                     <td>
                       <button style={{ marginRight: 20 }} onClick={() => handleEdit(i.id)}>Edit</button>
@@ -111,14 +112,16 @@ export const Dashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {productData.map(i => (
+                {productData.slice(0, 2).map(i => (
                   <tr key={i?.id}>
                     <td>{i?.id}</td>
                     <td>{i?.title}</td>
-                    <td><img style={{width:40,height:40}} src={i?.productImages[0]?.imageUrl}/></td>
+                    <td><img style={{ width: 40, height: 40 }} src={i?.productImages[0]?.imageUrl} /></td>
+                    <td>{i?.price}</td>
                     <td>{i?.priceAfterDiscount}</td>
-                    <td>{i?.percentDiscount}</td>
                     <td>{i?.sku}</td>
+                    <td>Iron Cage</td>
+                    <td>Active</td>
                     <td>
                       <button style={{ marginRight: 20 }} onClick={() => handleEdit(i.items.id)}>Edit</button>
                       <button style={{ backgroundColor: 'red' }} onClick={() => handleDelete(i.items.id)}>Delete</button>

@@ -21,14 +21,14 @@ const OrderDetailUser = () => {
     }
     const getStatusTagColor = (orderStatus) => {
         switch (orderStatus) {
-            case 'Pending':
-                return 'yellow';
             case 'Approved':
-                return 'green';
-            case 'Shiped':
-                return 'blue';
-            default:
-                return 'blue';
+            return 'green';
+        case 'Processing':
+            return 'yellow';
+        case 'Shiped':
+            return 'blue';
+        default:
+            return 'blue';
         }
     };
 

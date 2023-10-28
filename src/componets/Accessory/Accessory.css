@@ -42,13 +42,13 @@
     border-color: #ddd;
 
 }
-.card {
+.card-access {
     width:281px;
     border-style: dashed;
     border-width: 2px;
     border-color: #dddddd;
     margin-bottom: 15px;
-    margin-right: 20px;
+    margin-right: 650px;
     height: 391px;
     overflow: hidden;
     color: black;
@@ -57,7 +57,7 @@
     text-align: center;
     font-size: 15px;
     text-transform: uppercase;
-    height: 37px;
+    height: 11px;
 }
 
 .img-birdCage{

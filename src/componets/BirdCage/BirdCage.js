@@ -46,7 +46,7 @@ export const BirdCage = () => {
         <div>
           <p style={{ fontWeight: 600, color: '#353535', fontSize: 16 }}>LỌC THEO GIÁ</p>
           <p className='lineCage'></p>
-          <input style={{ width: 260 }} type="range" min="0" max="5" id="customRange2"></input>
+          <input style={{ width: 210 }} type="range" min="0" max="5" id="customRange2"></input>
           <button style={{ borderRadius: 20, height: 30, width: 53, fontSize: 14, paddingBottom: 22 }}>Lọc</button>
         </div>
         <div>
@@ -88,9 +88,8 @@ export const BirdCage = () => {
         </div>
         {isLoading ?  <Box sx={{ display: 'flex', height: '500px', alignItems: 'center' }}>
       <CircularProgress />
-    </Box> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden',marginRight:25 }}>
+    </Box> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden',marginRight:350 }}>
           {filteredData?.map(i => (
-            
             <div key={i?.id}>
                 <Link to={`/details/${i.id}`}>
               <div className='card'>

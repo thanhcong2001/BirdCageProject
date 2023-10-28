@@ -46,7 +46,7 @@ export const Accessory = () => {
                 <div>
                     <p style={{ fontWeight: 600, color: '#353535', fontSize: 16 }}>LỌC THEO GIÁ</p>
                     <p className='lineCage'></p>
-                    <input style={{ width: 260 }} type="range" min="0" max="5" id="customRange2"></input>
+                    <input style={{ width: 210 }} type="range" min="0" max="5" id="customRange2"></input>
                     <button style={{ borderRadius: 20, height: 30, width: 53, fontSize: 14, paddingBottom: 22 }}>Lọc</button>
                 </div>
                 <div>
@@ -93,7 +93,7 @@ export const Accessory = () => {
 
                         <div key={i?.id}>
                             <Link to={`/details/${i.id}`}>
-                                <div className='card'>
+                                <div className='card-access'>
                                     <img className='img-birdCage' src={i.productImages[0]?.imageUrl} alt={`hinh cua id ${i.id}`} />
                                     <p className='nameBirdCage'>{i.title}</p>
                                     <h4>{convertVND(i.price)}</h4>
