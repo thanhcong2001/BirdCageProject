@@ -179,7 +179,8 @@ function Header() {
                         </li>
                     </ul>
                     <Link style={{ textDecoration: 'none' }} to={'/birdCage'}><p className='category'>Lồng Chim</p></Link>
-                    <p className='category'>Phụ Kiện</p>
+                    <p className='category'>Cám Chim</p>
+                    <Link style={{ textDecoration: 'none' }} to={'/accessory'}><p className='category'>Phụ Kiện</p></Link>
                     <Link style={{ textDecoration: 'none' }} to={'/news'}><p className='category'>Tin Tức</p></Link>
                     <p className='category'>Liên Hệ</p>
                     <div style={{ marginLeft: 50, display: 'flex' }}>
@@ -220,12 +221,12 @@ function Header() {
                         )}
 
                         {isLoggedIn && (
-                            <IconButton color="inherit" onClick={handleUserClick} style={{ marginRight: 15 }}>
+                            <IconButton color="inherit" onClick={handleUserClick}>
                                 <AccountCircle />
                             </IconButton>
                         )}
                         {isLoggedIn && (
-                            <IconButton color="inherit" onClick={handleWishlist} style={{ marginRight: 15 }}>
+                            <IconButton color="inherit" onClick={handleWishlist}>
                                 <SellIcon />
                             </IconButton>
                         )}
@@ -259,7 +260,7 @@ function Header() {
                 getContentAnchorEl={null}
             >
                 <MenuItem onClick={handleProfile}>My Account</MenuItem>
-                <MenuItem onClick={handleAccount}>My Order</MenuItem>
+                <MenuItem onClick={handleAccount}>Purchase history</MenuItem>
                 <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
             </Menu>
 

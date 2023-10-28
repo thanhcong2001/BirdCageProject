@@ -4,6 +4,8 @@ import { DateTime } from 'luxon';
 import { useState } from 'react';
 import useCommentPost from './useCommentPost';
 const CommentSection = ({ id, reviews }) => {
+    const token = localStorage.getItem('token');
+
     const [feedback, setFeedback] = useState('');
     const [star, setStar] = useState(0);
     const { comment, isPending } = useCommentPost()
@@ -27,34 +29,6 @@ const CommentSection = ({ id, reviews }) => {
             {reviews?.length > 0 ?
                 <>
                     <h2 style={{ textAlign: 'center', fontWeight: 'bold' }}>COMMENTS</h2>
-                    <form className='form-feedBackCage' >
-                <p style={{ fontSize: 15, fontWeight: 'bold' }}>Nhận xét của bạn *</p>
-                <div className="comment-user-section" style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                }}>
-                    <input
-                        className='input-feedBack'
-                        value={feedback}
-                        onChange={(e) => setFeedback(e.target.value)}
-                    />
-                    <Rating
-                        value={star}
-                        onChange={(event, newValue) => {
-                            setStar(newValue);
-                        }}
-                    />
-                </div>
-
-                <Button onClick={handleReview} loading={isPending} style={{
-                    backgroundColor: '#64be43',
-                    color: '#fff',
-                    marginTop: '20px',
-                }}>
-
-                    Gửi Đi
-                </Button>
-            </form>
                     {reviews?.map((cmt) => (
                         <div key={cmt.id} className='comment-section'
                             style={{
@@ -109,6 +83,43 @@ const CommentSection = ({ id, reviews }) => {
                     <p style={{ fontSize: 22, fontWeight: 'bold' }}>Đánh giá</p>
                     <p>Chưa có đánh giá nào.</p>
                 </div>}
+
+            <form className='form-feedBackCage' >
+                <p style={{ fontSize: 15, fontWeight: 'bold' }}>Nhận xét của bạn *</p>
+                <div className="comment-user-section" style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}>
+                    <input
+                        className='input-feedBack'
+                        value={feedback}
+                        onChange={(e) => setFeedback(e.target.value)}
+                    />
+                    <Rating
+                        value={star}
+                        onChange={(event, newValue) => {
+                            setStar(newValue);
+                        }}
+                    />
+                </div>
+                {token ? <Button onClick={handleReview} loading={isPending} style={{
+                    backgroundColor: '#64be43',
+                    color: '#fff',
+                    marginTop: '20px',
+                }}>
+
+                    Gửi Đi
+                </Button> : <Button disabled style={{
+                    backgroundColor: '#64be43',
+                    color: '#fff',
+                    marginTop: '20px',
+                    opacity: 0.5
+                }}>
+
+                    Đăng nhập để đánh giá sản phẩm
+                </Button>}
+
+            </form>
         </div>
     )
 }

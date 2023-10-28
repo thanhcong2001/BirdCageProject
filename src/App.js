@@ -18,7 +18,9 @@ import OrderDetailUser from 'componets/OrderDetailUser/OrderDetailUser';
 import Wishlist from 'componets/Wishlist/Wishlist';
 import { useEffect, useState } from 'react';
 import Compare from 'componets/Compare/Compare';
-
+import { Accessory } from 'componets/Accessory/Accessory';
+import PaymentMethod from 'componets/Payments/PaymentMethod';
+ 
 function App() {
   const [authen, setAuthen] = useState(null)
   useEffect(() => {
@@ -38,8 +40,10 @@ function App() {
         <Route path='/wishlist' element={<Wishlist />} />
         <Route path='/news' element={<News />} />
         <Route path='/cart/payment' element={<Payments />} />
+        <Route path='/cart/payment/payment-methods' element={<PaymentMethod />} />
         <Route path='/details/:id' element={<Details />} />
         <Route path='/birdCage' element={<BirdCage />} />
+        <Route path='/accessory' element={<Accessory />} />
         <Route path='/cart' element={<Cart />} />
         <Route path='/designCage' element={<DesignCage />} />
         <Route path='/setting' element={<Setting />} />

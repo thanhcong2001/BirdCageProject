@@ -1,7 +1,8 @@
 .payment-wrapper {
-    width: 80%;
+    width: 40%;
     height: fit-content;
     margin: 0 auto;
+    min-width: 420px;
 }
 
 .cart-tilte, .method-tilte, .information-tilte {

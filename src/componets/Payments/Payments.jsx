@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Radio, Space } from 'antd';
 import useBirdCart from 'api/apiProduct/useBirdCart';
 import axios from 'axios';
 import CartItem from 'componets/Cart/CartItem';
-import { useEffect, useState } from 'react';
-import './payment.css';
-import PaymentForm from './PaymentForm';
-import usePayment from './usePayment';
+import { setInformation } from 'componets/Cart/cartSlice';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import PaymentForm from './PaymentForm';
+import './payment.css';
 
 
 
@@ -46,28 +46,15 @@ const Payments = () => {
         }
     };
 
-
     const totalPrice = cartItems?.reduce((total, item) => total + item.productViewModel.price * item.count, 0);
     const shippingFee = 30000
-    const [paymentMethod, setPaymentMethod] = useState('COD');
-    const onChangeRadio = (e) => {
-        setPaymentMethod(e.target.value);
-    };
-    const { checkout, isLoading } = usePayment()
+    const [totalPriceAfterShip] = useState(totalPrice + shippingFee)
 
+    const dispatch = useDispatch()
     const handleSubmit = async (value) => {
-        const { phone, streetAddress, city } = value
-        const infoS = {
-            phone,
-            streetAddress,
-            city,
-            paymentMethod
-        }
-        try {
-            await checkout(infoS)
-        } catch (error) {
-            console.log('Failed to login', error);
-        }
+
+        dispatch(setInformation({ totalPriceAfterShip, ...value }))
+        nav('/cart/payment/payment-methods')
     }
     if (!token || !cartItems?.length > 0) {
         nav('/cart')
@@ -106,34 +93,23 @@ const Payments = () => {
                         <div className='price-total'>
                             <div>Tổng giá đơn hàng</div>
                             <div>
-                                {totalPrice + shippingFee} VNĐ
+                                {totalPriceAfterShip} VNĐ
                             </div>
                         </div>
                         <div className='line-bottom'></div>
                     </div>
                 </div>
-                {/* phuong thuc thanh toan */}
-                <div className="payment-method">
-                    <div className="method-tilte">
-                        2. Phương thức thanh toán
-                    </div>
-                    <div className="method-confirm">
-                        <Radio.Group onChange={onChangeRadio} value={paymentMethod}>
-                            <Space direction="vertical">
-                                <Radio value={'COD'}>Thanh toán khi nhận hàng</Radio>
-                            </Space>
-                        </Radio.Group>
-                    </div>
-                </div>
                 {/* thong tin giao hang */}
                 <div className='payment-information'>
-                    <div className='line-bottom'></div>
                     <div className="information-tilte">
-                        3. Thông tin nhận hàng
+                        2. Thông tin nhận hàng
                     </div>
                     <div className='line-bottom'></div>
                     <div className='information-form'>
-                        <PaymentForm onSubmit={handleSubmit} isLoading={isLoading} />
+                        <PaymentForm onSubmit={handleSubmit} />
+                    </div>
+                    <div style={{ textAlign: 'center' }}>
+                        <span>Bạn có thể chọn phương thức thanh toán ở bước sau</span>
                     </div>
                 </div>
             </div>

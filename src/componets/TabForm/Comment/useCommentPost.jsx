@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
 
@@ -19,11 +19,13 @@ const commentPost = async (obj) => {
 }
 
 const useCommentPost = () => {
+    const queryClient = useQueryClient()
     const { enqueueSnackbar } = useSnackbar();
     const commentPostCon = useMutation({
         mutationFn: commentPost,
         onSuccess: () => {
             enqueueSnackbar("Đánh giá thành công", { variant: 'info' })
+            queryClient.invalidateQueries({ queryKey: ['birdCage'] });
         }
     })
     return { comment: commentPostCon.mutate, isPending: commentPostCon.isPending }

@@ -6,17 +6,9 @@ import { Box, CircularProgress } from '@mui/material';
 import { Link } from 'react-router-dom';
 export const BirdCage = () => {
   const [myCar, setMyCar] = useState("Thứ tự mặc định");
-  // const [data, setdata] = useState([])
   const [list, setList] = useState([])
-
-
   const { birdCage, isLoading, isError, birdCageError } = useProduct();
-
   useEffect(() => {
-  //   axios.get('https://6509117cf6553137159aecfc.mockapi.io/api/v1/Cage')
-  //     .then(res => {
-  //       setdata(res.data)
-  //     })
     axios.get('https://6509117cf6553137159aecfc.mockapi.io/api/v1/foodBird')
       .then(response => {
         setList(response.data)
@@ -35,8 +27,11 @@ export const BirdCage = () => {
   if(isError) {
     return <h2>{birdCageError.message}</h2>
   }
+  const categoryIdToFilter = 1; // page long chim
 
-  console.log(birdCage?.items)
+  const filteredData = birdCage?.items.filter(item => item.categoryId === categoryIdToFilter);
+
+
   return (
     <div className='all'>
       <div style={{ marginLeft: 150 }}>
@@ -94,13 +89,15 @@ export const BirdCage = () => {
         {isLoading ?  <Box sx={{ display: 'flex', height: '500px', alignItems: 'center' }}>
       <CircularProgress />
     </Box> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden',marginRight:25 }}>
-          {birdCage?.items.map(i => (
+          {filteredData?.map(i => (
+            
             <div key={i?.id}>
                 <Link to={`/details/${i.id}`}>
               <div className='card'>
                 <img className='img-birdCage' src={i.productImages[0]?.imageUrl} alt={`hinh cua id ${i.id}`} />
                 <p className='nameBirdCage'>{i.title}</p>
-                <h4>{convertVND(i.price)}</h4>
+                <h3 className='discount'>{convertVND(i.priceAfterDiscount)}</h3>
+                <h4 className='price'>{convertVND(i.price)}</h4>
               </div>
                 </Link>
             </div>

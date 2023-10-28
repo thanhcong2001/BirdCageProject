@@ -14,6 +14,8 @@ const PaymentForm = (props) => {
             .required('Please enter your street address.'),
         city: yup.string()
             .required('Please enter your city.'),
+        name: yup.string()
+            .required('Please enter your name.'),
     });
 
     const form = useForm({
@@ -21,6 +23,8 @@ const PaymentForm = (props) => {
             phone: '',
             streetAddress: '',
             city: '',
+            name: '',
+            vourcherCode: ''
         },
         reValidateMode: 'onSubmit',
         resolver: yupResolver(schema)
@@ -48,6 +52,13 @@ const PaymentForm = (props) => {
                     <Grid item xs={12}>
                         <InputField name="city" label="City" form={form}></InputField>
                     </Grid>
+                    <Grid item xs={12}>
+                        <InputField name="name" label="Name" form={form}></InputField>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <h2>Bạn có coupon giảm giá ?</h2>
+                        <InputField name="vourcherCode" label="Voucher Code" form={form}></InputField>
+                    </Grid>
                 </Grid>
                 <Button
                     disabled={isSubmitting}
@@ -56,8 +67,7 @@ const PaymentForm = (props) => {
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                 >
-                    {props.isLoading ? <CircularProgress size={20} color='inherit' /> : 'Đặt hàng'}
-
+                    Đặt hàng
                 </Button>
             </form>
         </Box>

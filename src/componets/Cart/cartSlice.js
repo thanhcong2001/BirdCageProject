@@ -5,8 +5,12 @@ const cartSlice = createSlice({
     initialState: {
         showMiniCart: false,
         cartItems: [],
+        checkoutInformation: {}
     },
     reducers: {
+        setInformation (state, action) {
+            state.checkoutInformation = action.payload;
+        },
         showMiniCart(state) {
             state.showMiniCart = true;
         },
@@ -45,5 +49,5 @@ const cartSlice = createSlice({
 })
 
 const { actions, reducer } = cartSlice;
-export const { showMiniCart, hideMiniCart, addToCart, setQuantity, removeFromCart } = actions; //named export
+export const { showMiniCart, hideMiniCart, addToCart, setQuantity, removeFromCart, setInformation } = actions; //named export
 export default reducer; //default export

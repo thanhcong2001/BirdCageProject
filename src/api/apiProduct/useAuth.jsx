@@ -27,7 +27,7 @@ const useAuth = () => {
             enqueueSnackbar("Wrong username or password", { variant: 'error', preventDuplicate: true })
         }
     })
-    return { loginMona: loginMutation.mutate, loginSuccess: loginMutation.isSuccess }
+    return { loginMona: loginMutation.mutate, loginPending: loginMutation.isPending }
 
 }
 
