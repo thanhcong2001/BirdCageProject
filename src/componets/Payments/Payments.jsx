@@ -48,7 +48,7 @@ const Payments = () => {
 
     const totalPrice = cartItems?.reduce((total, item) => total + item.productViewModel.price * item.count, 0);
     const shippingFee = 30000
-    const [totalPriceAfterShip, setTotalPriceAfterShip] = useState(totalPrice + shippingFee)
+    const [totalPriceAfterShip] = useState(totalPrice + shippingFee)
 
     const dispatch = useDispatch()
     const handleSubmit = async (value) => {

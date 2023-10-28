@@ -24,9 +24,11 @@ const PaymentMethod = () => {
             paymentMethod: 'COD',
         };
         if (vourcherCode) {
-            infoS.voucherCode = vourcherCode;
+            console.log(vourcherCode)
+            infoS.vourcherCode = vourcherCode;
         }
         try {
+            console.log(infoS)
             await checkout(infoS);
         } catch (error) {
             console.log('Failed to process COD payment', error);
@@ -42,7 +44,8 @@ const PaymentMethod = () => {
             paymentMethod: 'PAYONLINE',
         };
         if (vourcherCode) {
-            infoS.voucherCode = vourcherCode;
+            console.log(vourcherCode)
+            infoS.vourcherCode = vourcherCode;
         }
         try {
             await checkout(infoS);
