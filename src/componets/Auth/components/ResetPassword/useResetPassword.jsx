@@ -26,7 +26,7 @@ const useResetPassword = () => {
         onSuccess: (data) => {
             enqueueSnackbar("Reset success", { variant: 'success' })
             dispatch(clearEmail())
-            nav('intro')
+            nav('/intro')
         },
         onError: (error) => {
             enqueueSnackbar("Reset failed " + error, { variant: 'error', preventDuplicate: true })

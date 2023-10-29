@@ -19,16 +19,6 @@ const emailAccountQuery = async (value) => {
     }
 }
 
-const takeOutEmail = (text) => {
-    const emailPattern = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b/;
-    const emailMatch = text.match(emailPattern);
-    let emailVariable = null;
-    if (emailMatch) {
-        emailVariable = emailMatch[0];
-    }
-    return emailVariable
-}
-
 const useEmailForReset = () => {
     const nav = useNavigate()
     const dispatch = useDispatch()
@@ -36,9 +26,7 @@ const useEmailForReset = () => {
     const getEmail = useMutation({
         mutationFn: emailAccountQuery,
         onSuccess: (data) => {
-            const email = takeOutEmail(data.message)
-            console.log(email)
-            dispatch(setEmail(email))
+            dispatch(setEmail(data.email))
             enqueueSnackbar(data.message, { variant: 'success', preventDuplicate: true })
             nav('/reset')
         },

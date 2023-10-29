@@ -6,10 +6,8 @@ import usePayment from './usePayment';
 const PaymentMethod = () => {
     const token = localStorage.getItem('token');
     const dataPay = useSelector(state => state.cart.checkoutInformation)
-    console.log(dataPay)
     const [value, setValue] = useState(1);
     const onChange = (e) => {
-        console.log('radio checked', e.target.value);
         setValue(e.target.value);
     };
     const { checkout, isLoading } = usePayment()

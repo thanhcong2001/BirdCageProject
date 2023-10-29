@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { useSnackbar } from "notistack"
+import { useNavigate } from "react-router-dom"
 
 const registerUrl = 'http://tainguyen58-001-site1.ftempurl.com/api/User/register'
 
@@ -21,10 +22,12 @@ const registerQuery = async (data) => {
 
 const useRegister = () => {
     const { enqueueSnackbar } = useSnackbar();
+    const nav = useNavigate()
     const registerMutation = useMutation({
         mutationFn: registerQuery,
         onSuccess: () => {
             enqueueSnackbar('Register successfully!!! 🎊', { variant: 'success' });
+            nav('/')
         },
         onError: () => {
             enqueueSnackbar("Some thing wrong", { variant: 'error', preventDuplicate: true })

@@ -25,10 +25,7 @@ function RegisterForm(props) {
     const { registerPending } = props
     const schema = yup.object().shape({
         fullName: yup.string()
-            .required('Please enter your full name.')
-            .test('Should has at least two words.', 'Please enter at least 2 words.', value => {
-                return value.split(' ').length >= 2
-            }),
+            .required('Please enter your full name.'),
         email: yup.string()
             .required('Please enter your email.')
             .email('Please enter an valid email address.'),

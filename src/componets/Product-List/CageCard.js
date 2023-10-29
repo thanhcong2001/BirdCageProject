@@ -9,7 +9,6 @@ const CageCard = ({ product, onAddToCompare }) => {
         axios.get('https://64ad7733b470006a5ec60159.mockapi.io/cage')
             .then(response => {
                 setdata(response.data)
-                console.log(response.data)
             })
     }, [])
 

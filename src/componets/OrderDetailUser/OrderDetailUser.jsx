@@ -12,8 +12,6 @@ const OrderDetailUser = () => {
 
     const { orderDetail, isLoading } = useFetchOrderById(orderId)
 
-    console.log(orderDetail)
-
     const convertDate = (date) => {
         const dateTime = DateTime.fromISO(date);
         const formattedDateTime = dateTime.toFormat('dd/MM/yyyy HH:mm:ss');

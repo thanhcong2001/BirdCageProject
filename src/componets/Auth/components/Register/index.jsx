@@ -14,9 +14,6 @@ function Register(props) {
     const { registerMona, registerPending } = useRegister()
 
     const handleSubmit = async (value) => {
-        console.log('Form Submit: ', value);
-
-
         try {
             await registerMona(value)
         } catch (error) {

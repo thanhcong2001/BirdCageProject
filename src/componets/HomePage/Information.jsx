@@ -14,7 +14,6 @@ function Information(props) {
         axios.get('https://6507a9f63a38daf4803fa131.mockapi.io/api/v1/birdCage')
             .then(response => {
                 setData(response.data)
-                console.log(response.data)
             })
     }, [])
 

@@ -5,7 +5,6 @@ const OTP = (props) => {
     // const { closeDialog, setMode, MODE } = props;
     const { getEmailForReset, getEmailForResetPending } = useEmailForReset()
     const handleSubmit = async (value) => {
-        console.log('Form Submit: ', value);
         try {
             await getEmailForReset(value)
         } catch (error) {
