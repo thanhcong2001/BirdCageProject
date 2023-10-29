@@ -6,7 +6,7 @@ Login.propTypes = {
     closeDialog: PropTypes.func,
 };
 
-function Login(props) {
+function Login({ setMode, MODE }) {
 
     const { loginMona, loginPending } = useAuth()
     const { enqueueSnackbar } = useSnackbar();
@@ -25,7 +25,7 @@ function Login(props) {
 
     return (
         <div>
-            <LoginForm onSubmit={handleSubmit} loginPending={loginPending} />
+            <LoginForm onSubmit={handleSubmit} loginPending={loginPending} setMode={setMode} MODE={MODE} />
         </div>
     );
 }

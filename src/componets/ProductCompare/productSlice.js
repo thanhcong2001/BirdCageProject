@@ -8,6 +8,7 @@ const productSlice = createSlice({
     name: 'products',
     initialState : {
         compareList: [],
+        emailConfirm: null
     },
     reducers: {
         addToCompare: (state, action) => {
@@ -21,9 +22,15 @@ const productSlice = createSlice({
                 state.compareList.splice(index, 1);
             }
         },
+        setEmail: (state, action) => {
+            state.emailConfirm = action.payload
+        },
+        clearEmail: (state, action) => {
+            state.emailConfirm = null
+        }
     },
 });
 
-export const { addToCompare, removeFromCompare } = productSlice.actions;
+export const { addToCompare, removeFromCompare, setEmail, clearEmail } = productSlice.actions;
 
 export default productSlice.reducer;

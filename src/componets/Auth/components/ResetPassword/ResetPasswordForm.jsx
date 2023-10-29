@@ -1,7 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { CircularProgress, LinearProgress } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -10,42 +8,31 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import InputField from 'componets/form-controls/InputField/index.jsx';
 import PasswordField from 'componets/form-controls/PasswordField/index.jsx';
-import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import * as yup from "yup";
 
-
-RegisterForm.propTypes = {
-    onSubmit: PropTypes.func,
-};
-
 const defaultTheme = createTheme();
 
-function RegisterForm(props) {
-    const { registerPending } = props
+function ResetPasswordForm(props) {
+
+    const { resetLoading } = props
+
     const schema = yup.object().shape({
-        fullName: yup.string()
-            .required('Please enter your full name.')
-            .test('Should has at least two words.', 'Please enter at least 2 words.', value => {
-                return value.split(' ').length >= 2
-            }),
-        email: yup.string()
-            .required('Please enter your email.')
-            .email('Please enter an valid email address.'),
+        token: yup.string()
+            .required('Please enter your token received in your email.'),
         password: yup.string()
             .required('Please enter your password.')
             .min(6, 'Please enter at least 6 characters.'),
-        retypePassword: yup.string()
-            .required('Please retype your password.')
+        confirmPassword: yup.string()
+            .required('Please confirm your password.')
             .oneOf([yup.ref('password')], 'Password does not match.')
     });
 
     const form = useForm({
         defaultValues: {
-            fullName: '',
-            email: '',
+            token: '',
             password: '',
-            retypePassword: '',
+            confirmPassword: '',
         },
         reValidateMode: 'onSubmit',
         resolver: yupResolver(schema)
@@ -59,7 +46,6 @@ function RegisterForm(props) {
 
     const { isSubmitting } = form.formState
 
-
     return (
         <ThemeProvider theme={defaultTheme}>
             <Container component="main" maxWidth="xs">
@@ -72,31 +58,24 @@ function RegisterForm(props) {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
                     <Typography component="h2" variant="h5">
-                        Create account
+                        Điền thông tin cần thiết
                     </Typography>
 
                     <form onSubmit={form.handleSubmit(handleSubmit)}>
                         <Grid container spacing={1}>
                             <Grid item xs={12}>
-                                <InputField name="fullName" label="Full Name" form={form}></InputField>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <InputField name="email" label="Email" form={form}></InputField>
+                                <InputField name="token" label="Token" form={form}></InputField>
                             </Grid>
                             <Grid item xs={12}>
                                 <PasswordField name="password" label="Password" form={form}></PasswordField>
                             </Grid>
                             <Grid item xs={12}>
-                                <PasswordField name="retypePassword" label="Retype Password" form={form}></PasswordField>
+                                <PasswordField name="confirmPassword" label="Confirm Password" form={form}></PasswordField>
                             </Grid>
                         </Grid>
-                        {registerPending ? <Button
-                            disabled={isSubmitting}
-                            type="submit"
+
+                        {resetLoading ? <Button
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2, opacity: 0.5 }}
@@ -109,16 +88,9 @@ function RegisterForm(props) {
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
-                            Sign Up
+                            Xác nhận
                         </Button>}
 
-                        {/* <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <Link href="#" variant="body2">
-                                    Already have an account? Sign in
-                                </Link>
-                            </Grid>
-                        </Grid> */}
                     </form>
                 </Box>
             </Container>
@@ -126,4 +98,4 @@ function RegisterForm(props) {
     );
 }
 
-export default RegisterForm;
+export default ResetPasswordForm;

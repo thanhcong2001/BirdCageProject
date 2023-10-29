@@ -15,6 +15,7 @@ import OrderDetailUser from 'componets/OrderDetailUser/OrderDetailUser';
 import Wishlist from 'componets/Wishlist/Wishlist';
 import { Accessory } from 'componets/Accessory/Accessory';
 import PaymentMethod from 'componets/Payments/PaymentMethod';
+import ResetPassword from 'componets/Auth/components/ResetPassword/ResetPassword';
  
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path='/birdCage' element={<BirdCage />} />
         <Route path='/accessory' element={<Accessory />} />
         <Route path='/cart' element={<Cart />} />
+        <Route path='/reset' element={<ResetPassword />} />
         <Route path='/designCage' element={<DesignCage />} />
         <Route path='/user/order-history' element={<OrderHistory />} />
         <Route path='/user/order-history/:orderId' element={<OrderDetailUser />} />

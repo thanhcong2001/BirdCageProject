@@ -1,4 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { SetMealRounded } from '@mui/icons-material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { CircularProgress, LinearProgress } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
@@ -41,7 +42,7 @@ function LoginForm(props) {
 
     const { isSubmitting } = form.formState
 
-
+    const { setMode, MODE } = props
     return (
         <ThemeProvider theme={defaultTheme}>
             <Container component="main" maxWidth="xs">
@@ -89,6 +90,7 @@ function LoginForm(props) {
                         </Button>}
 
                     </form>
+                    <Button onClick={() => setMode(MODE.OTP)}>Quên mật khẩu</Button>
                 </Box>
             </Container>
         </ThemeProvider>

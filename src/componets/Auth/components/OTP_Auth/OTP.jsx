@@ -1,17 +1,13 @@
 import OTPForm from "./OTPForm"
+import useEmailForReset from "./useEmailForReset";
 
 const OTP = (props) => {
     // const { closeDialog, setMode, MODE } = props;
-
+    const { getEmailForReset, getEmailForResetPending } = useEmailForReset()
     const handleSubmit = async (value) => {
         console.log('Form Submit: ', value);
-
         try {
-
-            // if (closeDialog) {
-            //     setMode(MODE.LOGIN)
-            //     closeDialog();
-            // }
+            await getEmailForReset(value)
         } catch (error) {
             console.log('Failed', error);
         }
@@ -21,7 +17,7 @@ const OTP = (props) => {
 
     return (
         <div>
-            <OTPForm onSubmit={handleSubmit} />
+            <OTPForm onSubmit={handleSubmit} getEmailForResetPending={getEmailForResetPending} />
         </div>
     )
 }

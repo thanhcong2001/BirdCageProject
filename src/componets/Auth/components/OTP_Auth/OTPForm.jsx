@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { LinearProgress, Typography } from '@mui/material';
+import { CircularProgress, LinearProgress, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -13,17 +13,15 @@ const defaultTheme = createTheme();
 
 
 const OTPForm = (props) => {
-
+    const { getEmailForResetPending } = props
     const schema = yup.object().shape({
-        code: yup.string()
-            .matches(/^\d{6}$/, 'Please enter a 6-digit code.')
-            .required('Please enter your code.'),
-        username: yup.string()
-            .required('Please enter your username.')
+        email: yup.string()
+            .required('Please enter your email.')
+            .email('Please enter an valid email address.'),
     });
     const form = useForm({
         defaultValues: {
-            code: ''
+            email: ''
         },
         reValidateMode: 'onSubmit',
         resolver: yupResolver(schema)
@@ -51,18 +49,23 @@ const OTPForm = (props) => {
                     }}
                 >
                     <Typography component="h2" variant="h6">
-                        We've sent you a code in your email
+                        Nhập email đã dùng để đăng kí tài khoản
                     </Typography>
                     <form onSubmit={form.handleSubmit(handleSubmit)}>
                         <Grid container spacing={1}>
                             <Grid item xs={12}>
-                                <InputField name="username" label="Username" form={form}></InputField >
-                            </Grid>
-                            <Grid item xs={12}>
-                                <InputField name="code" label="Code" form={form}></InputField >
+                                <InputField name="email" label="Email" form={form}></InputField >
                             </Grid>
                         </Grid>
-                        <Button
+                        {getEmailForResetPending ? <Button
+                            disabled={isSubmitting}
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2, opacity: 0.5 }}
+                        >
+                            <CircularProgress size={20} color='inherit' />
+                        </Button> : <Button
                             disabled={isSubmitting}
                             type="submit"
                             fullWidth
@@ -70,7 +73,7 @@ const OTPForm = (props) => {
                             sx={{ mt: 3, mb: 2 }}
                         >
                             Xác thực
-                        </Button>
+                        </Button>}
                     </form>
                 </Box>
             </Container>
