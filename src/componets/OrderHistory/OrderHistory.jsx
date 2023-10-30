@@ -13,12 +13,14 @@ const convertDate = (date) => {
 }
 const getStatusTagColor = (orderStatus) => {
     switch (orderStatus) {
+        case 'Pending':
+            return 'yellow';
         case 'Approved':
             return 'green';
-        case 'Processing':
-            return 'yellow';
         case 'Shiped':
             return 'blue';
+        case 'Canceled':
+            return 'red';
         default:
             return 'blue';
     }

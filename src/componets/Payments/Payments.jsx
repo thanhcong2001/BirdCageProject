@@ -35,7 +35,6 @@ const Payments = () => {
         }
     });
     const handleDelete = (itemId) => {
-        console.log(itemId)
         deleteItemCart.mutate(itemId)
     }
 

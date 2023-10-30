@@ -13,7 +13,6 @@ const checkoutQuery = async (data) => {
     };
     try {
         const response = await axios.post(checkoutURL, data, { headers })
-        console.log(response.data)
         return response.data
     } catch (error) {
         throw error
