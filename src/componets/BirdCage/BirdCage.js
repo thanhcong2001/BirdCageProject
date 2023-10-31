@@ -3,11 +3,16 @@ import '../BirdCage/BirdCage.css'
 import axios from 'axios';
 import useProduct from 'api/apiProduct/useProduct';
 import { Box, CircularProgress } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { clear } from '@testing-library/user-event/dist/clear';
 export const BirdCage = () => {
+  const navigate = useNavigate()
   const [myCar, setMyCar] = useState("Thứ tự mặc định");
   const [list, setList] = useState([])
+  const [compareList, setCompareList] = useState([])
   const { birdCage, isLoading, isError, birdCageError } = useProduct();
+  const [tmpList, setTmpList] = useState([1, 2, 3])
+  const [disabledButtons, setDisabledButtons] = useState([]);
   useEffect(() => {
     axios.get('https://6509117cf6553137159aecfc.mockapi.io/api/v1/foodBird')
       .then(response => {
@@ -24,7 +29,7 @@ export const BirdCage = () => {
     else return 0
   }
 
-  if(isError) {
+  if (isError) {
     return <h2>{birdCageError.message}</h2>
   }
   const categoryIdToFilter = 1; // page long chim
@@ -32,6 +37,19 @@ export const BirdCage = () => {
   const filteredData = birdCage?.items.filter(item => item.categoryId === categoryIdToFilter);
 
 
+  const addItemToCompareList = (i) => {
+    if (compareList.length == 3 || disabledButtons.includes(i.id)) return
+    setCompareList([...compareList, i])
+    setTmpList((item) => item.filter((_, index) => index !== 0))
+    setDisabledButtons([...disabledButtons, i.id]);
+  }
+
+  const clear = () => {
+    setTmpList([1, 2, 3])
+    setCompareList([])
+    setDisabledButtons('')
+  }
+  console.log(compareList);
   return (
     <div className='all'>
       <div style={{ marginLeft: 150 }}>
@@ -58,7 +76,7 @@ export const BirdCage = () => {
             <div className='box-birdCage' key={index}>
               <div className='blog' >
                 <div>
-                  <img className='imgList' src={i.img} alt='hinh anh'/>
+                  <img className='imgList' src={i.img} alt='hinh anh' />
                 </div>
                 <div style={{ justifyContent: 'space-around' }}>
                   <span className='nameList'>{i.name}</span>
@@ -72,7 +90,7 @@ export const BirdCage = () => {
       </div>
       <div>
         <div className='result'>
-          <div style={{ fontSize: 16, paddingTop: 20, marginRight: 20}}>Xem tất cả 9 kết quả</div>
+          <div style={{ fontSize: 16, paddingTop: 20, marginRight: 20 }}>Xem tất cả 9 kết quả</div>
           <div>
             <form>
               <select className='select' value={myCar} onChange={handleChange}>
@@ -86,23 +104,55 @@ export const BirdCage = () => {
             </form>
           </div>
         </div>
-        {isLoading ?  <Box sx={{ display: 'flex', height: '500px', alignItems: 'center' }}>
-      <CircularProgress />
-    </Box> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden',marginRight:350 }}>
+        {isLoading ? <Box sx={{ display: 'flex', height: '500px', alignItems: 'center' }}>
+          <CircularProgress />
+        </Box> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden' }}>
           {filteredData?.map(i => (
             <div key={i?.id}>
-                <Link to={`/details/${i.id}`}>
               <div className='card'>
-                <img className='img-birdCage' src={i.productImages[0]?.imageUrl} alt={`hinh cua id ${i.id}`} />
+                <img className='img-birdCage' src={i.productImages[0]?.imageUrl} alt={`hinh cua id ${i.id}`} onClick={() => navigate(`/details/${i.id}`)} />
                 <p className='nameBirdCage'>{i.title}</p>
                 <h3 className='discount'>{convertVND(i.priceAfterDiscount)}</h3>
                 <h4 className='price'>{convertVND(i.price)}</h4>
+                <button onClick={() => addItemToCompareList(i)} disabled={disabledButtons.includes(i.id)}>So sánh</button>
               </div>
-                </Link>
             </div>
           ))}
         </div>}
       </div>
-    </div>
+      {compareList.length > 0 ? <div className='bottomList'>
+        <div style={{ display: 'flex' }}>
+          {compareList.map((i, index) => (
+            <div key={index}>
+              <div className='compare-card' style={{ paddingBottom: 15 }}>
+                <div>
+                  <img className='img-compare' src={i.productImages[0]?.imageUrl} alt='hinh anh' />
+                </div>
+                <div style={{ justifyContent: 'space-around' }}>
+                  <span className='name-List'>{i.title}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+          {tmpList.map(i => (
+            <div key={i}>
+              <div className='container-fake' style={{ paddingBottom: 114 }}>
+                <div>
+                  <img className='img-addProduct' src='https://cdn-icons-png.flaticon.com/128/1828/1828819.png' alt='hinh anh' />
+                </div>
+                <div style={{ justifyContent: 'space-around' }}>
+                  <span className='name-addProduct'>Thêm Sản phẩm</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{ marginLeft: 70, marginTop: 50 }}>
+          <button style={{ marginLeft: 20 }} onClick={() => navigate('/compare', { state: { compareList } })}>So sánh ngay</button>
+          <p className='closeTxT-compare' onClick={() => clear()}>Xóa tất cả sản phẩm</p>
+        </div>
+      </div> : null
+      }
+    </div >
   )
 }

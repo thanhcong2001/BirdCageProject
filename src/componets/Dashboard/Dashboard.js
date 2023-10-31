@@ -7,6 +7,7 @@ import { format } from 'date-fns';
 export const Dashboard = () => {
   const [data, setdata] = useState([])
   const [productData, setProductData] = useState([])
+  const [orderData, setOrderData] = useState([])
   useEffect(() => {
     axios.get('http://tainguyen58-001-site1.ftempurl.com/api/User')
       .then(response => {
@@ -15,39 +16,55 @@ export const Dashboard = () => {
     axios.get('http://tainguyen58-001-site1.ftempurl.com/api/Product/page?pageIndex=0&pageSize=10')
       .then(response => {
         setProductData(response.data?.items)
-        console.log("Data Product: ", productData);
+      })
+    axios.get('http://tainguyen58-001-site1.ftempurl.com/api/Order/page?pageIndex=0&pageSize=10')
+      .then(response => {
+        setOrderData(response.data?.items)
       })
   }, [])
-  const initialUsers = [
-    { id: 1, name: 'User 1', email: 'cong@gmail.com', gender: 'male', phone: '0393103426', birth: '18/02/2001', created: '24/10/2023', status: 'Active' },
-    { id: 2, name: 'User 2', email: 'cong@gmail.com', gender: 'male', phone: '0393103426', birth: '18/02/2001', created: '24/10/2023', status: 'Active' },
-    { id: 3, name: 'User 3', email: 'cong@gmail.com', gender: 'male', phone: '0393103426', birth: '18/02/2001', created: '24/10/2023', status: 'Active' },
-    { id: 4, name: 'User 4', email: 'cong@gmail.com', gender: 'male', phone: '0393103426', birth: '18/02/2001', created: '24/10/2023', status: 'Active' },
-    { id: 5, name: 'User 5', email: 'cong@gmail.com', gender: 'male', phone: '0393103426', birth: '18/02/2001', created: '24/10/2023', status: 'Active' },
-    { id: 6, name: 'User 6', email: 'cong@gmail.com', gender: 'male', phone: '0393103426', birth: '18/02/2001', created: '24/10/2023', status: 'Active' },];
   const tableHeaders = ['Name', 'Email', 'Gender', 'Phone Number', 'Birth Date', 'Status', 'Action'];
   const tableProduct = ['ID', 'Name', 'Image', 'Price', 'Price Discount', 'Discount', 'Sku', 'Status', 'Action'];
-  const [users, setUsers] = useState(initialUsers);
+  const tableOrder = ['ID', , 'Name Recieved', 'Price', 'Phone', 'Payment Status', 'Order Status', 'Action'];
+
   const handleEdit = (id) => {
     console.log(`Edit user with ID: ${id}`);
   };
   const handleDelete = (id) => {
-    const updatedUsers = data.filter(i => i.id !== id);
-    setdata(updatedUsers);
+    console.log('Id: ', id);
+    axios.delete(`http://tainguyen58-001-site1.ftempurl.com/${id}`)
+      .then((response) => {
+        if (response.status === 200) {
+        } else {
+          console.error('Xóa không thành công');
+        }
+      })
+      .catch((error) => {
+        // Xử lý lỗi nếu có lỗi trong quá trình gọi API
+        console.error('Lỗi kết nối', error);
+      });
   };
 
 
   const [showUserForm, setShowUserForm] = useState(true);
   const [showProductForm, setShowProductForm] = useState(false);
+  const [showOrderForm, setShowOrderForm] = useState(false);
 
   const toggleUserForm = () => {
     setShowUserForm(true);
     setShowProductForm(false);
+    setShowOrderForm(false)
+
   };
 
   const toggleProductForm = () => {
+    setShowOrderForm(false)
     setShowUserForm(false);
     setShowProductForm(true);
+  };
+  const toggleOrderForm = () => {
+    setShowUserForm(false);
+    setShowProductForm(false);
+    setShowOrderForm(true)
   };
   function UserForm() {
     return (
@@ -75,9 +92,9 @@ export const Dashboard = () => {
                     <td>{i.userName}</td>
                     <td>{i.email}</td>
                     <td>{i.gender}</td>
-                    <td>{i.phoneNumber}</td>
+                    <td>{i.phoneNumber ? i.phoneNumber.replace(/'/g, '') : ''}</td>
                     <td>{format(new Date(i.doB), 'dd/MM/yyyy')}</td>
-                    <td>{i.isDelete}</td>
+                    <td>{i.isDelete ? "Deactive" : "Active"}</td>
                     <td>
                       <button style={{ marginRight: 20 }} onClick={() => handleEdit(i.id)}>Edit</button>
                       <button style={{ backgroundColor: 'red' }} onClick={() => handleDelete(i.id)}>Delete</button>
@@ -112,7 +129,7 @@ export const Dashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {productData.slice(0, 2).map(i => (
+                {productData.map(i => (
                   <tr key={i?.id}>
                     <td>{i?.id}</td>
                     <td>{i?.title}</td>
@@ -121,7 +138,49 @@ export const Dashboard = () => {
                     <td>{i?.priceAfterDiscount}</td>
                     <td>{i?.sku}</td>
                     <td>Iron Cage</td>
-                    <td>Active</td>
+                    <td>{i.isDelete ? "Deactive" : "Active"}</td>
+                    <td>
+                      <button style={{ marginRight: 20 }} onClick={() => handleEdit(i.items.id)}>Edit</button>
+                      <button style={{ backgroundColor: 'red' }} onClick={() => handleDelete(i.items.id)}>Delete</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  function OrderForm() {
+    return (
+      <div style={{ marginLeft: 100}}>
+        <div>
+          <p style={{ fontSize: 23, letterSpacing: 2, marginBottom: 10 }}>Order Management</p>
+          <div style={{ display: 'flex' }}>
+            <input className='inputSearch-Dashboard' placeholder='Tìm kiếm ...' />
+            <button style={{ backgroundColor: '#64be43' }}>
+              <SearchIcon style={{ height: 15 }} />
+            </button>
+          </div>
+          <div className='borderTable-Dashboard'>
+            <table>
+              <thead>
+                <tr>
+                  {tableOrder.map((order, index) => (
+                    <th key={index}>{order}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {orderData.map(i => (
+                  <tr key={i?.id}>
+                    <td>{i?.id}</td>
+                    <td>{i?.nameRecieved}</td>
+                    <td>{i?.totalPrice}</td>
+                    <td>{i?.phoneNumber}</td>
+                    <td>{i?.paymentStatus}</td>
+                    <td>{i?.orderStatus}</td>
                     <td>
                       <button style={{ marginRight: 20 }} onClick={() => handleEdit(i.items.id)}>Edit</button>
                       <button style={{ backgroundColor: 'red' }} onClick={() => handleDelete(i.items.id)}>Delete</button>
@@ -152,7 +211,7 @@ export const Dashboard = () => {
             <img style={{ width: 40, height: 50, marginBottom: 10 }} src='https://cdn-icons-png.flaticon.com/128/4129/4129528.png' />
             <p style={{ fontSize: 18, marginLeft: 35, color: 'white' }}>Product</p>
           </div>
-          <div className='Option-Dashboard'>
+          <div className='Option-Dashboard' onClick={toggleOrderForm}>
             <img style={{ width: 40, height: 45 }} src='https://cdn-icons-png.flaticon.com/128/11449/11449872.png' />
             <p style={{ fontSize: 18, marginLeft: 35, color: 'white' }}>Order</p>
           </div>
@@ -164,6 +223,7 @@ export const Dashboard = () => {
       </div>
       {showUserForm && <UserForm />}
       {showProductForm && <ProductForm />}
+      {showOrderForm && <OrderForm />}
     </div>
   )
 }

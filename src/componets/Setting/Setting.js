@@ -41,26 +41,30 @@ function Setting() {
         <h2>Account Setting</h2>
         <div className='inputInfo-setting'>
           <div style={{ marginRight: 50 }}>
-            <p>First Name</p>
-            <input className='formTextInfo' />
+            <p>User Name</p>
+            <input className='formTextInfo'
+            placeholder={data.userName} />
           </div>
           <div>
-            <p>Last Name</p>
-            <input className='formTextInfo' />
+            <p>User Email</p>
+            <input className='formTextInfo'
+            placeholder={data.email}  />
           </div>
         </div>
         <div className='inputInfo-setting'>
           <div style={{ marginRight: 50 }}>
-            <p>Email</p>
-            <input className='formTextInfo' />
+            <p>Phone Number</p>
+            <input className='formTextInfo'
+            placeholder={data.phoneNumber}  />
           </div>
           <div>
-            <p>Phone Number</p>
-            <input className='formTextInfo' />
+            <p>Gender</p>
+            <input className='formTextInfo'
+            placeholder={data.gender}  />
           </div>
         </div>
         <div>
-          <p>Bio</p>
+          <p>Date Of Birth</p>
           <input className='BioInput' />
         </div>
         <div style={{ marginTop: 20 }}>
@@ -85,6 +89,11 @@ function Setting() {
 
     const rePassword = (e) => {
       setRePass(e.target.value);
+    };
+    const CancelButton = (e) => {
+      setOldPass('');
+      setNewPass('');
+      setRePass('');
     };
 
     const changPass = () => {
@@ -129,7 +138,7 @@ function Setting() {
               <p>Old Password</p>
               <input className='formTextInfo' type="password"
                 value={oldPass}
-                onChange={oldPassword} />
+                onChange={oldPassword} placeholder='*************'/>
             </div>
           </div>
           <div className='inputInfo-setting'>
@@ -137,18 +146,18 @@ function Setting() {
               <p>New Password</p>
               <input className='formTextInfo' type="password"
                 value={newPass}
-                onChange={newPassword} />
+                onChange={newPassword} placeholder='*************'/>
             </div>
             <div>
               <p>Confirm new password</p>
               <input className='formTextInfo' type="password"
                 value={rePass}
-                onChange={rePassword} />
+                onChange={rePassword} placeholder='*************'/>
             </div>
           </div>
           <div style={{ marginTop: 20 }}>
             <button onClick={changPass}>Update</button>
-            <button style={{ backgroundColor: '#D3D3D3', color: 'black', marginLeft: 10 }}>Cancel</button>
+            <button onClick={CancelButton} style={{ backgroundColor: '#D3D3D3', color: 'black', marginLeft: 10 }}>Cancel</button>
           </div>
         </div>
       </div>
