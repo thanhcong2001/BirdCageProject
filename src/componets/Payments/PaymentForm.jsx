@@ -3,6 +3,7 @@ import { Box, Button, CircularProgress, Grid } from "@mui/material";
 import InputField from 'componets/form-controls/InputField/index.jsx';
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import VoucherCode from "./Voucher/VoucherCode";
 
 const PaymentForm = (props) => {
 
@@ -24,7 +25,6 @@ const PaymentForm = (props) => {
             streetAddress: '',
             city: '',
             name: '',
-            vourcherCode: ''
         },
         reValidateMode: 'onSubmit',
         resolver: yupResolver(schema)
@@ -56,8 +56,7 @@ const PaymentForm = (props) => {
                         <InputField name="name" label="Name" form={form}></InputField>
                     </Grid>
                     <Grid item xs={12}>
-                        <h2>Bạn có coupon giảm giá ?</h2>
-                        <InputField name="vourcherCode" label="Voucher Code" form={form}></InputField>
+                        <VoucherCode />
                     </Grid>
                 </Grid>
                 <Button

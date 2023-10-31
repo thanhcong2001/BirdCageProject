@@ -16,6 +16,7 @@ import Wishlist from 'componets/Wishlist/Wishlist';
 import { Accessory } from 'componets/Accessory/Accessory';
 import PaymentMethod from 'componets/Payments/PaymentMethod';
 import ResetPassword from 'componets/Auth/components/ResetPassword/ResetPassword';
+import VoucherPage from 'componets/Payments/Voucher/VoucherPage';
  
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path='/' element={<HomePage />} />
         <Route path='/intro' element={<Intro />} />
         <Route path='/wishlist' element={<Wishlist />} />
+        <Route path='/voucher' element={<VoucherPage />} />
         <Route path='/news' element={<News />} />
         <Route path='/cart/payment' element={<Payments />} />
         <Route path='/cart/payment/payment-methods' element={<PaymentMethod />} />

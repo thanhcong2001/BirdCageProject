@@ -35,8 +35,9 @@ function Header() {
     const formattedToken = isLoggedIn?.replace(/"/g, '');
     const { cartItem } = useBirdCart(formattedToken)
     const totalCount = cartItem?.total
-
+    console.log(cartItem)
     const handleTotalProd = (count) => {
+        console.log(count)
         if(count < 10) {
             return count
         } else {
