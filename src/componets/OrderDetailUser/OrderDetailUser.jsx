@@ -29,6 +29,8 @@ const OrderDetailUser = () => {
     }
     const getStatusTagColor = (orderStatus) => {
         switch (orderStatus) {
+            case 'Pending':
+                return 'yellow';
             case 'Approved':
                 return 'green';
             case 'Shiped':
