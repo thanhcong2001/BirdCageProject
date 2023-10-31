@@ -4,10 +4,11 @@ import axios from 'axios';
 import CartItem from 'componets/Cart/CartItem';
 import { setInformation } from 'componets/Cart/cartSlice';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import PaymentForm from './PaymentForm';
 import './payment.css';
+import VoucherCode from './Voucher/VoucherCode';
 
 
 
@@ -35,7 +36,6 @@ const Payments = () => {
         }
     });
     const handleDelete = (itemId) => {
-        console.log(itemId)
         deleteItemCart.mutate(itemId)
     }
 
@@ -46,14 +46,16 @@ const Payments = () => {
         }
     };
 
+    const { voucherCode } = useSelector(state => state.products)
+
+
     const totalPrice = cartItems?.reduce((total, item) => total + item.productViewModel.price * item.count, 0);
     const shippingFee = 30000
     const [totalPriceAfterShip] = useState(totalPrice + shippingFee)
 
     const dispatch = useDispatch()
     const handleSubmit = async (value) => {
-
-        dispatch(setInformation({ totalPriceAfterShip, ...value }))
+        dispatch(setInformation({ totalPriceAfterShip, vourcherCode: voucherCode, ...value }))
         nav('/cart/payment/payment-methods')
     }
     if (!token || !cartItems?.length > 0) {
@@ -84,7 +86,7 @@ const Payments = () => {
                             </thead>
                             <tbody>
                                 {cartItems?.map((i, index) => (
-                                    <CartItem key={index} i={i} onChange={onChange} handleDelete={handleDelete} />
+                                    <CartItem key={index} i={i} onChange={onChange} handleDelete={handleDelete} quantityEdit={false} />
                                 ))}
                             </tbody>
                             <div className='button_cart'>
@@ -108,6 +110,7 @@ const Payments = () => {
                     <div className='information-form'>
                         <PaymentForm onSubmit={handleSubmit} />
                     </div>
+
                     <div style={{ textAlign: 'center' }}>
                         <span>Bạn có thể chọn phương thức thanh toán ở bước sau</span>
                     </div>

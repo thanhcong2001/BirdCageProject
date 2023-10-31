@@ -40,12 +40,10 @@ function Header() {
     const isLoggedIn = localStorage.getItem('token');
     const formattedToken = isLoggedIn?.replace(/"/g, '');
     const { cartItem } = useBirdCart(formattedToken)
-    console.log(formattedToken)
     const totalCount = cartItem?.total
-
-    // const totalCount = cartItems?.reduce((total, item) => total + item.count, 0);
-
+    console.log(cartItem)
     const handleTotalProd = (count) => {
+        console.log(count)
         if (count < 10) {
             return count
         } else {
@@ -127,7 +125,7 @@ function Header() {
             <AppBar style={{ backgroundColor: '#64BE43', height: 100, justifyContent: 'center', paddingLeft: 120, }}>
                 <Toolbar variant="dense" >
                     <Link style={{ textDecoration: 'none' }} to={'/'}><img alt='' className='logo' src='http://mauweb.monamedia.net/birdshop/wp-content/uploads/2018/04/logo-robin-white.png' /></Link>
-                    <Link style={{ textDecoration: 'none'}} to={'/intro'}><p className='category'>Giới Thiệu</p></Link>
+                    <Link style={{ textDecoration: 'none' }} to={'/intro'}><p className='category'>Giới Thiệu</p></Link>
                     <ul class="navbar">
                         <li className='bridge'>
                             <p className='category' style={{ marginLeft: 0, marginTop: 18 }} href='/birdCage'>Thiết Kế Lồng</p>

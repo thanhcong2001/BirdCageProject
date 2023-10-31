@@ -8,8 +8,6 @@ const headers = {
     Authorization: `Bearer ${formattedToken}`
 };
 const postWishlist = async (id) => {
-    console.log(id)
-
     try {
         const response = await axios.post(`http://tainguyen58-001-site1.ftempurl.com/api/Product/add-to-wishlist/${id}`, {}, { headers })
         return response.data

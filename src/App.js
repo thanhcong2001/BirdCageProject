@@ -20,6 +20,8 @@ import { useEffect, useState } from 'react';
 import Compare from 'componets/Compare/Compare';
 import { Accessory } from 'componets/Accessory/Accessory';
 import PaymentMethod from 'componets/Payments/PaymentMethod';
+import ResetPassword from 'componets/Auth/components/ResetPassword/ResetPassword';
+import VoucherPage from 'componets/Payments/Voucher/VoucherPage';
  
 function App() {
   const [authen, setAuthen] = useState(null)
@@ -38,6 +40,7 @@ function App() {
         <Route path='/' element={<HomePage />} />
         <Route path='/intro' element={<Intro />} />
         <Route path='/wishlist' element={<Wishlist />} />
+        <Route path='/voucher' element={<VoucherPage />} />
         <Route path='/news' element={<News />} />
         <Route path='/cart/payment' element={<Payments />} />
         <Route path='/cart/payment/payment-methods' element={<PaymentMethod />} />
@@ -45,6 +48,7 @@ function App() {
         <Route path='/birdCage' element={<BirdCage />} />
         <Route path='/accessory' element={<Accessory />} />
         <Route path='/cart' element={<Cart />} />
+        <Route path='/reset' element={<ResetPassword />} />
         <Route path='/designCage' element={<DesignCage />} />
         <Route path='/setting' element={<Setting />} />
         <Route path='/searchResult' element={<SearchResult />} />

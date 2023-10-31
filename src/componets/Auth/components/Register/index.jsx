@@ -1,6 +1,7 @@
 import { useSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import RegisterForm from '../RegisterForm/index.jsx';
+import useRegister from 'api/apiProduct/useRegister.jsx';
 
 Register.propTypes = {
     closeDialog: PropTypes.func,
@@ -10,24 +11,11 @@ function Register(props) {
     // const dispatch = useDispatch();
     const { enqueueSnackbar } = useSnackbar();
 
+    const { registerMona, registerPending } = useRegister()
+
     const handleSubmit = async (value) => {
-        console.log('Form Submit: ', value);
-
         try {
-            //auto set username = email
-            value.username = value.email;
-            // const action = register(value);
-            // const resultAction = await dispatch(action)
-            // const user = unwrapResult(resultAction);
-
-            //close dialog
-            const { closeDialog } = props;
-            if (closeDialog) {
-                closeDialog();
-            }
-
-            // console.log('New user', user);
-            enqueueSnackbar('Register successfully!!! 🎊', { variant: 'success' });
+            await registerMona(value)
         } catch (error) {
             console.log('Failed to register', error);
             enqueueSnackbar(error.message, { variant: 'error' });
@@ -36,7 +24,7 @@ function Register(props) {
 
     return (
         <div>
-            <RegisterForm onSubmit={handleSubmit} />
+            <RegisterForm onSubmit={handleSubmit} registerPending={registerPending} />
         </div>
     );
 }

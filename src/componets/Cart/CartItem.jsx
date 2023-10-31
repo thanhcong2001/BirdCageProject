@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { InputNumber } from "antd";
 
-const CartItem = ({ i, onChange, handleDelete }) => {
+const CartItem = ({ i, onChange, handleDelete, quantityEdit }) => {
 
     return (
         <tr key={i.id}>
@@ -11,7 +11,10 @@ const CartItem = ({ i, onChange, handleDelete }) => {
             </td>
             <td>{i.productViewModel.title}</td>
             <td>{i.productViewModel.price}₫</td>
-            <td><InputNumber min={0} defaultValue={i.count} onChange={(value) => onChange(value, i.productViewModel.id)} /></td>
+            {quantityEdit ? <td><InputNumber min={0} defaultValue={i.count} onChange={(value) => onChange(value, i.productViewModel.id)} /></td> : <td>{i.count}</td>}
+
+
+
             <td>{i.productViewModel.price * i.count}đ</td>
             <td>
                 <Button color="error" onClick={() => handleDelete(i.productViewModel.id)}>Xóa</Button>

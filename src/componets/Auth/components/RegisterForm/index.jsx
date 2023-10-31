@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { LinearProgress } from '@mui/material';
+import { CircularProgress, LinearProgress } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -22,13 +22,10 @@ RegisterForm.propTypes = {
 const defaultTheme = createTheme();
 
 function RegisterForm(props) {
-
+    const { registerPending } = props
     const schema = yup.object().shape({
         fullName: yup.string()
-            .required('Please enter your full name.')
-            .test('Should has at least two words.', 'Please enter at least 2 words.', value => {
-                return value.split(' ').length >= 2
-            }),
+            .required('Please enter your full name.'),
         email: yup.string()
             .required('Please enter your email.')
             .email('Please enter an valid email address.'),
@@ -94,7 +91,15 @@ function RegisterForm(props) {
                                 <PasswordField name="retypePassword" label="Retype Password" form={form}></PasswordField>
                             </Grid>
                         </Grid>
-                        <Button
+                        {registerPending ? <Button
+                            disabled={isSubmitting}
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2, opacity: 0.5 }}
+                        >
+                            <CircularProgress size={20} color='inherit' />
+                        </Button> : <Button
                             disabled={isSubmitting}
                             type="submit"
                             fullWidth
@@ -102,7 +107,8 @@ function RegisterForm(props) {
                             sx={{ mt: 3, mb: 2 }}
                         >
                             Sign Up
-                        </Button>
+                        </Button>}
+
                         {/* <Grid container justifyContent="flex-end">
                             <Grid item>
                                 <Link href="#" variant="body2">

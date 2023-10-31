@@ -1,8 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { SetMealRounded } from '@mui/icons-material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { CircularProgress, LinearProgress } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -16,19 +13,26 @@ import * as yup from "yup";
 
 const defaultTheme = createTheme();
 
-function LoginForm(props) {
+function ResetPasswordForm(props) {
+
+    const { resetLoading } = props
 
     const schema = yup.object().shape({
-        identifier: yup.string()
-            .required('Please enter your username.'),
+        token: yup.string()
+            .required('Please enter your token received in your email.'),
         password: yup.string()
-            .required('Please enter your password.'),
+            .required('Please enter your password.')
+            .min(6, 'Please enter at least 6 characters.'),
+        confirmPassword: yup.string()
+            .required('Please confirm your password.')
+            .oneOf([yup.ref('password')], 'Password does not match.')
     });
 
     const form = useForm({
         defaultValues: {
-            identifier: '',
+            token: '',
             password: '',
+            confirmPassword: '',
         },
         reValidateMode: 'onSubmit',
         resolver: yupResolver(schema)
@@ -42,7 +46,6 @@ function LoginForm(props) {
 
     const { isSubmitting } = form.formState
 
-    const { setMode, MODE } = props
     return (
         <ThemeProvider theme={defaultTheme}>
             <Container component="main" maxWidth="xs">
@@ -55,25 +58,24 @@ function LoginForm(props) {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
                     <Typography component="h2" variant="h5">
-                        Create account
+                        Điền thông tin cần thiết
                     </Typography>
 
                     <form onSubmit={form.handleSubmit(handleSubmit)}>
                         <Grid container spacing={1}>
-
                             <Grid item xs={12}>
-                                <InputField name="identifier" label="Username" form={form}></InputField>
+                                <InputField name="token" label="Token" form={form}></InputField>
                             </Grid>
                             <Grid item xs={12}>
                                 <PasswordField name="password" label="Password" form={form}></PasswordField>
                             </Grid>
-
+                            <Grid item xs={12}>
+                                <PasswordField name="confirmPassword" label="Confirm Password" form={form}></PasswordField>
+                            </Grid>
                         </Grid>
-                        {props.loginPending ? <Button
+
+                        {resetLoading ? <Button
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2, opacity: 0.5 }}
@@ -86,15 +88,14 @@ function LoginForm(props) {
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
-                            Đăng nhập
+                            Xác nhận
                         </Button>}
 
                     </form>
-                    <Button onClick={() => setMode(MODE.OTP)}>Quên mật khẩu</Button>
                 </Box>
             </Container>
         </ThemeProvider>
     );
 }
 
-export default LoginForm;
+export default ResetPasswordForm;

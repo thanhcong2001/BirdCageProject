@@ -5,14 +5,19 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../Cart/Cart.css';
 import CartItem from './CartItem';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearProductWithId, updateToCartArr } from 'componets/ProductCompare/productSlice';
+import useUpdateCart from './useUpdateCart';
 export const Cart = () => {
     const token = localStorage.getItem('token');
     const formattedToken = token?.replace(/"/g, '');
+    console.log(formattedToken)
     const { cartItem } = useBirdCart(formattedToken)
     const cartItems = cartItem?.shoppingCarts
     const totalPrice = cartItems?.reduce((total, item) => total + item.productViewModel.price*item.count, 0);
     const shippingFee = 30000
     const queryClient = useQueryClient()
+    const nav = useNavigate()
     async function deleteItem(itemId) {
         const headers = {
             Authorization: `Bearer ${formattedToken}`
@@ -30,15 +35,27 @@ export const Cart = () => {
     });
     
     const handleDelete = (itemId) => {
+        dispatch(clearProductWithId(itemId))
         deleteItemCart.mutate(itemId)
     }
-    const onChange = (value, id) => {
 
-        if(value === 0) {
-            handleDelete(id)
+    // const simplifiedItemsCart = cartItems?.map(({ id, count }) => ({ id, count }));
+    const {updateCartArr} = useSelector(state => state.products)
+
+    const dispatch = useDispatch()
+    const onChange = (value, id) => {
+        const newOj = {
+            productId:  id,
+            count: value
         }
-      };
-const nav = useNavigate()
+        dispatch(updateToCartArr(newOj))
+    };
+    const {updateCart ,updatePending} = useUpdateCart()
+
+    const handleUpdatedCart =  async () => {
+        await updateCart(updateCartArr)
+    }
+     
     return (
         <div>
             <section className='cart-items'>
@@ -56,11 +73,14 @@ const nav = useNavigate()
                             </thead>
                             <tbody>
                                 {cartItems?.map((i, index)=> (
-                                      <CartItem key={index} i={i} onChange={onChange} handleDelete={handleDelete} deleteItemCart={deleteItemCart}/>
+                                      <CartItem key={index} i={i} onChange={onChange} handleDelete={handleDelete} deleteItemCart={deleteItemCart} quantityEdit={true}/>
                                 ))}
                                 <tr>
                                     <td><button onClick={()=>nav('/payment')} className='bt-next'>TiẾP TỤC XEM SẢN PHẨM</button></td>
-                                    <td><button className='bt-update'>CẬP NHẬT GIỎ HÀNG</button></td>
+
+                                    {updateCartArr?.length < 1 ? null : <td><button className='bt-update' onClick={handleUpdatedCart}>
+                                        {updatePending ? 'ĐANG CẬP NHẬT...':'CẬP NHẬT GIỎ HÀNG' }
+                                        </button></td>}
                                 </tr>
                             </tbody>
                             <div className='button_cart'>
