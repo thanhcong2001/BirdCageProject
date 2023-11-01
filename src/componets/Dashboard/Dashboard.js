@@ -4,6 +4,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import axios from 'axios';
 import { format } from 'date-fns';
+import OrderForm from './OrderForm/OrderForm';
 export const Dashboard = () => {
   const [data, setdata] = useState([])
   const [productData, setProductData] = useState([])
@@ -162,48 +163,7 @@ export const Dashboard = () => {
       </div>
     );
   }
-  function OrderForm() {
-    return (
-      <div style={{ marginLeft: 100 }}>
-        <div>
-          <p style={{ fontSize: 23, letterSpacing: 2, marginBottom: 10 }}>Order Management</p>
-          <div style={{ display: 'flex' }}>
-            <input className='inputSearch-Dashboard' placeholder='Tìm kiếm ...' />
-            <button style={{ backgroundColor: '#64be43' }}>
-              <SearchIcon style={{ height: 15 }} />
-            </button>
-          </div>
-          <div className='borderTable-Dashboard'>
-            <table>
-              <thead>
-                <tr>
-                  {tableOrder.map((order, index) => (
-                    <th key={index}>{order}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {orderData.map(i => (
-                  <tr key={i?.id}>
-                    <td>{i?.id}</td>
-                    <td>{i?.nameRecieved}</td>
-                    <td>{i?.totalPrice}</td>
-                    <td>{i?.phoneNumber}</td>
-                    <td>{i?.paymentStatus}</td>
-                    <td>{i?.orderStatus}</td>
-                    <td>
-                      <button style={{ marginRight: 20 }} onClick={() => handleEdit(i.items.id)}>Edit</button>
-                      <button style={{ backgroundColor: 'red' }} onClick={() => handleDelete(i.items.id)}>Delete</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  
   return (
     <div style={{ display: 'flex' }}>
       <div style={{ backgroundColor: 'rgb(100, 190, 67)', height: '100vh' }}>
@@ -233,7 +193,7 @@ export const Dashboard = () => {
       </div>
       {showUserForm && <UserForm />}
       {showProductForm && <ProductForm />}
-      {showOrderForm && <OrderForm />}
+      {showOrderForm && <OrderForm tableOrder={tableOrder}/>}
     </div>
   )
 }
