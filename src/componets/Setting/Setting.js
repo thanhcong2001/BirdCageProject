@@ -2,6 +2,10 @@ import React, { useEffect } from 'react'
 import '../Setting/style.css'
 import { useState } from 'react';
 import axios from 'axios';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { format } from 'date-fns';
+import { da } from 'date-fns/locale';
 const { jwtDecode } = require('jwt-decode');
 function Setting() {
   const [showAccountForm, setShowAccountForm] = useState(true);
@@ -36,6 +40,10 @@ function Setting() {
   }, [])
 
   function AccountForm() {
+    const [selectedDate, setSelectedDate] = useState(null);
+    const handleDateChange = (date) => {
+      setSelectedDate(date);
+    };
     return (
       <div style={{ marginLeft: 100 }}>
         <h2>Account Setting</h2>
@@ -43,29 +51,34 @@ function Setting() {
           <div style={{ marginRight: 50 }}>
             <p>User Name</p>
             <input className='formTextInfo'
-            placeholder={data.userName} />
+              placeholder={data.userName} />
           </div>
           <div>
             <p>User Email</p>
             <input className='formTextInfo'
-            placeholder={data.email}  />
+              placeholder={data.email} />
           </div>
         </div>
         <div className='inputInfo-setting'>
           <div style={{ marginRight: 50 }}>
             <p>Phone Number</p>
             <input className='formTextInfo'
-            placeholder={data.phoneNumber}  />
+              placeholder={data.phoneNumber} />
           </div>
           <div>
             <p>Gender</p>
             <input className='formTextInfo'
-            placeholder={data.gender}  />
+              placeholder={data.gender} />
           </div>
         </div>
         <div>
-          <p>Date Of Birth</p>
-          <input className='BioInput' />
+        <p>Date of birth</p>
+          <DatePicker className='formTextInfo'
+            selected={selectedDate}
+            onChange={handleDateChange}
+            dateFormat="dd/MM/yyyy"
+            placeholderText={data.doB}
+          />
         </div>
         <div style={{ marginTop: 20 }}>
           <button>Update</button>
@@ -138,7 +151,7 @@ function Setting() {
               <p>Old Password</p>
               <input className='formTextInfo' type="password"
                 value={oldPass}
-                onChange={oldPassword} placeholder='*************'/>
+                onChange={oldPassword} placeholder='*************' />
             </div>
           </div>
           <div className='inputInfo-setting'>
@@ -146,13 +159,13 @@ function Setting() {
               <p>New Password</p>
               <input className='formTextInfo' type="password"
                 value={newPass}
-                onChange={newPassword} placeholder='*************'/>
+                onChange={newPassword} placeholder='*************' />
             </div>
             <div>
               <p>Confirm new password</p>
               <input className='formTextInfo' type="password"
                 value={rePass}
-                onChange={rePassword} placeholder='*************'/>
+                onChange={rePassword} placeholder='*************' />
             </div>
           </div>
           <div style={{ marginTop: 20 }}>

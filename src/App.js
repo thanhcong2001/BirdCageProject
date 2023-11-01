@@ -22,19 +22,35 @@ import { Accessory } from 'componets/Accessory/Accessory';
 import PaymentMethod from 'componets/Payments/PaymentMethod';
 import ResetPassword from 'componets/Auth/components/ResetPassword/ResetPassword';
 import VoucherPage from 'componets/Payments/Voucher/VoucherPage';
- 
+import axios from 'axios';
+import CustomCage from 'componets/Customize/CustomCage';
 function App() {
+  const { jwtDecode } = require('jwt-decode');
   const [authen, setAuthen] = useState(null)
+  const [data, setData] = useState([])
   useEffect(() => {
-
     const token = localStorage.getItem('token') || null
     setAuthen(token)
-
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken.Id;
+      const apiUrl = `http://tainguyen58-001-site1.ftempurl.com/api/User/${userId}`;
+      axios.get(apiUrl)
+        .then(response => {
+          setData(response.data);
+          console.log("Data: ",data.role); 
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    } else {
+      console.log('Token không tồn tại trong localStorage.');
+    }
   }, [])
 
   return (
     <div className='App'>
-      {/* {authen != null ? '' : <Header />} */}
+      {/* {data.role === 'Customer' ? '' : <Header />} */}
       <Header />
       <Routes>
         <Route path='/' element={<HomePage />} />
@@ -56,9 +72,10 @@ function App() {
         <Route path='/user/order-history' element={<OrderHistory />} />
         <Route path='/user/order-history/:orderId' element={<OrderDetailUser />} />
         <Route path='/compare' element={<Compare />} />
+        <Route path='/custom' element={<CustomCage />} />
       </Routes>
-      {/* {authen != null ? '' : <Footer />} */}
-      <Footer />
+      {data.role === 'Manager' ? '' : <Footer />}
+      {/* <Footer /> */}
     </div>
   );
 }

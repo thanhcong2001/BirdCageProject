@@ -17,7 +17,7 @@ export const Dashboard = () => {
       .then(response => {
         setProductData(response.data?.items)
       })
-    axios.get('http://tainguyen58-001-site1.ftempurl.com/api/Order/page?pageIndex=0&pageSize=10')
+    axios.get('http://tainguyen58-001-site1.ftempurl.com/api/Order/page?pageIndex=1&pageSize=10')
       .then(response => {
         setOrderData(response.data?.items)
       })
@@ -27,7 +27,17 @@ export const Dashboard = () => {
   const tableOrder = ['ID', , 'Name Recieved', 'Price', 'Phone', 'Payment Status', 'Order Status', 'Action'];
 
   const handleEdit = (id) => {
-    console.log(`Edit user with ID: ${id}`);
+    axios.put(`http://tainguyen58-001-site1.ftempurl.com/api/User/recover/${id}`)
+      .then((response) => {
+        if (response.status === 200) {
+        } else {
+          console.error('Edit không thành công');
+        }
+      })
+      .catch((error) => {
+        // Xử lý lỗi nếu có lỗi trong quá trình gọi API
+        console.error('Lỗi kết nối', error);
+      });
   };
   const handleDelete = (id) => {
     console.log('Id: ', id);
@@ -96,7 +106,7 @@ export const Dashboard = () => {
                     <td>{format(new Date(i.doB), 'dd/MM/yyyy')}</td>
                     <td>{i.isDelete ? "Deactive" : "Active"}</td>
                     <td>
-                      <button style={{ marginRight: 20 }} onClick={() => handleEdit(i.id)}>Edit</button>
+                      <button style={{ marginRight: 20 }} onClick={() => handleEdit(i.id)}>Active</button>
                       <button style={{ backgroundColor: 'red' }} onClick={() => handleDelete(i.id)}>Delete</button>
                     </td>
                   </tr>
@@ -129,7 +139,7 @@ export const Dashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {productData.map(i => (
+                {productData.slice(0,6).map(i => (
                   <tr key={i?.id}>
                     <td>{i?.id}</td>
                     <td>{i?.title}</td>
@@ -154,7 +164,7 @@ export const Dashboard = () => {
   }
   function OrderForm() {
     return (
-      <div style={{ marginLeft: 100}}>
+      <div style={{ marginLeft: 100 }}>
         <div>
           <p style={{ fontSize: 23, letterSpacing: 2, marginBottom: 10 }}>Order Management</p>
           <div style={{ display: 'flex' }}>

@@ -136,7 +136,7 @@ function Header() {
                                     <ul className='list2'>
                                         <li><a onClick={() => navigate('/designCage')}>Lồng bầu chạm</a></li>
                                         <div className='line-cage'></div>
-                                        <li><a href="#">Lồng Chim Lực</a></li>
+                                        <li><a onClick={() => navigate('/custom')}>Lồng Chim Lực</a></li>
                                         <div className='line-cage'></div>
                                         <li><a href="#">Lồng Chim Sing</a></li>
                                     </ul>
