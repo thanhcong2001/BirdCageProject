@@ -3,7 +3,7 @@ import { Cart } from './componets/Cart/Cart';
 import { DesignCage } from './componets/DesignCage/DesignCage';
 import { Intro } from './componets/Intro/Intro';
 import { News } from './componets/News/News';
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import { Footer } from './componets/Footer/Footer';
 import HomePage from './componets/HomePage/HomePage';
 import { BirdCage } from './componets/BirdCage/BirdCage';
@@ -28,6 +28,7 @@ function App() {
   const { jwtDecode } = require('jwt-decode');
   const [authen, setAuthen] = useState(null)
   const [data, setData] = useState([])
+  const navigate = useNavigate()
   useEffect(() => {
     const token = localStorage.getItem('token') || null
     setAuthen(token)
@@ -38,7 +39,9 @@ function App() {
       axios.get(apiUrl)
         .then(response => {
           setData(response.data);
-          console.log("Data: ",data.role); 
+          console.log("Data: ", response.data.role);
+          if (response.data?.role && response.data?.role == 'Manager') return navigate('/dashboard')
+          return navigate('/intro')
         })
         .catch(error => {
           console.error(error);
@@ -74,8 +77,8 @@ function App() {
         <Route path='/compare' element={<Compare />} />
         <Route path='/custom' element={<CustomCage />} />
       </Routes>
-      {data.role === 'Manager' ? '' : <Footer />}
-      {/* <Footer /> */}
+      {/* {data.role === 'Manager' ? '' : <Footer />} */}
+      <Footer />
     </div>
   );
 }

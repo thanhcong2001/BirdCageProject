@@ -20,6 +20,8 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import SellIcon from '@mui/icons-material/Sell';
+import { set } from 'date-fns';
+import apiClient from 'api/apiClient';
 const MODE = {
     LOGIN: 'login',
     REGISTER: 'register',
@@ -27,7 +29,6 @@ const MODE = {
 }
 
 function Header() {
-
     const CloseButton = styled(IconButton)(() => ({
         position: 'absolute',
         top: 8,
@@ -41,9 +42,8 @@ function Header() {
     const formattedToken = isLoggedIn?.replace(/"/g, '');
     const { cartItem } = useBirdCart(formattedToken)
     const totalCount = cartItem?.total
-    console.log(cartItem)
     const handleTotalProd = (count) => {
-        console.log(count)
+        console.log('Total: ',cartItem);
         if (count < 10) {
             return count
         } else {
@@ -78,7 +78,9 @@ function Header() {
 
     const handleLogoutClick = () => {
         localStorage.removeItem('token');
-        window.location.reload();
+        // window.location.reload();
+        setAnchorEl(null)
+        navigate('/intro')
     }
 
     const handleCartClick = () => {
@@ -92,7 +94,7 @@ function Header() {
     };
 
     const handleSearch = (data) => {
-        axios.get(`http://tainguyen58-001-site1.ftempurl.com/api/Product/search-by-title?title=${data}&pageIndex=0&pageSize=10`)
+        apiClient.get(`Product/search-by-title?title=${data}&pageIndex=0&pageSize=10`)
             .then(response => {
                 setSearchList(response.data)
             })

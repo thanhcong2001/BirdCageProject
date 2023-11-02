@@ -8,6 +8,7 @@ const loginQuery = async ({ username, password }) => {
     try {
         const response = await axios.post(loginURL, { username, password })
         const { token } = response.data
+        console.log("login: ",response.data);  
         localStorage.setItem('token', JSON.stringify(token));
         return response.data
     } catch (error) {

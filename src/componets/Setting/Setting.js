@@ -6,6 +6,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format } from 'date-fns';
 import { da } from 'date-fns/locale';
+import axiosClient from "../../api/axiosClient"
+import apiClient from 'api/apiClient';
 const { jwtDecode } = require('jwt-decode');
 function Setting() {
   const [showAccountForm, setShowAccountForm] = useState(true);
@@ -26,10 +28,10 @@ function Setting() {
     if (token) {
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.Id;
-      const apiUrl = `http://tainguyen58-001-site1.ftempurl.com/api/User/${userId}`;
-      axios.get(apiUrl)
+      apiClient.get(`User/${userId}`)
         .then(response => {
           setData(response.data);
+          console.log('Thang: ',response.data);
         })
         .catch(error => {
           console.error(error);
@@ -57,7 +59,7 @@ function Setting() {
             <p>User Email</p>
             <input className='formTextInfo'
               placeholder={data.email} />
-          </div>
+          </div> 
         </div>
         <div className='inputInfo-setting'>
           <div style={{ marginRight: 50 }}>
@@ -119,9 +121,8 @@ function Setting() {
             oldPassword: oldPass,
             newPassword: newPass,
             confirmPassword: rePass
-          };
-
-          axios.put('http://tainguyen58-001-site1.ftempurl.com/api/User/change-password', data, {
+          } 
+          apiClient.put('User/change-password', data, {
             headers: {
               'Authorization': 'Bearer ' + login,
               'Content-Type': 'application/json'
