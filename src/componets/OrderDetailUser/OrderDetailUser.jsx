@@ -60,6 +60,11 @@ const OrderDetailUser = () => {
         deleteOrder.mutate(orderId)
     }
 
+    function convertVND(price) {
+        if (price != null && price !== undefined && price !== '') return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
+        else return 0
+    }
+
     if (isLoading) {
         return (
             <Box sx={{ display: 'flex', height: '500px', alignItems: 'center', justifyContent: 'center', width: '100vw' }}>
@@ -93,7 +98,7 @@ const OrderDetailUser = () => {
                             </tr >
                             <tr style={{ height: '50px' }}>
                                 <th style={{ padding: '5px', textAlign: 'left', borderRight: '2px solid #E4E1E1' }}>Giá trị đơn hàng</th>
-                                <td style={{ padding: '5px', textAlign: 'left' }}>{orderDetail.totalPrice + shippingFee} VNĐ</td>
+                                <td style={{ padding: '5px', textAlign: 'left' }}>{convertVND(orderDetail.totalPrice + shippingFee)}</td>
                             </tr>
                         </table>
                     </div>
@@ -129,13 +134,15 @@ const OrderDetailUser = () => {
                         <tr>
                             <th style={{ border: '2px solid #E4E1E1' }}>ID</th>
                             <th style={{ border: '2px solid #E4E1E1' }}>Tên</th>
+                            <th style={{ border: '2px solid #E4E1E1' }}>Số lượng</th>
                             <th style={{ border: '2px solid #E4E1E1' }}>Tổng tiền</th>
                         </tr>
                         {orderDetail.details.map((data, index) => (
                             <tr key={index}>
                                 <td style={{ border: '2px solid #E4E1E1' }}>{data.orderId}</td>
                                 <td style={{ border: '2px solid #E4E1E1' }}>{data.productTitle}</td>
-                                <td style={{ border: '2px solid #E4E1E1' }}>{data.price}</td>
+                                <td style={{ border: '2px solid #E4E1E1' }}>{data.quantity}</td>
+                                <td style={{ border: '2px solid #E4E1E1' }}>{convertVND(data.price)}</td>
                             </tr>
                         ))}
 

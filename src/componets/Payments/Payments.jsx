@@ -49,9 +49,13 @@ const Payments = () => {
     const { voucherCode } = useSelector(state => state.products)
 
 
-    const totalPrice = cartItems?.reduce((total, item) => total + item.productViewModel.price * item.count, 0);
+    const totalPrice = cartItems?.reduce((total, item) => total + item.productViewModel.priceAfterDiscount * item.count, 0);
     const shippingFee = 30000
     const [totalPriceAfterShip] = useState(totalPrice + shippingFee)
+    function convertVND(price) {
+        if (price != null && price !== undefined && price !== '') return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
+        else return 0
+    }
 
     const dispatch = useDispatch()
     const handleSubmit = async (value) => {
@@ -92,10 +96,17 @@ const Payments = () => {
                             <div className='button_cart'>
                             </div>
                         </table>
+                        <div className='price-ship'>
+                            <div>Tiền vận chuyển</div>
+                            <div>
+                                {convertVND(shippingFee)}
+                            </div>
+                        </div>
+                        <div className='line-bottom'></div>
                         <div className='price-total'>
                             <div>Tổng giá đơn hàng</div>
                             <div>
-                                {totalPriceAfterShip} VNĐ
+                                {convertVND(totalPriceAfterShip)}
                             </div>
                         </div>
                         <div className='line-bottom'></div>

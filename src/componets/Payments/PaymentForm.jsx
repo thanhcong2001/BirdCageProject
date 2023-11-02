@@ -42,7 +42,9 @@ const PaymentForm = (props) => {
         <Box>
             <form onSubmit={form.handleSubmit(handleSubmit)}>
                 <Grid container spacing={1}>
-
+                    <Grid item xs={12}>
+                        <InputField name="name" label="Name" form={form}></InputField>
+                    </Grid>
                     <Grid item xs={12}>
                         <InputField name="phone" label="Phone Number" form={form}></InputField>
                     </Grid>
@@ -51,9 +53,6 @@ const PaymentForm = (props) => {
                     </Grid>
                     <Grid item xs={12}>
                         <InputField name="city" label="City" form={form}></InputField>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <InputField name="name" label="Name" form={form}></InputField>
                     </Grid>
                     <Grid item xs={12}>
                         <VoucherCode />
