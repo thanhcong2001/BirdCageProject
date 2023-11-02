@@ -41,7 +41,9 @@ function Header() {
     const formattedToken = isLoggedIn?.replace(/"/g, '');
     const { cartItem } = useBirdCart(formattedToken)
     const totalCount = cartItem?.total
-    console.log(cartItem)
+
+    const totalCountProduct = cartItem?.shoppingCarts?.reduce((total, item) => total + item.count, 0);
+
     const handleTotalProd = (count) => {
         console.log(count)
         if (count < 10) {
@@ -189,7 +191,7 @@ function Header() {
                                 onChange={handleSearchInputChange}
                                 onFocus={() => setIsShow(true)}
                             />
-                            {isShow == true
+                            {isShow === true
                                 ?
                                 <div>
                                     {searchList?.items?.length > 0
@@ -233,7 +235,7 @@ function Header() {
                             color="inherit"
                             onClick={handleCartClick}
                         >
-                            <Badge badgeContent={handleTotalProd(totalCount)} color="error">
+                            <Badge badgeContent={handleTotalProd(totalCountProduct)} color="error">
                                 <LocalMallIcon color="inherit" />
                             </Badge>
                         </IconButton>

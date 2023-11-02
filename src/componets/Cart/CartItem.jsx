@@ -2,12 +2,12 @@ import { Button } from "@mui/material";
 import { InputNumber } from "antd";
 
 const CartItem = ({ i, onChange, handleDelete, quantityEdit }) => {
-
+    const imgCartItem = i.productViewModel.productImages[0].imageUrl
     return (
         <tr key={i.id}>
             <td className='product-img'>
                 {/* <HighlightOffIcon /> */}
-                <img className='img_cart' src='http://mauweb.monamedia.net/birdshop/wp-content/uploads/2018/04/4-9.jpg' alt="" />
+                <img className='img_cart' src={imgCartItem} alt="" />
             </td>
             <td>{i.productViewModel.title}</td>
             <td>{i.productViewModel.price}₫</td>

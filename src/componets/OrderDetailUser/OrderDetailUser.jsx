@@ -20,8 +20,6 @@ const OrderDetailUser = () => {
 
     const { orderDetail, isLoading } = useFetchOrderById(orderId)
 
-    console.log(formattedToken)
-
     const convertDate = (date) => {
         const dateTime = DateTime.fromISO(date);
         const formattedDateTime = dateTime.toFormat('dd/MM/yyyy HH:mm:ss');

@@ -1,14 +1,16 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { Box, CircularProgress, Typography } from '@mui/material';
-import { Tag } from 'antd';
+import { Button, Tag } from 'antd';
 import useFetchOrder from './useFetchOrder';
 import usePostApproveOrder from './usePostApproveOrder';
 import usePostShipApprove from './usePostShipOrder';
+import { useNavigate } from 'react-router-dom';
 
 
 const OrderForm = ({ tableOrder }) => {
 
     const { order } = useFetchOrder()
+    const nav = useNavigate()
 
     const { approveOrder, approveOrderPending } = usePostApproveOrder()
     const { shipOrder, shipOrderPending } = usePostShipApprove()
@@ -196,6 +198,9 @@ const OrderForm = ({ tableOrder }) => {
                                                         <Tag color={getStatusTagColor(i.orderStatus)} key={i.orderStatus}>
                                                             {i.orderStatus}
                                                         </Tag>
+                                                    </td>
+                                                    <td>
+                                                        <Button onClick={() => nav(`/user/order-history/${i?.id}`)}>Detail</Button>
                                                     </td>
                                                 </tr>
                                             ))}
