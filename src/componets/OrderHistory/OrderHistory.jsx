@@ -67,7 +67,7 @@ const OrderHistory = () => {
                     key="action"
                     render={(data) => (
                         <Space size="middle">
-                            <Button onClick={() => nav(`${data?.id}`)}>View detail</Button>
+                            <Button onClick={() => nav(`/user/order-history/${data?.id}`)}>View detail</Button>
                         </Space>
                     )}
                 />

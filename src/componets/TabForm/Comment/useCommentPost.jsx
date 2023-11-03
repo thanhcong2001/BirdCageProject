@@ -26,6 +26,9 @@ const useCommentPost = () => {
         onSuccess: () => {
             enqueueSnackbar("Đánh giá thành công", { variant: 'info' })
             queryClient.invalidateQueries({ queryKey: ['birdCage'] });
+        },
+        onError: () => {
+            enqueueSnackbar("Bạn cần mua sản phẩm để có thể đánh giá", { variant: 'info' })
         }
     })
     return { comment: commentPostCon.mutate, isPending: commentPostCon.isPending }

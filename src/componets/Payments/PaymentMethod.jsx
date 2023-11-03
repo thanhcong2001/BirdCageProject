@@ -49,6 +49,11 @@ const PaymentMethod = () => {
         }
     };
 
+    function convertVND(price) {
+        if (price != null && price !== undefined && price !== '') return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
+        else return 0
+    }
+
     const handleSubmit = async () => {
         if (value === 1) {
             await handleCODPayment()
@@ -87,9 +92,10 @@ const PaymentMethod = () => {
                 <Typography>Đơn hàng của bạn: </Typography>
                 <Box>
                     <ul>
-                        <li style={{ paddingBottom: '10px' }}>Người nhận: {dataPay.name}, {dataPay.phone}</li>
-                        <li style={{ paddingBottom: '10px' }}>Giao đến: {dataPay.streetAddress}</li>
-                        <li>Tổng tiền: {dataPay.totalPriceAfterShip} VNĐ</li>
+                        <li style={{ paddingBottom: '10px' }}>Người nhận: {dataPay.name}</li>
+                        <li style={{ paddingBottom: '10px' }}>SĐT: {dataPay.phone}</li>
+                        <li style={{ paddingBottom: '10px' }}>Giao đến: {dataPay.streetAddress}, {dataPay.city}</li>
+                        <li>Tổng tiền: {convertVND(dataPay.totalPriceAfterShip)}</li>
                     </ul>
                 </Box>
             </Box>
@@ -129,8 +135,6 @@ const PaymentMethod = () => {
                         </Button> : <Button onClick={handleSubmit} fullWidth variant="contained" >
                             Xác nhận
                         </Button>}
-
-
                 </Box>
             </Box>
         </Box>

@@ -1,15 +1,17 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { Box, CircularProgress, Typography } from '@mui/material';
-import { Tag } from 'antd';
+import { Button, Tag } from 'antd';
 import useFetchOrder from './useFetchOrder';
 import usePostApproveOrder from './usePostApproveOrder';
 import usePostShipApprove from './usePostShipOrder';
+import { useNavigate } from 'react-router-dom';
 
 
 const OrderForm = ({ tableOrder }) => {
 
     const { order } = useFetchOrder()
-
+    const nav = useNavigate()
+    const shippingFee = 30000
     const { approveOrder, approveOrderPending } = usePostApproveOrder()
     const { shipOrder, shipOrderPending } = usePostShipApprove()
 
@@ -40,6 +42,11 @@ const OrderForm = ({ tableOrder }) => {
         await shipOrder(id)
     }
 
+    function convertVND(price) {
+        if (price != null && price !== undefined && price !== '') return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
+        else return 0
+    }
+
     const EmptyF = () => {
         return <Box sx={{ display: 'flex', height: '100px' }} >
             <p>Empty</p>
@@ -56,8 +63,8 @@ const OrderForm = ({ tableOrder }) => {
                         <SearchIcon style={{ height: 15 }} />
                     </button>
                 </div>
-                <div style={{ display: 'flex', gap: '20px' }}>
-                    <div style={{ width: '50%', overflow: 'scroll', height: '85vh' }}>
+                <div>
+                    <div style={{ width: '100%', overflow: 'scroll', height: '85vh' }}>
                         <Typography variant="h6" color={'Highlight'}>Pending order waiting for action</Typography>
                         <div className='borderTable-Dashboard'>
                             {orderData.filter(i => i.orderStatus === 'Pending').length < 1 ? <EmptyF /> :
@@ -76,7 +83,7 @@ const OrderForm = ({ tableOrder }) => {
                                                 <tr key={i.id}>
                                                     <td>{i.id}</td>
                                                     <td>{i.nameRecieved}</td>
-                                                    <td>{i.totalPrice}</td>
+                                                    <td>{convertVND(i.totalPrice + shippingFee)}</td>
                                                     <td>{i.phoneNumber}</td>
                                                     <td>{i.paymentStatus}</td>
                                                     <td>
@@ -115,7 +122,7 @@ const OrderForm = ({ tableOrder }) => {
                                                     <tr key={i.id}>
                                                         <td>{i.id}</td>
                                                         <td>{i.nameRecieved}</td>
-                                                        <td>{i.totalPrice}</td>
+                                                        <td>{convertVND(i.totalPrice + shippingFee)}</td>
                                                         <td>{i.phoneNumber}</td>
                                                         <td>{i.paymentStatus}</td>
                                                         <td>
@@ -129,9 +136,7 @@ const OrderForm = ({ tableOrder }) => {
                                                     </tr>
                                                 ))}
                                         </tbody>}
-
                                 </table>}
-
                         </div>
                         <Typography variant="h6" color={'blue'} >Shiped order</Typography>
                         <div className='borderTable-Dashboard'>
@@ -154,7 +159,7 @@ const OrderForm = ({ tableOrder }) => {
                                                 <tr key={i.id}>
                                                     <td>{i.id}</td>
                                                     <td>{i.nameRecieved}</td>
-                                                    <td>{i.totalPrice}</td>
+                                                    <td>{convertVND(i.totalPrice + shippingFee)}</td>
                                                     <td>{i.phoneNumber}</td>
                                                     <td>{i.paymentStatus}</td>
                                                     <td>
@@ -165,12 +170,8 @@ const OrderForm = ({ tableOrder }) => {
                                                 </tr>
                                             ))}
                                     </tbody>}
-
                                 </table>}
-
                         </div>
-                    </div>
-                    <div style={{ width: '50%', overflow: 'scroll', height: '85vh' }}>
                         <Typography variant="h6" color={'red'}>Canceled order</Typography>
                         <div className='borderTable-Dashboard'>
                             <table>
@@ -189,7 +190,7 @@ const OrderForm = ({ tableOrder }) => {
                                                 <tr key={i.id}>
                                                     <td>{i.id}</td>
                                                     <td>{i.nameRecieved}</td>
-                                                    <td>{i.totalPrice}</td>
+                                                    <td>{convertVND(i.totalPrice + shippingFee)}</td>
                                                     <td>{i.phoneNumber}</td>
                                                     <td>{i.paymentStatus}</td>
                                                     <td>
@@ -197,16 +198,16 @@ const OrderForm = ({ tableOrder }) => {
                                                             {i.orderStatus}
                                                         </Tag>
                                                     </td>
+                                                    <td>
+                                                        <Button onClick={() => nav(`/user/order-history/${i?.id}`)}>Detail</Button>
+                                                    </td>
                                                 </tr>
                                             ))}
                                     </tbody>}
-
                             </table>
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     )
