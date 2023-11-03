@@ -3,12 +3,12 @@
     justify-content: space-between;
 }
 
-.result {
+.result-BirdCage {
     display: flex;
     margin-bottom: 20px;
     justify-content: end;
-    padding-right: 96px;
     margin-right: 10px;
+    padding-right: 30px;
 }
 .name-List{
     margin-top: 10px;
@@ -52,7 +52,7 @@
     border-width: 2px;
     border-color: #dddddd;
     margin-bottom: 15px;
-    margin-right: 20px;
+    margin-right: 40px;
     height: 391px;
     overflow: hidden;
     color: black;

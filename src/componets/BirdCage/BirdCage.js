@@ -89,7 +89,7 @@ export const BirdCage = () => {
         </div>
       </div>
       <div>
-        <div className='result'>
+        <div className='result-BirdCage'>
           <div style={{ fontSize: 16, paddingTop: 20, marginRight: 20 }}>Xem tất cả 9 kết quả</div>
           <div>
             <form>

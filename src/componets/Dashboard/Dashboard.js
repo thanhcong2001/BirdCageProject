@@ -12,6 +12,7 @@ export const Dashboard = () => {
   const [productData, setProductData] = useState([])
   const [orderData, setOrderData] = useState([])
   const [voucherData, setVoucherData] = useState([])
+
   useEffect(() => {
     fetchUsers()
     apiClient.get('Product/page?pageIndex=0&pageSize=10')
@@ -34,11 +35,11 @@ export const Dashboard = () => {
 
   const fetchUsers = () => {
     apiClient.get('User')
-    .then(response => {
-      setdata(response.data)
-    })
+      .then(response => {
+        setdata(response.data)
+      })
   }
-  const handleEdit = (id) => {
+  const handleEditUser = (id) => {
     apiClient.put(`User/recover/${id}`)
       .then((response) => {
         if (response.status === 200) {
@@ -50,7 +51,59 @@ export const Dashboard = () => {
         console.error('Lỗi kết nối', error);
       });
   };
-  const handleDelete = (id) => {
+  const handleDeleteUser = (id) => {
+    console.log('Id: ', id);
+    apiClient.delete(`http://tainguyen58-001-site1.ftempurl.com/${id}`)
+      .then((response) => {
+        if (response.status === 200) {
+          fetchUsers()
+        } else {
+          console.error('Xóa không thành công');
+        }
+      })
+      .catch((error) => {
+        console.error('Lỗi kết nối', error);
+      });
+  };
+  const handleEditProduct = (id) => {
+    apiClient.put(`User/recover/${id}`)
+      .then((response) => {
+        if (response.status === 200) {
+        } else {
+          console.error('Edit không thành công');
+        }
+      })
+      .catch((error) => {
+        console.error('Lỗi kết nối', error);
+      });
+  };
+  const handleDeleteProduct = (id) => {
+    console.log('Id: ', id);
+    apiClient.delete(`http://tainguyen58-001-site1.ftempurl.com/${id}`)
+      .then((response) => {
+        if (response.status === 200) {
+          fetchUsers()
+        } else {
+          console.error('Xóa không thành công');
+        }
+      })
+      .catch((error) => {
+        console.error('Lỗi kết nối', error);
+      });
+  };
+  const handleEditVoucher = (id) => {
+    apiClient.put(`User/recover/${id}`)
+      .then((response) => {
+        if (response.status === 200) {
+        } else {
+          console.error('Edit không thành công');
+        }
+      })
+      .catch((error) => {
+        console.error('Lỗi kết nối', error);
+      });
+  };
+  const handleDeleteVoucher = (id) => {
     console.log('Id: ', id);
     apiClient.delete(`http://tainguyen58-001-site1.ftempurl.com/${id}`)
       .then((response) => {
@@ -68,29 +121,34 @@ export const Dashboard = () => {
   const [showProductForm, setShowProductForm] = useState(false);
   const [showOrderForm, setShowOrderForm] = useState(false);
   const [showVoucherForm, setShowVoucherForm] = useState(false);
+  const [activeOption, setActiveOption] = useState(null);
   const toggleUserForm = () => {
     setShowUserForm(true);
     setShowProductForm(false);
     setShowOrderForm(false);
     setShowVoucherForm(false)
+    setActiveOption('user');
   };
   const toggleProductForm = () => {
     setShowOrderForm(false)
     setShowUserForm(false);
     setShowProductForm(true);
     setShowVoucherForm(false)
+    setActiveOption('product');
   };
   const toggleOrderForm = () => {
     setShowUserForm(false);
     setShowProductForm(false);
     setShowOrderForm(true);
     setShowVoucherForm(false)
+    setActiveOption('order');
   };
   const toggleVoucherForm = () => {
     setShowUserForm(false);
     setShowProductForm(false);
     setShowOrderForm(false);
     setShowVoucherForm(true);
+    setActiveOption('voucher');
   };
   function UserForm() {
     return (
@@ -122,8 +180,8 @@ export const Dashboard = () => {
                     <td>{format(new Date(i.doB), 'dd/MM/yyyy')}</td>
                     <td>{i.isDelete ? "Deactive" : "Active"}</td>
                     <td>
-                      <button style={{ marginRight: 20 }} onClick={() => handleEdit(i.id)}>Active</button>
-                      <button style={{ backgroundColor: 'red' }} onClick={() => handleDelete(i.id)}>Delete</button>
+                      <button style={{ marginRight: 20 }} onClick={() => handleEditUser(i.id)}>Active</button>
+                      <button style={{ backgroundColor: 'red' }} onClick={() => handleDeleteUser(i.id)}>Delete</button>
                     </td>
                   </tr>
                 ))}
@@ -188,7 +246,7 @@ export const Dashboard = () => {
                     <td>{i.isDelete ? "Deactive" : "Active"}</td>
                     <td>
                       <button style={{ marginRight: 20 }} onClick={openPopup}>Edit</button>
-                      <button style={{ backgroundColor: 'red' }} onClick={() => handleDelete(i.items.id)}>Delete</button>
+                      <button style={{ backgroundColor: 'red' }} onClick={() => handleDeleteProduct(i.items.id)}>Delete</button>
                     </td>
                   </tr>
                 ))}
@@ -253,7 +311,7 @@ export const Dashboard = () => {
       <div style={{ marginLeft: 100 }}>
         <div>
           <p style={{ fontSize: 23, letterSpacing: 2, marginBottom: 10 }}>Voucher Management</p>
-          <div style={{ display: 'flex',justifyContent:'space-between' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div>
               <input className='inputSearch-Dashboard' placeholder='Tìm kiếm ...' />
               <button style={{ backgroundColor: '#64be43' }}>
@@ -285,8 +343,8 @@ export const Dashboard = () => {
                     <td>{format(new Date(i.expirationDate), 'dd/MM/yyyy')}</td>
                     <td>Active</td>
                     <td>
-                      <button style={{ marginRight: 20 }} onClick={() => handleEdit(i.id)}>Active</button>
-                      <button style={{ backgroundColor: 'red' }} onClick={() => handleDelete(i.id)}>Delete</button>
+                      <button style={{ marginRight: 20 }} onClick={() => handleEditVoucher(i.id)}>Active</button>
+                      <button style={{ backgroundColor: 'red' }} onClick={() => handleDeleteVoucher(i.id)}>Delete</button>
                     </td>
                   </tr>
                 ))}
@@ -307,19 +365,31 @@ export const Dashboard = () => {
         </div>
         <div className='lineAdmin-Dashboard'></div>
         <div>
-          <div className='Option-Dashboard' onClick={toggleUserForm}>
+          <div className='Option-Dashboard' onClick={toggleUserForm} style={{
+            backgroundColor: activeOption === 'user' ? 'lightBlue' : 'initial',
+            color: activeOption === 'user' ? '#fff' : 'initial',
+          }}>
             <img style={{ width: 40, height: 45, marginBottom: 10 }} src='https://cdn-icons-png.flaticon.com/128/921/921347.png' />
             <p style={{ fontSize: 18, marginLeft: 35, color: 'white' }}>User</p>
           </div>
-          <div className='Option-Dashboard' onClick={toggleProductForm}>
+          <div className='Option-Dashboard' onClick={toggleProductForm} style={{
+            backgroundColor: activeOption === 'product' ? 'lightBlue' : 'initial',
+            color: activeOption === 'product' ? '#fff' : 'initial',
+          }}>
             <img style={{ width: 40, height: 50, marginBottom: 10 }} src='https://cdn-icons-png.flaticon.com/128/4129/4129528.png' />
             <p style={{ fontSize: 18, marginLeft: 35, color: 'white' }}>Product</p>
           </div>
-          <div className='Option-Dashboard' onClick={toggleOrderForm}>
+          <div className='Option-Dashboard' onClick={toggleOrderForm} style={{
+            backgroundColor: activeOption === 'order' ? 'lightBlue' : 'initial',
+            color: activeOption === 'order' ? '#fff' : 'initial',
+          }}>
             <img style={{ width: 40, height: 45 }} src='https://cdn-icons-png.flaticon.com/128/11449/11449872.png' />
             <p style={{ fontSize: 18, marginLeft: 35, color: 'white' }}>Order</p>
           </div>
-          <div className='Option-Dashboard' onClick={toggleVoucherForm}>
+          <div className='Option-Dashboard' onClick={toggleVoucherForm} style={{
+            backgroundColor: activeOption === 'voucher' ? 'lightBlue' : 'initial',
+            color: activeOption === 'voucher' ? '#fff' : 'initial',
+          }}>
             <img style={{ width: 40, height: 45 }} src='https://cdn-icons-png.flaticon.com/128/10218/10218090.png' />
             <p style={{ fontSize: 18, marginLeft: 35, color: 'white' }}>Voucher</p>
           </div>

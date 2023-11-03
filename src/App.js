@@ -77,8 +77,8 @@ function App() {
         <Route path='/compare' element={<Compare />} />
         <Route path='/custom' element={<CustomCage />} />
       </Routes>
-      {/* {data.role === 'Manager' ? '' : <Footer />} */}
-      <Footer />
+      {data.role === 'Manager' ? '' : <Footer />}
+      {/* <Footer /> */}
     </div>
   );
 }

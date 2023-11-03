@@ -8,19 +8,23 @@ import { format } from 'date-fns';
 import { da } from 'date-fns/locale';
 import axiosClient from "../../api/axiosClient"
 import apiClient from 'api/apiClient';
+import { textTransform } from '@mui/system';
 const { jwtDecode } = require('jwt-decode');
 function Setting() {
   const [showAccountForm, setShowAccountForm] = useState(true);
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [data, setData] = useState([])
+  const [activeOption, setActiveOption] = useState(null);
   const toggleAccountForm = () => {
     setShowAccountForm(true);
     setShowPasswordForm(false);
+    setActiveOption('account');
   };
 
   const togglePasswordForm = () => {
     setShowAccountForm(false);
     setShowPasswordForm(true);
+    setActiveOption('password');
   };
 
   useEffect(() => {
@@ -31,7 +35,7 @@ function Setting() {
       apiClient.get(`User/${userId}`)
         .then(response => {
           setData(response.data);
-          console.log('Thang: ',response.data);
+          console.log('Thang: ', response.data);
         })
         .catch(error => {
           console.error(error);
@@ -59,7 +63,7 @@ function Setting() {
             <p>User Email</p>
             <input className='formTextInfo'
               placeholder={data.email} />
-          </div> 
+          </div>
         </div>
         <div className='inputInfo-setting'>
           <div style={{ marginRight: 50 }}>
@@ -68,13 +72,17 @@ function Setting() {
               placeholder={data.phoneNumber} />
           </div>
           <div>
+            <form>
             <p>Gender</p>
-            <input className='formTextInfo'
-              placeholder={data.gender} />
+              <select className='select-optionGender'>
+                <option value="1">Male</option>
+                <option value="2">Female</option>
+              </select>
+            </form>
           </div>
         </div>
         <div>
-        <p>Date of birth</p>
+          <p>Date of birth</p>
           <DatePicker className='formTextInfo'
             selected={selectedDate}
             onChange={handleDateChange}
@@ -121,7 +129,7 @@ function Setting() {
             oldPassword: oldPass,
             newPassword: newPass,
             confirmPassword: rePass
-          } 
+          }
           apiClient.put('User/change-password', data, {
             headers: {
               'Authorization': 'Bearer ' + login,
@@ -183,14 +191,20 @@ function Setting() {
         <div className='borderInfo-Setting'>
           <div style={{ padding: 15, marginLeft: 55 }}>
             <img src='https://scontent.fsgn2-4.fna.fbcdn.net/v/t39.30808-6/324736014_1240215329893369_5490209580249412603_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=5f2048&_nc_ohc=WeT9xi_5yuYAX_VIJng&_nc_ht=scontent.fsgn2-4.fna&oh=00_AfDp4Nhh_oMUBofQckZ_lNaqYZk307GkCbjm6zRyj2dQRg&oe=653B976F' className='Setting-Image' />
-            <h3 >Lương Thành {data.userName}</h3>
+            <h3 style={{textTransform:'uppercase'}}>Lương Thành {data.userName}</h3>
           </div>
           <div className='line-Setting'></div>
-          <div className='OptionSetting' onClick={toggleAccountForm}>
+          <div className='OptionSetting' onClick={toggleAccountForm} style={{
+            backgroundColor: activeOption === 'account' ? 'rgb(100, 190, 67)' : 'initial',
+            color: activeOption === 'account' ? '#fff' : 'initial',
+          }}>
             <div className='Option'>Account</div>
             <div className='line-Setting'></div>
           </div>
-          <div className='OptionSetting' onClick={togglePasswordForm}>
+          <div className='OptionSetting' onClick={togglePasswordForm} style={{
+            backgroundColor: activeOption === 'password' ? 'rgb(100, 190, 67)' : 'initial',
+            color: activeOption === 'password' ? '#fff' : 'initial',
+          }}>
             <div className='Option'>Password</div>
             <div className='line-Setting'></div>
           </div>

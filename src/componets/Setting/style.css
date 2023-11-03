@@ -52,3 +52,14 @@
     background-color:lightblue;
     cursor: pointer;
 }
+.select-optionGender{
+    height: 35px;
+    width: 285px;
+    background-color: #fdfdfd;
+    border-color: #ddd;
+    padding-left: 5px;
+    font-size: 15px;
+    color: '#333333';
+    border-radius: 5px;
+    
+}
