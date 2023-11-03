@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const fetchBirdCageUrl = 'http://tainguyen58-001-site1.ftempurl.com/api/Product/page?pageIndex=0&pageSize=10'
+// const fetchBirdCageUrl = ''
 
-const fetchBirdCage = async () => {
-    const response = await axios.get(fetchBirdCageUrl);
+const fetchBirdCage = async (pageIndex) => {
+    const response = await axios.get(`http://tainguyen58-001-site1.ftempurl.com/api/Product/page?pageIndex=${pageIndex}&pageSize=10`);
     return response.data;
 };
 
@@ -13,8 +13,9 @@ const fetchBirdCageById = async (id) => {
     return response.data;
 }
 
-const useProduct = (id) => {
-    const { data: birdCage, isLoading, isError, error: birdCageError } = useQuery({ queryKey: ['product'], queryFn: fetchBirdCage });
+const useProduct = (info) => {
+    const { id, pageIndex } = info
+    const { data: birdCage, isLoading, isError, error: birdCageError } = useQuery({ queryKey: ['product', pageIndex], queryFn: () => fetchBirdCage(pageIndex), keepPreviousData: true, staleTime: 60000 });
 
     const { data: bird, isLoading: birdIdLoading, isError: birdIdError, error: birdError } = useQuery({ queryKey: ['birdCage', id], queryFn: () => fetchBirdCageById(id) })
     return {
