@@ -55,6 +55,15 @@ export const Dashboard = () => {
         console.error('Lỗi kết nối', error);
       });
   };
+
+  const handleCopyUserId = async (id) => {
+    try {
+      await navigator.clipboard.writeText(id);
+    } catch (error) {
+      console.error('Failed to copy to clipboard:', error);
+    }
+  }
+
   const handleDeleteUser = (id) => {
     console.log('Id: ', id);
     apiClient.delete(`http://tainguyen58-001-site1.ftempurl.com/${id}`)
@@ -81,6 +90,7 @@ export const Dashboard = () => {
         console.error('Lỗi kết nối', error);
       });
   };
+
   const handleDeleteProduct = (id) => {
     console.log('Id: ', id);
     apiClient.delete(`http://tainguyen58-001-site1.ftempurl.com/${id}`)
@@ -199,7 +209,8 @@ export const Dashboard = () => {
                     <td>{i.isDelete ? "Deactive" : "Active"}</td>
                     <td>
                       <button style={{ marginRight: 20 }} onClick={() => handleEditUser(i.id)}>Active</button>
-                      <button style={{ backgroundColor: 'red' }} onClick={() => handleDeleteUser(i.id)}>Delete</button>
+                      <button style={{ backgroundColor: 'red', marginRight: 20 }} onClick={() => handleDeleteUser(i.id)}>Delete</button>
+                      <button style={{ backgroundColor: 'yellow', color: 'black' }} onClick={() => handleCopyUserId(i.id)}>Copy user id</button>
                     </td>
                   </tr>
                 ))}
