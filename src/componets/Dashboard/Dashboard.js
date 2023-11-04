@@ -7,6 +7,10 @@ import { format } from 'date-fns';
 import OrderForm from './OrderForm/OrderForm';
 import axiosClient from 'api/axiosClient';
 import apiClient from 'api/apiClient';
+import { useNavigate } from 'react-router-dom';
+import { DatePicker } from 'antd';
+import useAddVoucher from './Voucher/useAddVoucher';
+const { RangePicker } = DatePicker;
 export const Dashboard = () => {
   const [data, setdata] = useState([])
   const [productData, setProductData] = useState([])
@@ -121,12 +125,14 @@ export const Dashboard = () => {
   const [showProductForm, setShowProductForm] = useState(false);
   const [showOrderForm, setShowOrderForm] = useState(false);
   const [showVoucherForm, setShowVoucherForm] = useState(false);
+  const [showAddVoucherForm, setShowAddVoucherForm] = useState(false);
   const [activeOption, setActiveOption] = useState(null);
   const toggleUserForm = () => {
     setShowUserForm(true);
     setShowProductForm(false);
     setShowOrderForm(false);
     setShowVoucherForm(false)
+    setShowAddVoucherForm(false)
     setActiveOption('user');
   };
   const toggleProductForm = () => {
@@ -134,6 +140,7 @@ export const Dashboard = () => {
     setShowUserForm(false);
     setShowProductForm(true);
     setShowVoucherForm(false)
+    setShowAddVoucherForm(false)
     setActiveOption('product');
   };
   const toggleOrderForm = () => {
@@ -141,6 +148,7 @@ export const Dashboard = () => {
     setShowProductForm(false);
     setShowOrderForm(true);
     setShowVoucherForm(false)
+    setShowAddVoucherForm(false)
     setActiveOption('order');
   };
   const toggleVoucherForm = () => {
@@ -148,7 +156,17 @@ export const Dashboard = () => {
     setShowProductForm(false);
     setShowOrderForm(false);
     setShowVoucherForm(true);
+    setShowAddVoucherForm(false)
     setActiveOption('voucher');
+  };
+
+  const toggleAddVoucherForm = () => {
+    setShowUserForm(false);
+    setShowProductForm(false);
+    setShowOrderForm(false);
+    setShowVoucherForm(false);
+    setShowAddVoucherForm(true)
+    setActiveOption('addVoucher');
   };
   function UserForm() {
     return (
@@ -238,7 +256,7 @@ export const Dashboard = () => {
                   <tr key={i?.id}>
                     <td>{i?.id}</td>
                     <td>{i?.title}</td>
-                    <td><img style={{ width: 40, height: 40 }} src={i?.productImages[0]?.imageUrl} /></td>
+                    <td><img style={{ width: 40, height: 40 }} src={i?.productImages[0]?.imageUrl} alt='hinh anh'/></td>
                     <td>{i?.price}</td>
                     <td>{i?.priceAfterDiscount}</td>
                     <td>{i?.sku}</td>
@@ -319,7 +337,7 @@ export const Dashboard = () => {
               </button>
             </div>
             <div>
-              <button style={{ backgroundColor: '#64be43' }}>
+              <button style={{ backgroundColor: '#64be43' }} onClick={toggleAddVoucherForm}>
                 Add Voucher
               </button>
             </div>
@@ -354,6 +372,80 @@ export const Dashboard = () => {
         </div>
       </div>
     );
+  }
+
+  function AddVoucherForm() {
+    const [formData, setFormData] = useState({
+      discountPercent: '',
+      applicationUserId: '',
+    });
+
+    const [info, setInfo] = useState(null)
+
+    const handleInputChange = (event) => {
+      const { name, value } = event.target;
+      setFormData({ ...formData, [name]: value });
+    };
+    
+    const {addVoucher, addVoucherPending} = useAddVoucher()
+
+    const handleChangeDate = (e) => {
+      const date = e.map(d => d.$d)
+      const startDate = date[0];
+      const endDate = date[1];
+      const info = {
+        startDate: startDate.toISOString(),
+        expirationDate: endDate.toISOString(),
+        ...formData,
+      }
+      setInfo(()=> info)
+    }
+    const handleSubmit = async () => {
+      await addVoucher(info)
+    }
+    return (
+      <div style={{
+        width: '100%'
+      }}>
+        <h2 style={{ marginBottom: 30 }}>Add voucher</h2>
+                <form style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '50%',
+                  margin: '0 auto',
+                  gap: '20px'
+                }} >
+                  <input style={{
+                    width: '80%',
+                    margin: '0 auto',
+                  }} className='inputEdit-Product' 
+                  name='discountPercent'
+                  placeholder="Discount percent"
+                  value={formData.discountPercent}
+                  onChange={handleInputChange}/>
+                  <input style={{
+                    width: '80%',
+                    margin: '0 auto',
+                  }} className='inputEdit-Product' name='applicationUserId'
+                  placeholder="User"
+                  value={formData.applicationUserId}
+                  onChange={handleInputChange} />
+                  <div style={{
+                    width: '80%',
+                    margin: '0 auto',
+                  }}>
+                    <RangePicker onChange={handleChangeDate} />
+                  </div>
+                </form>
+                <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '20px' , width: '50%',
+                  margin: '0 auto',}}>
+                  <button style={{ marginRight: 30 }} onClick={handleSubmit}>
+                    {addVoucherPending ? 'Submitting' : 'Submit'}
+                    </button>
+                  <button style={{ backgroundColor: 'red' }} onClick={toggleVoucherForm}>Cancel</button>
+                </div>
+      </div>
+    )
   }
 
   return (
@@ -399,6 +491,7 @@ export const Dashboard = () => {
       {showProductForm && <ProductForm />}
       {showOrderForm && <OrderForm tableOrder={tableOrder} />}
       {showVoucherForm && <VoucherForm />}
+      {showAddVoucherForm && <AddVoucherForm />}
     </div>
   )
 }

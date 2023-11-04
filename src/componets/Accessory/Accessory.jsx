@@ -28,8 +28,7 @@ export const Accessory = () => {
     if (isError) {
         return <h2>{birdCageError.message}</h2>
     }
-    console.log(birdCage)
-    const categoryIdToFilter = 2; // page long chim
+    const categoryIdToFilter = 4; // page long chim
 
     const filteredData = birdCage?.items.filter(item => item.categoryId === categoryIdToFilter);
 
