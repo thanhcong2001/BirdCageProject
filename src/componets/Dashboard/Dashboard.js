@@ -10,6 +10,7 @@ import apiClient from 'api/apiClient';
 import { useNavigate } from 'react-router-dom';
 import { DatePicker } from 'antd';
 import useAddVoucher from './Voucher/useAddVoucher';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 const { RangePicker } = DatePicker;
 export const Dashboard = () => {
   const [data, setdata] = useState([])
@@ -414,6 +415,11 @@ export const Dashboard = () => {
     const handleSubmit = async () => {
       await addVoucher(info)
     }
+    const [userId, setUserId] = useState('');
+
+  const handleChange = (event) => {
+    setUserId(event.target.value);
+  };
     return (
       <div style={{
         width: '100%'
@@ -434,13 +440,24 @@ export const Dashboard = () => {
                   placeholder="Discount percent"
                   value={formData.discountPercent}
                   onChange={handleInputChange}/>
-                  <input style={{
-                    width: '80%',
-                    margin: '0 auto',
-                  }} className='inputEdit-Product' name='applicationUserId'
-                  placeholder="User"
-                  value={formData.applicationUserId}
-                  onChange={handleInputChange} />
+                  <FormControl fullWidth>
+  <Select
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+    placeholder='User ID'
+    value={userId}
+    onChange={handleChange}
+    sx={{
+      width: '80%',
+      margin: '0 auto',
+    }}
+  >
+    {data?.map((i) => (
+    <MenuItem key={i.id} value={i.id}>{i.userName}</MenuItem>
+    ))}
+
+  </Select>
+</FormControl>
                   <div style={{
                     width: '80%',
                     margin: '0 auto',
