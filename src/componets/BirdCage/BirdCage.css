@@ -59,10 +59,11 @@
 }
 .nameBirdCage{
     text-align: center;
-    font-size: 15px;
+    font-size: 14px;
     text-transform: uppercase;
     height: 10px;
     margin: 0px;
+
 }
 
 .img-birdCage{
@@ -84,17 +85,19 @@
     color: #af9e9e;
     text-decoration: line-through;
     margin-bottom: 2px;
+    padding: 5px 30px 0px 30px;
 }
 
 .price {
     margin: 0;
+    padding-bottom: 11px;
 }
 .bottomList{
     position: fixed;
     bottom: 0;
-    left: 63.5%;
-    width: 60.5%;
-    height: 145px;
+    left: 65.7%;
+    width: 63.2%;
+    height: 22%;
     transform: translateX(-50%);
     z-index: 99;
     background-color: lightblue;
@@ -114,6 +117,8 @@
     border-right: 1px solid white;
     margin-left: 40px;
     padding-right: 40px;
+    text-align: center;
+    width: 160px;
 }
 
 .img-addProduct{
@@ -121,11 +126,10 @@
     height: 50px;
     border:1px dashed white;
     margin-top: 50px;
-    margin-left: 73px;
-    margin-bottom: 50px;
+    margin-left: 90px;
+    margin-right: 90px;
 }
 .container-fake{
-    margin-right: 20px;
     border-right: 1px solid white;
 }
 .name-addProduct{

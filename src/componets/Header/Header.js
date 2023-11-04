@@ -165,10 +165,11 @@ function Header() {
                                 className="category"
                                 style={{ marginLeft: 0, marginTop: 18 }}
                                 href="/birdCage"
+                                onClick={() => navigate('/custom')}
                             >
                                 Thiết Kế Lồng
                             </p>
-                            <ul className="list1">
+                            {/* <ul className="list1">
                                 <li className="parent2">
                                     <a href="">Lồng Chim Vẹt</a>
                                     <div className='line-cage'></div>
@@ -230,7 +231,7 @@ function Header() {
                                         </li>
                                     </ul>
                                 </li>
-                            </ul>
+                            </ul> */}
                         </li>
                     </ul>
                     <Link style={{ textDecoration: "none" }} to={"/birdCage"}>
@@ -277,7 +278,7 @@ function Header() {
                                                                 alt=""
                                                                 src={i?.productImages[0]?.imageUrl}
                                                             />
-                                                            <span>{i?.title}</span>
+                                                            <span style={{fontSize:15}}>{i?.title}</span>
                                                         </div>
                                                     </Link>
                                                 ))}

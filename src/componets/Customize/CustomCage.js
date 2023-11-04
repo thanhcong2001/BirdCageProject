@@ -4,104 +4,102 @@ import '../Customize/CustomCage.css'
 
 export default function CustomCage() {
     const [data, setdata] = useState([])
-    const [selectedOption, setSelectedOption] = useState('');
+    const [selectedOption, setSelectedOption] = useState(1);
     const [imgCage, setImgCage] = useState();
-
+    const [cageType, setcageType] = useState([])
+    const [loadData, setSelectedData] = useState([]);
+    const [active, setActive] = useState(null)
+    const handleButtonClick = (buttonId) => {
+        apiClient.get(`Formula/${buttonId}`)
+            .then(response => {
+                setSelectedData(response.data?.data)
+                setActive(buttonId)
+            })
+    };
     useEffect(() => {
         apiClient.get('Product/page?pageIndex=0&pageSize=10')
             .then(response => {
                 setdata(response.data?.items)
             })
+        apiClient.get('BirdCageType/get-all')
+            .then(response => {
+                setcageType(response.data?.data)
+                if (response.data?.data && response.data.data.length > 0) {
+                    handleButtonClick(response.data.data[0].id);
+                }
+            })
+
     }, [])
     const handleOptionChange = (event) => {
         const selectedValue = event.target.value;
         setSelectedOption(selectedValue);
-        console.log('Check: ', selectedValue);
-        apiClient.get(`Product/${selectedValue}`)
-            .then(response => {
-                setImgCage(response.data?.productImages[0]?.imageUrl)
-            })
     };
+    function convertVND(price) {
+        if (price != null && price !== undefined && price !== '') return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
+        else return 0
+    }
     return (
         <div>
-            <p style={{ fontSize: 30, marginLeft: 600, paddingTop: 30 }}>Thiết Kế Lồng Chim</p>
-            <div style={{ marginLeft: 500 }}>
-                <button style={{ marginRight: 30, backgroundColor: 'rgb(100, 190, 67)', color: 'white' }}>Chim Sẻ</button>
-                <button style={{ marginRight: 30, backgroundColor: 'rgb(100, 190, 67)', color: 'white' }}>Chim Khuyên</button>
-                <button style={{ marginRight: 30, backgroundColor: 'rgb(100, 190, 67)', color: 'white' }}>Chim Khướu</button>
-                <button style={{ marginRight: 30, backgroundColor: 'rgb(100, 190, 67)', color: 'white' }}>Chim Vẹt</button>
-            </div>
+            <p className='header-custom'>Thiết Kế Lồng Chim</p>
             <div className='borderCustom-Input'>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <div style={{ lineHeight: 4 }}>
-                        <div style={{ display: 'flex' }}>
-                            <div style={{ marginRight: 37 }}>
-                                <label style={{ marginRight: 10 }}>Chiều Dài:</label>
-                                <input style={{ width: 110, height: 30 }} />
-                            </div>
-                            <div style={{ marginRight: 10 }}>
-                                <label style={{ marginRight: 15 }}>Chiều Rộng:</label>
-                                <input style={{ width: 100, height: 30 }} />
-                            </div>
+                <div style={{ textAlign: 'center', display: 'flex', marginLeft: 150,marginBottom:30 }}>
+                    {cageType.map(item => (
+                        <div key={item?.id}>
+                            <button onClick={() => handleButtonClick(item?.id)} style={{ marginRight: 30, backgroundColor: 'rgb(100, 190, 67)', color: 'white' }}>{item?.typeName}</button>
                         </div>
+                    ))}
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <div className='borderMethod-Custom1' style={{ lineHeight: 4 }}>
                         <div>
                             <form>
                                 <label>Mẫu Mã:</label>
                                 <select className='select-optionCutom' style={{ marginLeft: 20 }} onChange={handleOptionChange}>
-                                    {data.map(item => (
-                                        <option key={item?.id} value={item?.id}>
-                                            <span>{item?.title}</span> <span style={{ marginLeft: 80 }}>{item?.price}</span>
+                                    {loadData.map(item => (
+                                        <option key={item?.id} value={selectedOption}>
+                                            <span>{item?.code}</span>
                                         </option>
                                     ))}
                                 </select>
-                                <input style={{ paddingTop: 10.5, paddingBottom: 9, width: 100, marginLeft: 10 }} />
                             </form>
                             <form>
                                 <label>Chất Liệu:</label>
                                 <select className='select-optionCutom' style={{ marginLeft: 12 }}>
-                                    <option value="1"></option>
-                                    <option value="2">Thứ tự theo mức độ phổ biến</option>
-                                    <option value="3">Thứ tự theo điểm đánh giá</option>
-                                    <option value="4">Thứ tự theo sản phẩm mới</option>
-                                    <option value="5">Thứ tự theo giá: thấp đến cao</option>
-                                    <option value="6">Thứ tự theo giá: cao xuống thấp</option>
+                                    {loadData.map(item => (
+                                        <option key={item?.id} value={item?.id}>
+                                            <span>{item?.material}</span>
+                                        </option>
+                                    ))}
                                 </select>
-                                <input style={{ paddingTop: 10.5, paddingBottom: 9, width: 100, marginLeft: 10 }} />
-                            </form>
-                            <form>
-                                <label>Số Nan:</label>
-                                <select className='select-optionCutom' style={{ marginLeft: 28 }}>
-                                    <option value="1"></option>
-                                    <option value="2">Thứ tự theo mức độ phổ biến</option>
-                                    <option value="3">Thứ tự theo điểm đánh giá</option>
-                                    <option value="4">Thứ tự theo sản phẩm mới</option>
-                                    <option value="5">Thứ tự theo giá: thấp đến cao</option>
-                                    <option value="6">Thứ tự theo giá: cao xuống thấp</option>
-                                </select>
-                                <input style={{ paddingTop: 10.5, paddingBottom: 9, width: 100, marginLeft: 10 }} />
-                            </form>
-                            <form>
-                                <label>Phụ Kiện:</label>
-                                <select className='select-optionCutom' style={{ marginLeft: 17 }}>
-                                    <option value="1"></option>
-                                    <option value="2">Thứ tự theo mức độ phổ biến</option>
-                                    <option value="3">Thứ tự theo điểm đánh giá</option>
-                                    <option value="4">Thứ tự theo sản phẩm mới</option>
-                                    <option value="5">Thứ tự theo giá: thấp đến cao</option>
-                                    <option value="6">Thứ tự theo giá: cao xuống thấp</option>
-                                </select>
-                                <input style={{ paddingTop: 10.5, paddingBottom: 9, width: 100, marginLeft: 10 }} />
                             </form>
                         </div>
+                        <div style={{ display: 'flex' }}>
+                            <div style={{ marginRight: 37 }}>
+                                <label style={{ marginRight: 5 }}>Chiều Dài:</label>
+                                <input type="number" style={{ width: 110, height: 30 }} />
+                            </div>
+                            <div style={{ marginRight: 5 }}>
+                                <label style={{ marginRight: 10 }}>Chiều Rộng:</label>
+                                <input type="number" style={{ width: 100, height: 30 }} />
+                            </div>
+                        </div>
+                        <div style={{ display: 'flex' }}>
+                            <div style={{ marginRight: 37 }}>
+                                <label style={{ marginRight: 25 }}>Số Nan:</label>
+                                <input type="number" style={{ width: 110, height: 30 }} />
+                            </div>
+                        </div>
+
                     </div>
                     <div>
-                        <div className='borderMethod-Custom'>
-                            <p style={{ margin: 0, fontSize: 20, textAlign: 'center', fontWeight: 'bold' }}>Lưu ý</p>
-                            <p>- Chiều dài , Chiều rộng ( min: <span style={{ color: 'red', fontSize: 20 }}>30</span> , max: <span style={{ color: 'red', fontSize: 20 }}>100</span> ) </p>
-                            <p>- Chiều rộng phải nhỏ hơn chiều dài.</p>
-                            <p>- Số nan: min<span style={{ color: 'red', fontSize: 25 }}> 130 </span>max <span style={{ color: 'red', fontSize: 25 }}>260</span></p>
-                            <p>- Phụ kiện đi kèm: Lọ đồ ăn, khay nước</p>
-                            <p>- Giá ước tính: <span style={{ color: 'red', fontSize: 20, fontWeight: 'bold' }}>924.0000</span></p>
+                        <div className='borderMethod-Custom' >
+                            <p style={{ marginBottom: 30, marginTop: 0, fontSize: 20, textAlign: 'center', fontWeight: 'bold' }}>Lưu ý</p>
+                            <div style={{ marginLeft: 30 }}>
+                                <p>- Chiều dài( min: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bolder' }}>{loadData[selectedOption - 1]?.minHeight}</span> , max: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bolder' }}>{loadData[selectedOption - 1]?.maxHeight}</span> ) </p>
+                                <p>- Chiều rộng ( min: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bolder' }}>{loadData[selectedOption - 1]?.minWidth}</span> , max: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bolder' }}>{loadData[selectedOption - 1]?.maxWidth}</span> ) </p>
+                                <p>- Số nan ( min: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bolder' }}>{loadData[selectedOption - 1]?.minBars}</span>, max: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bolder' }}>{loadData[selectedOption - 1]?.maxBars}</span> )</p>
+                                <p>- Giá ước tính: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bold' }}>{convertVND(loadData[selectedOption - 1]?.price)}</span></p>
+                            </div>
                         </div>
                         <button style={{ width: 400, marginTop: 10, borderRadius: 10, backgroundColor: 'rgb(100, 190, 67)', height: 50 }}>Thêm vào giỏ</button>
                     </div>
@@ -109,20 +107,20 @@ export default function CustomCage() {
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <div className='borderExam-Cus'>
                         <p style={{ marginLeft: 80, fontWeight: 'bold' }}>Mẫu Mã</p>
-                        <img className='pictureOption-Cus' src='' />
+                        <img className='pictureOption-Cus' src='https://i.pinimg.com/736x/85/0a/b4/850ab445663bf066acb5a1aec94d62c9.jpg' />
                     </div>
                     <div className='borderExam-Cus'>
                         <p style={{ marginLeft: 80, fontWeight: 'bold' }}>Chất Liệu</p>
-                        <img className='pictureOption-Cus' src='https://o.remove.bg/downloads/bdaa1a06-95f5-4c40-9b82-a6819c2aa36b/go-lim-removebg-preview.png' />
+                        <img className='pictureOption-Cus' src='https://img.ws.mms.shopee.vn/625a1207f2bb993ac1c47b915d0af756' />
                     </div>
                     <div className='borderExam-Cus'>
                         <p style={{ marginLeft: 80, fontWeight: 'bold' }}>Số Nan</p>
-                        <img className='pictureOption-Cus' src='https://o.remove.bg/downloads/e6121638-c334-40f6-979b-8a0e16ba1542/nan-long-chim-removebg-preview.png' />
+                        <img className='pictureOption-Cus' src='https://vn-test-11.slatic.net/p/5c55ab1e77b5c51fbdb8e339ca7effe8.jpg' />
                     </div>
-                    <div className='borderExam-Cus'>
+                    {/* <div className='borderExam-Cus'>
                         <p style={{ marginLeft: 80, fontWeight: 'bold' }}>Phụ Kiện</p>
-                        <img className='pictureOption-Cus' src={imgCage}/>
-                    </div>
+                        <img className='pictureOption-Cus' src={imgCage} />
+                    </div> */}
                 </div>
             </div>
         </div>

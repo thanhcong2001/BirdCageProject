@@ -14,7 +14,7 @@ function Setting() {
   const [showAccountForm, setShowAccountForm] = useState(true);
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [data, setData] = useState([])
-  const [activeOption, setActiveOption] = useState(null);
+  const [activeOption, setActiveOption] = useState('account');
   const toggleAccountForm = () => {
     setShowAccountForm(true);
     setShowPasswordForm(false);
@@ -44,6 +44,11 @@ function Setting() {
       console.log('Token không tồn tại trong localStorage.');
     }
   }, [])
+
+  const convertDate = (date) => {
+    let fDate = new Date(date)
+    return fDate.toLocaleDateString()
+  }
 
   function AccountForm() {
     const [selectedDate, setSelectedDate] = useState(null);
@@ -75,8 +80,9 @@ function Setting() {
             <form>
             <p>Gender</p>
               <select className='select-optionGender'>
-                <option value="1">Male</option>
-                <option value="2">Female</option>
+                <option disabled selected defaultValue={data?.gender}>{data?.gender}</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
               </select>
             </form>
           </div>
@@ -87,7 +93,7 @@ function Setting() {
             selected={selectedDate}
             onChange={handleDateChange}
             dateFormat="dd/MM/yyyy"
-            placeholderText={data.doB}
+            placeholderText={convertDate(data?.doB)}
           />
         </div>
         <div style={{ marginTop: 20 }}>
@@ -154,7 +160,7 @@ function Setting() {
     return (
       <div>
         <div style={{ marginLeft: 100 }}>
-          <h2>Password Setting</h2>
+          <h2>Change Password</h2>
           <div className='inputInfo-setting'>
             <div style={{ marginRight: 50 }}>
               <p>Old Password</p>
@@ -189,9 +195,9 @@ function Setting() {
     <div style={{ marginTop: 120 }}>
       <div className='Container-Setting'>
         <div className='borderInfo-Setting'>
-          <div style={{ padding: 15, marginLeft: 55 }}>
+          <div style={{ padding: 15,textAlign:'center' }}>
             <img src='https://scontent.fsgn2-4.fna.fbcdn.net/v/t39.30808-6/324736014_1240215329893369_5490209580249412603_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=5f2048&_nc_ohc=WeT9xi_5yuYAX_VIJng&_nc_ht=scontent.fsgn2-4.fna&oh=00_AfDp4Nhh_oMUBofQckZ_lNaqYZk307GkCbjm6zRyj2dQRg&oe=653B976F' className='Setting-Image' />
-            <h3 style={{textTransform:'uppercase'}}>Lương Thành {data.userName}</h3>
+            <p style={{textTransform:'uppercase',textAlign:'center',fontWeight:'bold'}}>{data.userName}</p>
           </div>
           <div className='line-Setting'></div>
           <div className='OptionSetting' onClick={toggleAccountForm} style={{

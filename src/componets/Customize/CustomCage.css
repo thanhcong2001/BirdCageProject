@@ -1,6 +1,6 @@
 .select-optionCutom{
     height: 39px;
-    width: 244px;
+    width: 360px;
     margin-top: 10px;
     background-color: #fdfdfd;
     border-color: #ddd;
@@ -14,12 +14,20 @@
     line-height: 21.5px;
     font-size: 18px;
     border-radius: 20px;
+    height: 230px;
+}
+.borderMethod-Custom1{
+    border: 1px solid rgb(100, 190, 67);
+    padding: 7px 20px;
+    line-height: 21.5px;
+    font-size: 18px;
+    border-radius: 20px;
 }
 .borderCustom-Input{
     border: 1px solid white;
     margin-left: 200px;
     width: 1100px;
-    padding: 50px 40px 50px 20px;
+    padding: 25px 40px 50px 20px;
     margin-top: 30px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-radius: 10px;
@@ -27,6 +35,8 @@
 .pictureOption-Cus{
     width: 220px;
     height: 220px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 
 }
 .borderExam-Cus{
@@ -35,4 +45,11 @@
     margin-top: 50px;
     border-radius: 20px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+.header-custom{
+    font-Size: 35px;
+     text-align: center;
+     padding-Top: 30px;
+     color: rgb(60, 52, 81);
+     font-weight: bold;
 }

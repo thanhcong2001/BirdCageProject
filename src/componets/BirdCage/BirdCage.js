@@ -5,6 +5,7 @@ import useProduct from 'api/apiProduct/useProduct';
 import { Box, CircularProgress } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { clear } from '@testing-library/user-event/dist/clear';
+import apiClient from 'api/apiClient';
 export const BirdCage = () => {
   const navigate = useNavigate()
   const [myCar, setMyCar] = useState("Thứ tự mặc định");
@@ -14,9 +15,10 @@ export const BirdCage = () => {
   const [tmpList, setTmpList] = useState([1, 2, 3])
   const [disabledButtons, setDisabledButtons] = useState([]);
   useEffect(() => {
-    axios.get('https://6509117cf6553137159aecfc.mockapi.io/api/v1/foodBird')
+    apiClient.get('Product/page?pageIndex=0&pageSize=10')
       .then(response => {
-        setList(response.data)
+        setList(response.data?.items)
+        console.log("Cong: ",response.data?.items);
       })
   }, [])
 
@@ -72,16 +74,16 @@ export const BirdCage = () => {
           <p className='lineCage'></p>
         </div>
         <div className='borderBlogOne' style={{ height: 489 }}>
-          {list.slice(0, 6).map((i, index) => (
-            <div className='box-birdCage' key={index}>
+          {list.slice(1,7).map(i => (
+            <div className='box-birdCage' key={i?.id}>  
               <div className='blog' >
                 <div>
-                  <img className='imgList' src={i.img} alt='hinh anh' />
+                  <img className='imgList' src={i?.productImages[0]?.imageUrl} alt='hinh anh' />
                 </div>
                 <div style={{ justifyContent: 'space-around' }}>
-                  <span className='nameList'>{i.name}</span>
+                  <span className='nameList'>{i?.title}</span>
                   <br />
-                  <p className='priceProduct'>{convertVND(i.price)}</p>
+                  <p className='priceProduct'>{convertVND(i?.price)}</p>
                 </div>
               </div>
             </div>
@@ -106,7 +108,7 @@ export const BirdCage = () => {
         </div>
         {isLoading ? <Box sx={{ display: 'flex', height: '500px', alignItems: 'center' }}>
           <CircularProgress />
-        </Box> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden' }}>
+        </Box> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden',marginLeft:78 }}>
           {filteredData?.map(i => (
             <div key={i?.id}>
               <div className='card'>
@@ -140,15 +142,12 @@ export const BirdCage = () => {
                 <div>
                   <img className='img-addProduct' src='https://cdn-icons-png.flaticon.com/128/1828/1828819.png' alt='hinh anh' />
                 </div>
-                <div style={{ justifyContent: 'space-around' }}>
-                  <span className='name-addProduct'>Thêm Sản phẩm</span>
-                </div>
               </div>
             </div>
           ))}
         </div>
-        <div style={{ marginLeft: 70, marginTop: 50 }}>
-          <button style={{ marginLeft: 20 }} onClick={() => navigate('/compare', { state: { compareList } })}>So sánh ngay</button>
+        <div style={{ marginTop: 60,paddingLeft:30,paddingRight:30,textAlign:'center' }}>
+          <button onClick={() => navigate('/compare', { state: { compareList } })}>So sánh ngay</button>
           <p className='closeTxT-compare' onClick={() => clear()}>Xóa tất cả sản phẩm</p>
         </div>
       </div> : null

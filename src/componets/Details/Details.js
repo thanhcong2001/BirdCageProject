@@ -30,7 +30,7 @@ function Details() {
         const headers = {
             Authorization: `Bearer ${formattedToken}`
         };
-        const response = await apiClient.post(`http://tainguyen58-001-site1.ftempurl.com/api/ShoppingCart/update-cart/${id}?count=${quantity}`, birdCageToCart, { headers });
+        const response = await apiClient.post(`ShoppingCart/update-cart/${id}?count=${quantity}`, birdCageToCart, { headers });
         return response.data;
     };
     const queryClient = useQueryClient()
@@ -123,7 +123,7 @@ function Details() {
                         {/* title here */}
                         <h1 style={{ fontSize: 27 }}>{bird?.title}<br /> MSP: {bird?.sku}</h1>
                         {/* price here */}
-                        <span className='priceProduct' style={{ fontSize: 24,marginLeft:147 }}>{convertVND(bird?.price)} ₫</span>
+                        <p className='priceProduct' style={{ fontSize: 27,paddingTop:0,textAlign:'center'}}>{convertVND(bird?.price)} ₫</p>
                         {/* descipriton here */}
                         {/* <p style={{ color: '#353535', fontSize: 18 }}>{bird?.description}</p> */}
                         <p style={{ color: '#353535', lineHeight: 2.2, fontSize: 18, marginTop: 2, marginBottom: 0 }}>– Phù hợp với nuôi chào mào có tật bu lồng, ngoái, lộn.

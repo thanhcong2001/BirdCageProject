@@ -121,7 +121,7 @@ export const Dashboard = () => {
   const [showProductForm, setShowProductForm] = useState(false);
   const [showOrderForm, setShowOrderForm] = useState(false);
   const [showVoucherForm, setShowVoucherForm] = useState(false);
-  const [activeOption, setActiveOption] = useState(null);
+  const [activeOption, setActiveOption] = useState('user');
   const toggleUserForm = () => {
     setShowUserForm(true);
     setShowProductForm(false);
@@ -237,7 +237,7 @@ export const Dashboard = () => {
                 {productData.slice(0, 6).map(i => (
                   <tr key={i?.id}>
                     <td>{i?.id}</td>
-                    <td>{i?.title}</td>
+                    <td style={{width:190}}>{i?.title}</td>
                     <td><img style={{ width: 40, height: 40 }} src={i?.productImages[0]?.imageUrl} /></td>
                     <td>{i?.price}</td>
                     <td>{i?.priceAfterDiscount}</td>

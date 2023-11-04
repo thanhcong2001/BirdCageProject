@@ -39,7 +39,6 @@ function App() {
       axios.get(apiUrl)
         .then(response => {
           setData(response.data);
-          console.log("Data: ", response.data.role);
           if (response.data?.role && response.data?.role == 'Manager') return navigate('/dashboard')
           return navigate('/intro')
         })

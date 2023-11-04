@@ -4,16 +4,17 @@ import axios from 'axios';
 import useProduct from 'api/apiProduct/useProduct';
 import { Box, CircularProgress } from '@mui/material';
 import { Link } from 'react-router-dom';
+import apiClient from 'api/apiClient';
 export const Accessory = () => {
     const [myCar, setMyCar] = useState("Thứ tự mặc định");
     const [list, setList] = useState([])
     const { birdCage, isLoading, isError, birdCageError } = useProduct();
     useEffect(() => {
-        axios.get('https://6509117cf6553137159aecfc.mockapi.io/api/v1/foodBird')
-            .then(response => {
-                setList(response.data)
-            })
-    }, [])
+        apiClient.get('Product/page?pageIndex=0&pageSize=10')
+          .then(response => {
+            setList(response.data?.items)
+          })
+      }, [])
 
     const handleChange = (event) => {
         setMyCar(event.target.value)
@@ -54,14 +55,14 @@ export const Accessory = () => {
                     <p className='lineCage'></p>
                 </div>
                 <div className='borderBlogOne' style={{ height: 489 }}>
-                    {list.slice(0, 6).map((i, index) => (
+                    {list.slice(1, 7).map((i, index) => (
                         <div className='box-birdCage' key={index}>
                             <div className='blog' >
                                 <div>
-                                    <img className='imgList' src={i.img} alt='hinh anh' />
+                                    <img className='imgList' src={i?.productImages[0]?.imageUrl} alt='hinh anh' />
                                 </div>
                                 <div style={{ justifyContent: 'space-around' }}>
-                                    <span className='nameList'>{i.name}</span>
+                                    <span className='nameList'>{i?.title}</span>
                                     <br />
                                     <p className='priceProduct'>{convertVND(i.price)}</p>
                                 </div>
@@ -95,7 +96,7 @@ export const Accessory = () => {
                             <Link to={`/details/${i.id}`}>
                                 <div className='card-access'>
                                     <img className='img-birdCage' src={i.productImages[0]?.imageUrl} alt={`hinh cua id ${i.id}`} />
-                                    <p className='nameBirdCage'>{i.title}</p>
+                                    <p className='nameAccessory'>{i.title}</p>
                                     <h4>{convertVND(i.price)}</h4>
                                 </div>
                             </Link>
