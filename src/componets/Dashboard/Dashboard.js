@@ -389,7 +389,6 @@ export const Dashboard = () => {
   function AddVoucherForm() {
     const [formData, setFormData] = useState({
       discountPercent: '',
-      applicationUserId: '',
     });
 
     const [info, setInfo] = useState(null)
@@ -408,6 +407,7 @@ export const Dashboard = () => {
       const info = {
         startDate: startDate.toISOString(),
         expirationDate: endDate.toISOString(),
+        applicationUserId: userId,
         ...formData,
       }
       setInfo(()=> info)
