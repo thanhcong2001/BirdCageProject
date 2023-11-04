@@ -7,7 +7,8 @@ import { Link } from 'react-router-dom';
 export const Accessory = () => {
     const [myCar, setMyCar] = useState("Thứ tự mặc định");
     const [list, setList] = useState([])
-    const { birdCage, isLoading, isError, birdCageError } = useProduct();
+    const [pageIndex, setPageIndex] = useState(0)
+    const { birdCage, isLoading, isError, birdCageError } = useProduct({ pageIndex: pageIndex });
     useEffect(() => {
         axios.get('https://6509117cf6553137159aecfc.mockapi.io/api/v1/foodBird')
             .then(response => {
@@ -27,6 +28,7 @@ export const Accessory = () => {
     if (isError) {
         return <h2>{birdCageError.message}</h2>
     }
+    console.log(birdCage)
     const categoryIdToFilter = 2; // page long chim
 
     const filteredData = birdCage?.items.filter(item => item.categoryId === categoryIdToFilter);
