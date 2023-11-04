@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import { InputNumber } from "antd";
 
 const CartItem = ({ i, onChange, handleDelete, quantityEdit }) => {
-    const imgCartItem = i.productViewModel.productImages[0].imageUrl
+    const imgCartItem = i.productViewModel.productImages[0]?.imageUrl
     function convertVND(price) {
         if (price != null && price !== undefined && price !== '') return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
         else return 0
