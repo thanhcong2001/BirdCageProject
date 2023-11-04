@@ -8,7 +8,8 @@ import apiClient from 'api/apiClient';
 export const Accessory = () => {
     const [myCar, setMyCar] = useState("Thứ tự mặc định");
     const [list, setList] = useState([])
-    const { birdCage, isLoading, isError, birdCageError } = useProduct();
+    const [pageIndex, setPageIndex] = useState(0)
+    const { birdCage, isLoading, isError, birdCageError } = useProduct({ pageIndex: pageIndex });
     useEffect(() => {
         apiClient.get('Product/page?pageIndex=0&pageSize=10')
           .then(response => {
@@ -28,7 +29,7 @@ export const Accessory = () => {
     if (isError) {
         return <h2>{birdCageError.message}</h2>
     }
-    const categoryIdToFilter = 2; // page long chim
+    const categoryIdToFilter = 4; // page long chim
 
     const filteredData = birdCage?.items.filter(item => item.categoryId === categoryIdToFilter);
 

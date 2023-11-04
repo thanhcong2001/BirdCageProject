@@ -19,7 +19,7 @@ function Details() {
 
     const { id } = useParams()
 
-    const { bird, birdIdLoading } = useProduct(id)
+    const { bird, birdIdLoading } = useProduct({id})
     const { enqueueSnackbar } = useSnackbar();
     const token = localStorage.getItem('token');
     const formattedToken = token?.replace(/"/g, '');

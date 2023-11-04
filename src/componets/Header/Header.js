@@ -3,25 +3,20 @@ import { AccountCircle, Close } from '@mui/icons-material';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import PersonIcon from '@mui/icons-material/Person';
 import SearchIcon from '@mui/icons-material/Search';
+import SellIcon from '@mui/icons-material/Sell';
 import { AppBar, Badge, Box, Menu, MenuItem, Toolbar } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
+import apiClient from 'api/apiClient';
 import useBirdCart from 'api/apiProduct/useBirdCart';
 import Login from 'componets/Auth/components/Login/Login.jsx';
 import OTP from 'componets/Auth/components/OTP_Auth/OTP';
 import Register from 'componets/Auth/components/Register/index.jsx';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import '../Header/Header.css';
-import { cartItemsCountSelector } from './../Cart/seletors';
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import SellIcon from '@mui/icons-material/Sell';
-import { set } from 'date-fns';
-import apiClient from 'api/apiClient';
 const MODE = {
     LOGIN: "login",
     REGISTER: "register",
@@ -41,16 +36,12 @@ function Header() {
     const isLoggedIn = localStorage.getItem("token");
     const formattedToken = isLoggedIn?.replace(/"/g, "");
     const { cartItem } = useBirdCart(formattedToken);
-    const totalCount = cartItem?.total;
-
     const totalCountProduct = cartItem?.shoppingCarts?.reduce(
         (total, item) => total + item.count,
         0
     );
-    console.log(totalCountProduct);
 
     const handleTotalProd = (count) => {
-        console.log(count);
         if (count < 10) {
             return count;
         } else {

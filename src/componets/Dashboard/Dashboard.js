@@ -7,6 +7,11 @@ import { format } from 'date-fns';
 import OrderForm from './OrderForm/OrderForm';
 import axiosClient from 'api/axiosClient';
 import apiClient from 'api/apiClient';
+import { useNavigate } from 'react-router-dom';
+import { DatePicker } from 'antd';
+import useAddVoucher from './Voucher/useAddVoucher';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+const { RangePicker } = DatePicker;
 export const Dashboard = () => {
   const [data, setdata] = useState([])
   const [productData, setProductData] = useState([])
@@ -51,6 +56,15 @@ export const Dashboard = () => {
         console.error('Lỗi kết nối', error);
       });
   };
+
+  const handleCopyUserId = async (id) => {
+    try {
+      await navigator.clipboard.writeText(id);
+    } catch (error) {
+      console.error('Failed to copy to clipboard:', error);
+    }
+  }
+
   const handleDeleteUser = (id) => {
     console.log('Id: ', id);
     apiClient.delete(`http://tainguyen58-001-site1.ftempurl.com/${id}`)
@@ -77,6 +91,7 @@ export const Dashboard = () => {
         console.error('Lỗi kết nối', error);
       });
   };
+
   const handleDeleteProduct = (id) => {
     console.log('Id: ', id);
     apiClient.delete(`http://tainguyen58-001-site1.ftempurl.com/${id}`)
@@ -121,12 +136,14 @@ export const Dashboard = () => {
   const [showProductForm, setShowProductForm] = useState(false);
   const [showOrderForm, setShowOrderForm] = useState(false);
   const [showVoucherForm, setShowVoucherForm] = useState(false);
+  const [showAddVoucherForm, setShowAddVoucherForm] = useState(false);
   const [activeOption, setActiveOption] = useState('user');
   const toggleUserForm = () => {
     setShowUserForm(true);
     setShowProductForm(false);
     setShowOrderForm(false);
     setShowVoucherForm(false)
+    setShowAddVoucherForm(false)
     setActiveOption('user');
   };
   const toggleProductForm = () => {
@@ -134,6 +151,7 @@ export const Dashboard = () => {
     setShowUserForm(false);
     setShowProductForm(true);
     setShowVoucherForm(false)
+    setShowAddVoucherForm(false)
     setActiveOption('product');
   };
   const toggleOrderForm = () => {
@@ -141,6 +159,7 @@ export const Dashboard = () => {
     setShowProductForm(false);
     setShowOrderForm(true);
     setShowVoucherForm(false)
+    setShowAddVoucherForm(false)
     setActiveOption('order');
   };
   const toggleVoucherForm = () => {
@@ -148,7 +167,17 @@ export const Dashboard = () => {
     setShowProductForm(false);
     setShowOrderForm(false);
     setShowVoucherForm(true);
+    setShowAddVoucherForm(false)
     setActiveOption('voucher');
+  };
+
+  const toggleAddVoucherForm = () => {
+    setShowUserForm(false);
+    setShowProductForm(false);
+    setShowOrderForm(false);
+    setShowVoucherForm(false);
+    setShowAddVoucherForm(true)
+    setActiveOption('addVoucher');
   };
   function UserForm() {
     return (
@@ -181,7 +210,8 @@ export const Dashboard = () => {
                     <td>{i.isDelete ? "Deactive" : "Active"}</td>
                     <td>
                       <button style={{ marginRight: 20 }} onClick={() => handleEditUser(i.id)}>Active</button>
-                      <button style={{ backgroundColor: 'red' }} onClick={() => handleDeleteUser(i.id)}>Delete</button>
+                      <button style={{ backgroundColor: 'red', marginRight: 20 }} onClick={() => handleDeleteUser(i.id)}>Delete</button>
+                      <button style={{ backgroundColor: 'yellow', color: 'black' }} onClick={() => handleCopyUserId(i.id)}>Copy user id</button>
                     </td>
                   </tr>
                 ))}
@@ -319,7 +349,7 @@ export const Dashboard = () => {
               </button>
             </div>
             <div>
-              <button style={{ backgroundColor: '#64be43' }}>
+              <button style={{ backgroundColor: '#64be43' }} onClick={toggleAddVoucherForm}>
                 Add Voucher
               </button>
             </div>
@@ -354,6 +384,96 @@ export const Dashboard = () => {
         </div>
       </div>
     );
+  }
+
+  function AddVoucherForm() {
+    const [formData, setFormData] = useState({
+      discountPercent: '',
+    });
+
+    const [info, setInfo] = useState(null)
+
+    const handleInputChange = (event) => {
+      const { name, value } = event.target;
+      setFormData({ ...formData, [name]: value });
+    };
+    
+    const {addVoucher, addVoucherPending} = useAddVoucher()
+
+    const handleChangeDate = (e) => {
+      const date = e.map(d => d.$d)
+      const startDate = date[0];
+      const endDate = date[1];
+      const info = {
+        startDate: startDate.toISOString(),
+        expirationDate: endDate.toISOString(),
+        applicationUserId: userId,
+        ...formData,
+      }
+      setInfo(()=> info)
+    }
+    const handleSubmit = async () => {
+      await addVoucher(info)
+    }
+    const [userId, setUserId] = useState('');
+
+  const handleChange = (event) => {
+    setUserId(event.target.value);
+  };
+    return (
+      <div style={{
+        width: '100%'
+      }}>
+        <h2 style={{ marginBottom: 30 }}>Add voucher</h2>
+                <form style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '50%',
+                  margin: '0 auto',
+                  gap: '20px'
+                }} >
+                  <input style={{
+                    width: '80%',
+                    margin: '0 auto',
+                  }} className='inputEdit-Product' 
+                  name='discountPercent'
+                  placeholder="Discount percent"
+                  value={formData.discountPercent}
+                  onChange={handleInputChange}/>
+                  <FormControl fullWidth>
+  <Select
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+    placeholder='User ID'
+    value={userId}
+    onChange={handleChange}
+    sx={{
+      width: '80%',
+      margin: '0 auto',
+    }}
+  >
+    {data?.map((i) => (
+    <MenuItem key={i.id} value={i.id}>{i.userName}</MenuItem>
+    ))}
+
+  </Select>
+</FormControl>
+                  <div style={{
+                    width: '80%',
+                    margin: '0 auto',
+                  }}>
+                    <RangePicker onChange={handleChangeDate} />
+                  </div>
+                </form>
+                <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '20px' , width: '50%',
+                  margin: '0 auto',}}>
+                  <button style={{ marginRight: 30 }} onClick={handleSubmit}>
+                    {addVoucherPending ? 'Submitting' : 'Submit'}
+                    </button>
+                  <button style={{ backgroundColor: 'red' }} onClick={toggleVoucherForm}>Cancel</button>
+                </div>
+      </div>
+    )
   }
 
   return (
@@ -399,6 +519,7 @@ export const Dashboard = () => {
       {showProductForm && <ProductForm />}
       {showOrderForm && <OrderForm tableOrder={tableOrder} />}
       {showVoucherForm && <VoucherForm />}
+      {showAddVoucherForm && <AddVoucherForm />}
     </div>
   )
 }

@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react'
-import '../BirdCage/BirdCage.css'
-import axios from 'axios';
-import useProduct from 'api/apiProduct/useProduct';
 import { Box, CircularProgress } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { clear } from '@testing-library/user-event/dist/clear';
 import apiClient from 'api/apiClient';
+import useProduct from 'api/apiProduct/useProduct';
+import { useEffect, useState } from 'react';
+import '../BirdCage/BirdCage.css';
+import { Pagination } from 'antd';
 export const BirdCage = () => {
   const navigate = useNavigate()
   const [myCar, setMyCar] = useState("Thứ tự mặc định");
   const [list, setList] = useState([])
   const [compareList, setCompareList] = useState([])
-  const { birdCage, isLoading, isError, birdCageError } = useProduct();
+  const [pageIndex, setPageIndex] = useState(0)
+  const { birdCage, isLoading, isError, birdCageError } = useProduct({pageIndex: pageIndex});
   const [tmpList, setTmpList] = useState([1, 2, 3])
   const [disabledButtons, setDisabledButtons] = useState([]);
   useEffect(() => {
@@ -38,9 +39,8 @@ export const BirdCage = () => {
 
   const filteredData = birdCage?.items.filter(item => item.categoryId === categoryIdToFilter);
 
-
   const addItemToCompareList = (i) => {
-    if (compareList.length == 3 || disabledButtons.includes(i.id)) return
+    if (compareList.length === 3 || disabledButtons.includes(i.id)) return
     setCompareList([...compareList, i])
     setTmpList((item) => item.filter((_, index) => index !== 0))
     setDisabledButtons([...disabledButtons, i.id]);
@@ -51,7 +51,10 @@ export const BirdCage = () => {
     setCompareList([])
     setDisabledButtons('')
   }
-  console.log(compareList);
+
+  const handleChangePage = (e) => {
+    setPageIndex(()=> e-1)
+  }
   return (
     <div className='all'>
       <div style={{ marginLeft: 150 }}>
@@ -121,6 +124,7 @@ export const BirdCage = () => {
             </div>
           ))}
         </div>}
+          <Pagination defaultCurrent={1} pageSize={10} total={50} onChange={handleChangePage}/>
       </div>
       {compareList.length > 0 ? <div className='bottomList'>
         <div style={{ display: 'flex' }}>
@@ -152,6 +156,7 @@ export const BirdCage = () => {
         </div>
       </div> : null
       }
+
     </div >
   )
 }
