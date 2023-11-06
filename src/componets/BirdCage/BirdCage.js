@@ -124,7 +124,7 @@ export const BirdCage = () => {
             </div>
           ))}
         </div>}
-          <Pagination defaultCurrent={1} pageSize={10} total={50} onChange={handleChangePage}/>
+          <Pagination style={{textAlign:'center',marginTop:20}} defaultCurrent={1} pageSize={10} total={50} onChange={handleChangePage}/>
       </div>
       {compareList.length > 0 ? <div className='bottomList'>
         <div style={{ display: 'flex' }}>

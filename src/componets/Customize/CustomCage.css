@@ -15,6 +15,7 @@
     font-size: 18px;
     border-radius: 20px;
     height: 230px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 .borderMethod-Custom1{
     border: 1px solid rgb(100, 190, 67);
@@ -22,6 +23,7 @@
     line-height: 21.5px;
     font-size: 18px;
     border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 .borderCustom-Input{
     border: 1px solid white;

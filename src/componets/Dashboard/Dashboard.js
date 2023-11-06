@@ -11,19 +11,19 @@ import { useNavigate } from 'react-router-dom';
 import { DatePicker } from 'antd';
 import useAddVoucher from './Voucher/useAddVoucher';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import deleteClient from 'api/deleteApi';
+import swal from 'sweetalert';
+const { jwtDecode } = require('jwt-decode');
 const { RangePicker } = DatePicker;
 export const Dashboard = () => {
   const [data, setdata] = useState([])
   const [productData, setProductData] = useState([])
   const [orderData, setOrderData] = useState([])
   const [voucherData, setVoucherData] = useState([])
-
+  const [role, setRole] = useState([])
   useEffect(() => {
     fetchUsers()
-    apiClient.get('Product/page?pageIndex=0&pageSize=10')
-      .then(response => {
-        setProductData(response.data?.items)
-      })
+    fetchProduct()
     apiClient.get('Order/page?pageIndex=1&pageSize=10')
       .then(response => {
         setOrderData(response.data?.items)
@@ -44,12 +44,26 @@ export const Dashboard = () => {
         setdata(response.data)
       })
   }
+  const fetchProduct = () => {
+    apiClient.get('Product/page?pageIndex=0&pageSize=10')
+      .then(response => {
+        setProductData(response.data?.items)
+      })
+  }
   const handleEditUser = (id) => {
     apiClient.put(`User/recover/${id}`)
       .then((response) => {
         if (response.status === 200) {
+          fetchUsers()
+          swal({
+            title: "Edit Thành Công",
+            icon: "success",
+          })
         } else {
-          console.error('Edit không thành công');
+          swal({
+            title: "Edit không thành công",
+            icon: "warning",
+          })
         }
       })
       .catch((error) => {
@@ -66,11 +80,14 @@ export const Dashboard = () => {
   }
 
   const handleDeleteUser = (id) => {
-    console.log('Id: ', id);
-    apiClient.delete(`http://tainguyen58-001-site1.ftempurl.com/${id}`)
+    deleteClient.delete(`${id}`)
       .then((response) => {
         if (response.status === 200) {
           fetchUsers()
+          swal({
+            title: "Delete Thành Công",
+            icon: "success",
+          })
         } else {
           console.error('Xóa không thành công');
         }
@@ -92,20 +109,52 @@ export const Dashboard = () => {
       });
   };
 
+  useEffect(() => {
+
+  }, [])
+
+
+
   const handleDeleteProduct = (id) => {
-    console.log('Id: ', id);
-    apiClient.delete(`http://tainguyen58-001-site1.ftempurl.com/${id}`)
-      .then((response) => {
-        if (response.status === 200) {
-          fetchUsers()
-        } else {
-          console.error('Xóa không thành công');
-        }
+    const token = JSON.parse(localStorage.getItem('token'));
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken.Id;
+      apiClient.get(`User/${userId}`)
+        .then(response => {
+          setRole(response.data?.role);
+        })
+    } else {
+      console.log('Token không tồn tại trong localStorage.');
+    }
+    if (role === 'Manager') {
+      apiClient.delete(`Product/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .catch((error) => {
-        console.error('Lỗi kết nối', error);
-      });
+        .then((response) => {
+          if (response.status === 200) {
+            fetchProduct()
+            swal({
+              title: "Xóa Thành Công",
+              icon: "success",
+            })
+          } else {
+            swal({
+              title: "Xóa Thất Bại",
+              icon: "warning",
+            })
+          }
+        })
+        .catch((error) => {
+          console.error('Lỗi kết nối', error);
+        });
+    } else {
+      console.error('Không có quyền xóa sản phẩm');
+    }
   };
+
   const handleEditVoucher = (id) => {
     apiClient.put(`User/recover/${id}`)
       .then((response) => {
@@ -120,7 +169,7 @@ export const Dashboard = () => {
   };
   const handleDeleteVoucher = (id) => {
     console.log('Id: ', id);
-    apiClient.delete(`http://tainguyen58-001-site1.ftempurl.com/${id}`)
+    apiClient.delete(`${id}`)
       .then((response) => {
         if (response.status === 200) {
           fetchUsers()
@@ -211,7 +260,6 @@ export const Dashboard = () => {
                     <td>
                       <button style={{ marginRight: 20 }} onClick={() => handleEditUser(i.id)}>Active</button>
                       <button style={{ backgroundColor: 'red', marginRight: 20 }} onClick={() => handleDeleteUser(i.id)}>Delete</button>
-                      <button style={{ backgroundColor: 'yellow', color: 'black' }} onClick={() => handleCopyUserId(i.id)}>Copy user id</button>
                     </td>
                   </tr>
                 ))}
@@ -225,7 +273,13 @@ export const Dashboard = () => {
   function ProductForm() {
     const [showPopup, setShowPopup] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
-    const openPopup = () => {
+    const [idEdit, setIdEdit] = useState([])
+    const openPopup = (id) => {
+      apiClient.get(`Product/${id}`)
+        .then(response => {
+          setIdEdit(response.data)
+          console.log("Dung dep trai: ", response.data);
+        })
       setShowPopup(true);
     };
     const closePopup = () => {
@@ -267,7 +321,7 @@ export const Dashboard = () => {
                 {productData.slice(0, 6).map(i => (
                   <tr key={i?.id}>
                     <td>{i?.id}</td>
-                    <td style={{width:190}}>{i?.title}</td>
+                    <td style={{ width: 190 }}>{i?.title}</td>
                     <td><img style={{ width: 40, height: 40 }} src={i?.productImages[0]?.imageUrl} /></td>
                     <td>{i?.price}</td>
                     <td>{i?.priceAfterDiscount}</td>
@@ -275,8 +329,8 @@ export const Dashboard = () => {
                     <td>Iron Cage</td>
                     <td>{i.isDelete ? "Deactive" : "Active"}</td>
                     <td>
-                      <button style={{ marginRight: 20 }} onClick={openPopup}>Edit</button>
-                      <button style={{ backgroundColor: 'red' }} onClick={() => handleDeleteProduct(i.items.id)}>Delete</button>
+                      <button style={{ marginRight: 20 }} onClick={() => openPopup(i?.id)}>Edit</button>
+                      <button style={{ backgroundColor: 'red' }} onClick={() => handleDeleteProduct(i.id)}>Delete</button>
                     </td>
                   </tr>
                 ))}
@@ -293,7 +347,7 @@ export const Dashboard = () => {
                 </span>
                 <h2 style={{ marginBottom: 30 }}>Edit Product</h2>
                 <form className='formEdit-Product'>
-                  <input className='inputEdit-Product' type="text" placeholder="Name" />
+                  <input className='inputEdit-Product' type="text" placeholder="Name" value={idEdit.title} />
                   <input className='inputEdit-Product' type="email" placeholder="Image" />
                   <input className='inputEdit-Product' type="text" placeholder="Price" />
                   <input className='inputEdit-Product' type="email" placeholder="Price Discount" />
@@ -397,8 +451,8 @@ export const Dashboard = () => {
       const { name, value } = event.target;
       setFormData({ ...formData, [name]: value });
     };
-    
-    const {addVoucher, addVoucherPending} = useAddVoucher()
+
+    const { addVoucher, addVoucherPending } = useAddVoucher()
 
     const handleChangeDate = (e) => {
       const date = e.map(d => d.$d)
@@ -410,68 +464,70 @@ export const Dashboard = () => {
         applicationUserId: userId,
         ...formData,
       }
-      setInfo(()=> info)
+      setInfo(() => info)
     }
     const handleSubmit = async () => {
       await addVoucher(info)
     }
     const [userId, setUserId] = useState('');
 
-  const handleChange = (event) => {
-    setUserId(event.target.value);
-  };
+    const handleChange = (event) => {
+      setUserId(event.target.value);
+    };
     return (
       <div style={{
         width: '100%'
       }}>
         <h2 style={{ marginBottom: 30 }}>Add voucher</h2>
-                <form style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  width: '50%',
-                  margin: '0 auto',
-                  gap: '20px'
-                }} >
-                  <input style={{
-                    width: '80%',
-                    margin: '0 auto',
-                  }} className='inputEdit-Product' 
-                  name='discountPercent'
-                  placeholder="Discount percent"
-                  value={formData.discountPercent}
-                  onChange={handleInputChange}/>
-                  <FormControl fullWidth>
-  <Select
-    labelId="demo-simple-select-label"
-    id="demo-simple-select"
-    placeholder='User ID'
-    value={userId}
-    onChange={handleChange}
-    sx={{
-      width: '80%',
-      margin: '0 auto',
-    }}
-  >
-    {data?.map((i) => (
-    <MenuItem key={i.id} value={i.id}>{i.userName}</MenuItem>
-    ))}
+        <form style={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: '50%',
+          margin: '0 auto',
+          gap: '20px'
+        }} >
+          <input style={{
+            width: '80%',
+            margin: '0 auto',
+          }} className='inputEdit-Product'
+            name='discountPercent'
+            placeholder="Discount percent"
+            value={formData.discountPercent}
+            onChange={handleInputChange} />
+          <FormControl fullWidth>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              placeholder='User ID'
+              value={userId}
+              onChange={handleChange}
+              sx={{
+                width: '80%',
+                margin: '0 auto',
+              }}
+            >
+              {data?.map((i) => (
+                <MenuItem key={i.id} value={i.id}>{i.userName}</MenuItem>
+              ))}
 
-  </Select>
-</FormControl>
-                  <div style={{
-                    width: '80%',
-                    margin: '0 auto',
-                  }}>
-                    <RangePicker onChange={handleChangeDate} />
-                  </div>
-                </form>
-                <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '20px' , width: '50%',
-                  margin: '0 auto',}}>
-                  <button style={{ marginRight: 30 }} onClick={handleSubmit}>
-                    {addVoucherPending ? 'Submitting' : 'Submit'}
-                    </button>
-                  <button style={{ backgroundColor: 'red' }} onClick={toggleVoucherForm}>Cancel</button>
-                </div>
+            </Select>
+          </FormControl>
+          <div style={{
+            width: '80%',
+            margin: '0 auto',
+          }}>
+            <RangePicker onChange={handleChangeDate} />
+          </div>
+        </form>
+        <div style={{
+          display: 'flex', justifyContent: 'center', paddingTop: '20px', width: '50%',
+          margin: '0 auto',
+        }}>
+          <button style={{ marginRight: 30 }} onClick={handleSubmit}>
+            {addVoucherPending ? 'Submitting' : 'Submit'}
+          </button>
+          <button style={{ backgroundColor: 'red' }} onClick={toggleVoucherForm}>Cancel</button>
+        </div>
       </div>
     )
   }

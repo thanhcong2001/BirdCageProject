@@ -9,6 +9,7 @@ import { da } from 'date-fns/locale';
 import axiosClient from "../../api/axiosClient"
 import apiClient from 'api/apiClient';
 import { textTransform } from '@mui/system';
+import swal from 'sweetalert';
 const { jwtDecode } = require('jwt-decode');
 function Setting() {
   const [showAccountForm, setShowAccountForm] = useState(true);
@@ -35,10 +36,10 @@ function Setting() {
       apiClient.get(`User/${userId}`)
         .then(response => {
           setData(response.data);
-          console.log('Thang: ', response.data);
         })
         .catch(error => {
           console.error(error);
+
         });
     } else {
       console.log('Token không tồn tại trong localStorage.');
@@ -51,22 +52,70 @@ function Setting() {
   }
 
   function AccountForm() {
+
     const [selectedDate, setSelectedDate] = useState(null);
     const handleDateChange = (date) => {
       setSelectedDate(date);
     };
+    const [selectedName, setSelectedName] = useState(null);
+    const handleNameChange = (name) => {
+      setSelectedName(name);
+    };
+    const [selectedEmail, setSelectedEmail] = useState(null);
+    const handleEmailChange = (email) => {
+      setSelectedEmail(email);
+    };
+    const [selectedPhone, setSelectedPhone] = useState(null);
+    const handlePhoneChange = (phone) => {
+      setSelectedPhone(phone);
+    };
+    const [selectedGender, setSelectedGender] = useState(null);
+    const handleGenderChange = (gender) => {
+      setSelectedPhone(gender);
+    };
+
+    const updateProfile = () => {
+      const login = localStorage.getItem('token');
+      if (login) {
+        const data = {
+          userName: selectedName,
+          email: selectedEmail,
+          phoneNumber: selectedPhone,
+          gender: selectedGender,
+          doB: selectedDate
+        }
+        apiClient.put('User/update-profile', data, {
+          headers: {
+            'Authorization': 'Bearer ' + login,
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(function (response) {
+            console.log("Status: ", response.status);
+            swal({
+              title: "Cập nhật thành công",
+              icon: "success",
+            })
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+    }
+
     return (
       <div style={{ marginLeft: 100 }}>
         <h2>Account Setting</h2>
         <div className='inputInfo-setting'>
           <div style={{ marginRight: 50 }}>
             <p>User Name</p>
-            <input className='formTextInfo'
+            <input className='formTextInfo' onChange={() => handleNameChange()}
               placeholder={data.userName} />
           </div>
           <div>
             <p>User Email</p>
             <input className='formTextInfo'
+              onChange={handleEmailChange}
               placeholder={data.email} />
           </div>
         </div>
@@ -74,13 +123,14 @@ function Setting() {
           <div style={{ marginRight: 50 }}>
             <p>Phone Number</p>
             <input className='formTextInfo'
+              onChange={handlePhoneChange}
               placeholder={data.phoneNumber} />
           </div>
           <div>
             <form>
-            <p>Gender</p>
-              <select className='select-optionGender'>
-                <option disabled selected defaultValue={data?.gender}>{data?.gender}</option>
+              <p>Gender</p>
+              <select className='select-optionGender' onChange={setSelectedGender}>
+                <option disabled selected defaultValue={data?.gender}>{data?.gender}</option >
                 <option value="male">Male</option>
                 <option value="female">Female</option>
               </select>
@@ -89,15 +139,10 @@ function Setting() {
         </div>
         <div>
           <p>Date of birth</p>
-          <DatePicker className='formTextInfo'
-            selected={selectedDate}
-            onChange={handleDateChange}
-            dateFormat="dd/MM/yyyy"
-            placeholderText={convertDate(data?.doB)}
-          />
+          <input type="date" id="birthdaytime" name="birthdaytime"></input>
         </div>
         <div style={{ marginTop: 20 }}>
-          <button>Update</button>
+          <button onClick={updateProfile}>Update</button>
           <button style={{ backgroundColor: '#D3D3D3', color: 'black', marginLeft: 10 }}>Cancel</button>
         </div>
       </div>
@@ -107,7 +152,6 @@ function Setting() {
     const [oldPass, setOldPass] = useState('');
     const [newPass, setNewPass] = useState('');
     const [rePass, setRePass] = useState('');
-
     const oldPassword = (e) => {
       setOldPass(e.target.value);
     };
@@ -127,8 +171,6 @@ function Setting() {
 
     const changPass = () => {
       const login = JSON.parse(localStorage.getItem('token'));
-
-      // Kiểm tra xem người dùng đã đăng nhập và mã token hợp lệ
       if (login) {
         if (newPass === rePass) {
           const data = {
@@ -144,14 +186,21 @@ function Setting() {
           })
             .then(function (response) {
               console.log("Status: ", response.status);
-              // Xử lý thành công, có thể hiển thị thông báo cho người dùng
+              swal({
+                title: "Cập nhật thành công",
+                icon: "success",
+              })
             })
             .catch(function (error) {
               console.log(error);
-              // Xử lý lỗi, hiển thị thông báo lỗi cho người dùng hoặc kiểm tra mã lỗi cụ thể từ máy chủ.
+
             });
         } else {
-          console.log("New Password and Confirm Password do not match.");
+          swal({
+            title: "New Password and Confirm Password do not match.",
+            icon: "warning",
+            dangerMode: true,
+          })
         }
       } else {
         console.log("User is not logged in. Please log in first.");
@@ -195,9 +244,9 @@ function Setting() {
     <div style={{ marginTop: 120 }}>
       <div className='Container-Setting'>
         <div className='borderInfo-Setting'>
-          <div style={{ padding: 15,textAlign:'center' }}>
+          <div style={{ padding: 15, textAlign: 'center' }}>
             <img src='https://scontent.fsgn2-4.fna.fbcdn.net/v/t39.30808-6/324736014_1240215329893369_5490209580249412603_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=5f2048&_nc_ohc=WeT9xi_5yuYAX_VIJng&_nc_ht=scontent.fsgn2-4.fna&oh=00_AfDp4Nhh_oMUBofQckZ_lNaqYZk307GkCbjm6zRyj2dQRg&oe=653B976F' className='Setting-Image' />
-            <p style={{textTransform:'uppercase',textAlign:'center',fontWeight:'bold'}}>{data.userName}</p>
+            <p style={{ textTransform: 'uppercase', textAlign: 'center', fontWeight: 'bold' }}>{data.userName}</p>
           </div>
           <div className='line-Setting'></div>
           <div className='OptionSetting' onClick={toggleAccountForm} style={{

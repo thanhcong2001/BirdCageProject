@@ -14,7 +14,7 @@ import useBirdCart from 'api/apiProduct/useBirdCart';
 import Login from 'componets/Auth/components/Login/Login.jsx';
 import OTP from 'componets/Auth/components/OTP_Auth/OTP';
 import Register from 'componets/Auth/components/Register/index.jsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../Header/Header.css';
 const MODE = {
@@ -33,13 +33,23 @@ function Header() {
 
     const [searchList, setSearchList] = useState([]);
     const [isShow, setIsShow] = useState(false);
+    const [isValid, setIsValid] = useState(false)
     const isLoggedIn = localStorage.getItem("token");
     const formattedToken = isLoggedIn?.replace(/"/g, "");
     const { cartItem } = useBirdCart(formattedToken);
+    const [role, setRole] = useState(localStorage.getItem('role') || '')
     const totalCountProduct = cartItem?.shoppingCarts?.reduce(
         (total, item) => total + item.count,
         0
     );
+
+    useEffect(() => { checkRole() }, [role])
+
+    const checkRole = () => {
+
+        if (role == 'Manager') setIsValid(true)
+        else setIsValid(false)
+    }
 
     const handleTotalProd = (count) => {
         if (count < 10) {
@@ -73,7 +83,9 @@ function Header() {
     const handleProfile = () => {
         navigate("/setting");
     };
-
+    const handleDashboard = () => {
+        navigate("/dashboard");
+    };
     const handleLogoutClick = () => {
         localStorage.removeItem('token');
         // window.location.reload();
@@ -269,7 +281,7 @@ function Header() {
                                                                 alt=""
                                                                 src={i?.productImages[0]?.imageUrl}
                                                             />
-                                                            <span style={{fontSize:15}}>{i?.title}</span>
+                                                            <span style={{ fontSize: 15 }}>{i?.title}</span>
                                                         </div>
                                                     </Link>
                                                 ))}
@@ -328,6 +340,7 @@ function Header() {
                 }}
                 getContentAnchorEl={null}
             >
+                {isValid ? <MenuItem onClick={handleDashboard}>Dashboard</MenuItem> : null}
                 <MenuItem onClick={handleProfile}>My Account</MenuItem>
                 <MenuItem onClick={handleAccount}>Purchase history</MenuItem>
                 <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>

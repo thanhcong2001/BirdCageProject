@@ -90,10 +90,9 @@ export const Accessory = () => {
                 </div>
                 {isLoading ? <Box sx={{ display: 'flex', height: '500px', alignItems: 'center' }}>
                     <CircularProgress />
-                </Box> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden' }}>
+                </Box> : <div style={{ display: 'flex', marginRight:450}}>
                     {filteredData?.map(i => (
-
-                        <div key={i?.id}>
+                        <div key={i?.id} style={{marginLeft:20}}>
                             <Link to={`/details/${i.id}`}>
                                 <div className='card-access'>
                                     <img className='img-birdCage' src={i.productImages[0]?.imageUrl} alt={`hinh cua id ${i.id}`} />

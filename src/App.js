@@ -3,7 +3,7 @@ import { Cart } from './componets/Cart/Cart';
 import { DesignCage } from './componets/DesignCage/DesignCage';
 import { Intro } from './componets/Intro/Intro';
 import { News } from './componets/News/News';
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom'
 import { Footer } from './componets/Footer/Footer';
 import HomePage from './componets/HomePage/HomePage';
 import { BirdCage } from './componets/BirdCage/BirdCage';
@@ -39,6 +39,7 @@ function App() {
       axios.get(apiUrl)
         .then(response => {
           setData(response.data);
+          localStorage.setItem('role', response.data?.role)
           if (response.data?.role && response.data?.role == 'Manager') return navigate('/dashboard')
           return navigate('/intro')
         })
@@ -49,10 +50,17 @@ function App() {
       console.log('Token không tồn tại trong localStorage.');
     }
   }, [])
+  
+
+  const CheckAuth = ({ children }) => {
+    const role = localStorage.getItem('role') || ''
+    if (role != 'Manager') return <Navigate to={'/'} />
+    else return children
+  }
 
   return (
     <div className='App'>
-      {/* {data.role === 'Customer' ? '' : <Header />} */}
+      {/* {data.role === 'Manager' ? '' : <Header />} */}
       <Header />
       <Routes>
         <Route path='/' element={<HomePage />} />
@@ -70,7 +78,7 @@ function App() {
         <Route path='/designCage' element={<DesignCage />} />
         <Route path='/setting' element={<Setting />} />
         <Route path='/searchResult' element={<SearchResult />} />
-        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/dashboard' element={<CheckAuth><Dashboard /></CheckAuth>} />
         <Route path='/user/order-history' element={<OrderHistory />} />
         <Route path='/user/order-history/:orderId' element={<OrderDetailUser />} />
         <Route path='/compare' element={<Compare />} />
