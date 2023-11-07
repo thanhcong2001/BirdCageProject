@@ -37,7 +37,10 @@ export const Dashboard = () => {
   const tableProduct = ['ID', 'Name', 'Image', 'Price', 'Price Discount', 'Discount', 'Sku', 'Status', 'Action'];
   const tableOrder = ['ID', , 'Name Recieved', 'Price', 'Phone', 'Payment Status', 'Order Status', 'Action'];
   const tableVoucher = ['ID', 'Voucher Code', 'Discount Percent', 'start Date', 'Expiration Date', 'Status', 'Action'];
-
+  function convertVND(price) {
+    if (price != null && price !== undefined && price !== '') return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
+    else return 0
+  }
   const fetchUsers = () => {
     apiClient.get('User')
       .then(response => {
@@ -321,10 +324,10 @@ export const Dashboard = () => {
                 {productData.slice(0, 6).map(i => (
                   <tr key={i?.id}>
                     <td>{i?.id}</td>
-                    <td style={{ width: 190 }}>{i?.title}</td>
+                    <td style={{ width: 150 }}>{i?.title}</td>
                     <td><img style={{ width: 40, height: 40 }} src={i?.productImages[0]?.imageUrl} /></td>
-                    <td>{i?.price}</td>
-                    <td>{i?.priceAfterDiscount}</td>
+                    <td>{convertVND(i?.price)}</td>
+                    <td>{convertVND(i?.priceAfterDiscount)}</td>
                     <td>{i?.sku}</td>
                     <td>Iron Cage</td>
                     <td>{i.isDelete ? "Deactive" : "Active"}</td>
@@ -347,11 +350,11 @@ export const Dashboard = () => {
                 </span>
                 <h2 style={{ marginBottom: 30 }}>Edit Product</h2>
                 <form className='formEdit-Product'>
-                  <input className='inputEdit-Product' type="text" placeholder="Name" value={idEdit.title} />
+                  <input className='inputEdit-Product' type="text" placeholder={idEdit.title} />
                   <input className='inputEdit-Product' type="email" placeholder="Image" />
-                  <input className='inputEdit-Product' type="text" placeholder="Price" />
-                  <input className='inputEdit-Product' type="email" placeholder="Price Discount" />
-                  <input className='inputEdit-Product' type="text" placeholder="Discount" />
+                  <input className='inputEdit-Product' type="text" placeholder={convertVND(idEdit.price)} />
+                  <input className='inputEdit-Product' type="email" placeholder={convertVND(idEdit.priceAfterDiscount)}  />
+                  <input className='inputEdit-Product' type="text" placeholder={idEdit.sku} />
                   <input className='inputEdit-Product' type="email" placeholder="Sku" />
                 </form>
                 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
