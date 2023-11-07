@@ -5,17 +5,19 @@ import useProduct from 'api/apiProduct/useProduct';
 import { Box, CircularProgress } from '@mui/material';
 import { Link } from 'react-router-dom';
 import apiClient from 'api/apiClient';
+import { Pagination } from 'antd';
 export const Accessory = () => {
     const [myCar, setMyCar] = useState("Thứ tự mặc định");
     const [list, setList] = useState([])
-    const [pageIndex, setPageIndex] = useState(0)
+    const [pageIndex, setPageIndex] = useState(1)
     const { birdCage, isLoading, isError, birdCageError } = useProduct({ pageIndex: pageIndex });
+
     useEffect(() => {
         apiClient.get('Product/page?pageIndex=0&pageSize=10')
-          .then(response => {
-            setList(response.data?.items)
-          })
-      }, [])
+            .then(response => {
+                setList(response.data?.items)
+            })
+    }, [])
 
     const handleChange = (event) => {
         setMyCar(event.target.value)
@@ -33,6 +35,9 @@ export const Accessory = () => {
 
     const filteredData = birdCage?.items.filter(item => item.categoryId === categoryIdToFilter);
 
+    const handleChangePage = (e) => {
+        setPageIndex(() => e - 1)
+    }
 
     return (
         <div className='all'>
@@ -90,11 +95,11 @@ export const Accessory = () => {
                 </div>
                 {isLoading ? <Box sx={{ display: 'flex', height: '500px', alignItems: 'center' }}>
                     <CircularProgress />
-                </Box> : <div style={{ display: 'flex', marginRight:450}}>
+                </Box> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden', marginLeft: 78 }}>
                     {filteredData?.map(i => (
-                        <div key={i?.id} style={{marginLeft:20}}>
+                        <div key={i?.id} style={{ marginLeft: 20 }}>
                             <Link to={`/details/${i.id}`}>
-                                <div className='card-access'>
+                                <div className='card'>
                                     <img className='img-birdCage' src={i.productImages[0]?.imageUrl} alt={`hinh cua id ${i.id}`} />
                                     <p className='nameAccessory'>{i.title}</p>
                                     <h4>{convertVND(i.price)}</h4>
@@ -103,6 +108,7 @@ export const Accessory = () => {
                         </div>
                     ))}
                 </div>}
+                <Pagination style={{ textAlign: 'center', marginTop: 20 }} defaultCurrent={1} pageSize={10} total={50} onChange={handleChangePage} />
             </div>
         </div>
     )

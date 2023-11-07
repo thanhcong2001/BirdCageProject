@@ -81,7 +81,7 @@ export const Cart = () => {
                                         <CartItem key={index} i={i} onChange={onChange} handleDelete={handleDelete} deleteItemCart={deleteItemCart} quantityEdit={true} />
                                     ))}
                                     <tr>
-                                        <td><button onClick={() => nav('/payment')} className='bt-next'>TiẾP TỤC XEM SẢN PHẨM</button></td>
+                                        <td><button onClick={() => nav('/birdCage')} className='bt-next'>TiẾP TỤC XEM SẢN PHẨM</button></td>
 
                                         {updateCartArr?.length < 1 ? null : <td><button className='bt-update' onClick={handleUpdatedCart}>
                                             {updatePending ? 'ĐANG CẬP NHẬT...' : 'CẬP NHẬT GIỎ HÀNG'}
