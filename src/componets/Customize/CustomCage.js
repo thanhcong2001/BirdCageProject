@@ -5,25 +5,33 @@ import '../Customize/CustomCage.css'
 export default function CustomCage() {
     const [data, setdata] = useState([])
     const [selectedOption, setSelectedOption] = useState(1);
-    const [imgCage, setImgCage] = useState();
+    const [imgCage, setImgCage] = useState([]);
     const [cageType, setcageType] = useState([])
-    const [loadData, setSelectedData] = useState([]);
-    const [material, setMaterial] = useState([])
+    const [selectedCode, setSelectedCode] = useState('');
     const [active, setActive] = useState(null)
-
     const handleButtonClick = (buttonId) => {
+        setActive(buttonId);
         apiClient.get(`Formula/${buttonId}`)
             .then(response => {
-                handleOptionChange(null)
-                setSelectedData(response.data?.data)
-                setActive(buttonId)
-                const tmpData = response.data?.data.filter(i => {
-                    if (i?.code == response.data?.data[0]?.code) return i
-                })
-                setMaterial(tmpData)
-                setSelectedOption(tmpData[0])
+                setImgCage(response.data?.data)
             })
     };
+
+    const [selectedMaterials, setSelectedMaterials] = useState([]);
+    const [detail, setDetail] = useState([])
+    useEffect(() => {
+        if (selectedCode) {
+            const selectedCage = imgCage.find(item => item.code === selectedCode);
+            setDetail(selectedCage)
+            if (selectedCage) {
+                setSelectedMaterials(selectedCage.specifications);
+            }
+        } else {
+            // Nếu không có mẫu mã nào được chọn, set selectedMaterials về rỗng
+            setSelectedMaterials([]);
+        }
+    }, [selectedCode]);
+
     useEffect(() => {
         apiClient.get('Product/page?pageIndex=0&pageSize=10')
             .then(response => {
@@ -38,12 +46,7 @@ export default function CustomCage() {
             })
     }, [])
     const handleOptionChange = (event) => {
-        const selectedValue = event?.target?.value
-        const tmpData = loadData.filter(i => {
-            if (i?.code == selectedValue) return i
-        })
-        setMaterial(tmpData)
-        setSelectedOption(tmpData[0]);
+        setSelectedCode(event.target.value);
     };
     function convertVND(price) {
         if (price != null && price !== undefined && price !== '') return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
@@ -54,7 +57,7 @@ export default function CustomCage() {
     const [isValid, setIsValid] = useState(true);
     const handleBlur = () => {
         const value = parseFloat(inputValue);
-        if (value > selectedOption?.maxHeight || value < selectedOption?.minHeight) {
+        if (value > detail?.maxHeight || value < detail?.minHeight) {
             setIsValid(false);
         } else {
             setIsValid(true);
@@ -65,7 +68,7 @@ export default function CustomCage() {
     const [isWidth, setIsWidth] = useState(true);
     const handleWidth = () => {
         const value = parseFloat(inputWidth);
-        if (value > selectedOption?.maxWidth || value < selectedOption?.minWidth) {
+        if (value > detail?.maxWidth || value < detail?.minWidth) {
             setIsWidth(false);
         } else {
             setIsWidth(true);
@@ -76,7 +79,7 @@ export default function CustomCage() {
     const [isNan, setIsNan] = useState(true);
     const handleNan = () => {
         const value = parseFloat(inputNan);
-        if (value > selectedOption?.maxBars || value < selectedOption?.minBars) {
+        if (value > detail?.maxBars || value < detail?.minBars) {
             setIsNan(false);
         } else {
             setIsNan(true);
@@ -87,13 +90,13 @@ export default function CustomCage() {
         <div>
             <p className='header-custom'>Thiết Kế Lồng Chim</p>
             <div className='borderCustom-Input'>
-                <div style={{ textAlign: 'center', display: 'flex', marginLeft: 150, marginBottom: 30 }}>
+                <div style={{justifyContent:'center',display: 'flex', marginBottom: 30 }}>
                     {cageType.map(item => (
                         <div key={item?.id}>
                             <button onClick={() => handleButtonClick(item?.id)} style={{
                                 marginRight: 30,
                                 backgroundColor: active === item?.id ? 'lightBlue' : 'rgb(100, 190, 67)',
-                                color: 'white'
+                                color: 'white',paddingBottom:10,paddingTop:10,borderRadius:10
                             }}>{item?.typeName}</button>
                         </div>
                     ))}
@@ -104,7 +107,7 @@ export default function CustomCage() {
                             <form>
                                 <label>Mẫu Mã:</label>
                                 <select className='select-optionCutom' style={{ marginLeft: 20 }} onChange={handleOptionChange}>
-                                    {loadData.map(item => (
+                                    {imgCage.map(item => (
                                         <option key={item?.id} value={item?.code}>
                                             <span>{item?.code}</span>
                                         </option>
@@ -114,9 +117,9 @@ export default function CustomCage() {
                             <form>
                                 <label>Chất Liệu:</label>
                                 <select className='select-optionCutom' style={{ marginLeft: 12 }}>
-                                    {material.map(item => (
-                                        <option key={item?.id} value={item?.id}>
-                                            <span>{item?.material}</span>
+                                    {selectedMaterials.map(spec => (
+                                        <option key={spec.id} value={spec.specificationValue}>
+                                            <span>{spec.specificationValue}</span>
                                         </option>
                                     ))}
                                 </select>
@@ -158,11 +161,11 @@ export default function CustomCage() {
                         <div className='borderMethod-Custom' >
                             <p style={{ marginBottom: 10, marginTop: 0, fontSize: 25, textAlign: 'center', fontWeight: 'bold' }}>Lưu ý</p>
                             <div style={{ marginLeft: 30 }}>
-                                <p>- Chiều dài( min: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bolder' }}>{selectedOption?.minHeight}</span> , max: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bolder' }}>{selectedOption?.maxHeight}</span> ) </p>
-                                <p>- Chiều rộng ( min: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bolder' }}>{selectedOption?.minWidth}</span> , max: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bolder' }}>{selectedOption?.maxWidth}</span> ) </p>
-                                <p>- Số nan ( min: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bolder' }}>{selectedOption?.minBars}</span>, max: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bolder' }}>{selectedOption?.maxBars}</span> )</p>
-                                <p>- Ngày dự tính giao hàng: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bolder' }}>{selectedOption?.constructionTime}</span> ngày</p>
-                                <p>- Giá ước tính: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bold' }}>{convertVND(selectedOption?.price)}</span></p>
+                                <p>- Chiều dài( min: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bolder' }}>{detail?.minHeight}</span> , max: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bolder' }}>{detail?.maxHeight}</span> ) </p>
+                                <p>- Chiều rộng ( min: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bolder' }}>{detail?.minWidth}</span> , max: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bolder' }}>{detail?.maxWidth}</span> ) </p>
+                                <p>- Số nan ( min: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bolder' }}>{detail?.minBars}</span>, max: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bolder' }}>{detail?.maxBars}</span> )</p>
+                                <p>- Ngày dự tính giao hàng: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bolder' }}>{detail?.constructionTime}</span> ngày</p>
+                                <p>- Giá ước tính: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bold' }}>{convertVND(detail?.price)}</span></p>
                             </div>
                         </div>
                         <button style={{ width: 400, marginTop: 10, borderRadius: 10, backgroundColor: 'rgb(100, 190, 67)', height: 50 }}>Thêm vào giỏ

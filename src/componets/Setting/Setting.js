@@ -152,6 +152,8 @@ function Setting() {
     const [oldPass, setOldPass] = useState('');
     const [newPass, setNewPass] = useState('');
     const [rePass, setRePass] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [rePassError, setRePassError] = useState('');
     const oldPassword = (e) => {
       setOldPass(e.target.value);
     };
@@ -163,12 +165,75 @@ function Setting() {
     const rePassword = (e) => {
       setRePass(e.target.value);
     };
+
+    const checkRePassword = () => {
+      if (rePass.length < 6 || rePass.length > 20) {
+        setRePassError('New password must be between 6 and 20 characters.');
+      } else {
+        setRePassError('');
+        // Kiểm tra các yêu cầu khác ở đây
+        checkFormatRePassword();
+      }
+    };
+    const checkFormatRePassword = () => {
+      const lowerCaseRegex = /[a-z]/;
+      const upperCaseRegex = /[A-Z]/;
+      const digitRegex = /\d/;
+      const nonAlphaNumericRegex = /[^A-Za-z0-9]/;
+      if (
+        lowerCaseRegex.test(rePass) &&
+        upperCaseRegex.test(rePass) &&
+        digitRegex.test(rePass) &&
+        nonAlphaNumericRegex.test(rePass)
+      ) {
+        setRePassError('');
+      } else {
+        setRePassError(
+          'Password must contain at least one lowercase letter, one uppercase letter, one digit, and one non-alphanumeric character.'
+        );
+      }
+    };
+
+    const hidePasswordError = () => {
+      setPasswordError();
+    };
+    const hideRePassError = () => {
+      setRePassError();
+    };
+
+    const checkNewPassword = () => {
+      if (newPass.length < 6 || newPass.length > 20) {
+        setPasswordError('New password must be between 6 and 20 characters.');
+      } else {
+        setPasswordError('');
+        // Kiểm tra các yêu cầu khác ở đây
+        checkFormatPassword();
+      }
+    };
+    const checkFormatPassword = () => {
+      const lowerCaseRegex = /[a-z]/;
+      const upperCaseRegex = /[A-Z]/;
+      const digitRegex = /\d/;
+      const nonAlphaNumericRegex = /[^A-Za-z0-9]/;
+      if (
+        lowerCaseRegex.test(newPass) &&
+        upperCaseRegex.test(newPass) &&
+        digitRegex.test(newPass) &&
+        nonAlphaNumericRegex.test(newPass)
+      ) {
+        setPasswordError('');
+      } else {
+        setPasswordError(
+          'Password must contain at least one lowercase letter, one uppercase letter, one digit, and one non-alphanumeric character.'
+        );
+      }
+    };
+
     const CancelButton = (e) => {
       setOldPass('');
       setNewPass('');
       setRePass('');
     };
-
     const changPass = () => {
       const login = JSON.parse(localStorage.getItem('token'));
       if (login) {
@@ -210,28 +275,48 @@ function Setting() {
       <div>
         <div style={{ marginLeft: 100 }}>
           <h2>Change Password</h2>
-          <div className='inputInfo-setting'>
+          <div className="inputInfo-setting">
             <div style={{ marginRight: 50 }}>
               <p>Old Password</p>
-              <input className='formTextInfo' type="password"
+              <input
+                className="formTextInfo"
+                type="password"
                 value={oldPass}
-                onChange={oldPassword} placeholder='*************' />
+                onChange={oldPassword}
+                placeholder="*************"
+              />
             </div>
           </div>
-          <div className='inputInfo-setting'>
+          <div className="inputInfo-setting">
             <div style={{ marginRight: 50 }}>
               <p>New Password</p>
-              <input className='formTextInfo' type="password"
+              <input
+                className="formTextInfo"
+                type="password"
                 value={newPass}
-                onChange={newPassword} placeholder='*************' />
+                onChange={newPassword}
+                onBlur={checkNewPassword}
+                onFocus={hidePasswordError}
+                placeholder="*************"
+              />
+              <div style={{ width: 300, fontSize: 13, color: 'red' }}>{passwordError}</div>
+
             </div>
             <div>
               <p>Confirm new password</p>
-              <input className='formTextInfo' type="password"
+              <input
+                className="formTextInfo"
+                type="password"
                 value={rePass}
-                onChange={rePassword} placeholder='*************' />
+                onChange={rePassword}
+                onBlur={checkRePassword}
+                onFocus={hideRePassError}
+                placeholder="*************"
+              />
+              <div style={{ width: 300, fontSize: 13, color: 'red' }}>{rePassError}</div>
             </div>
           </div>
+
           <div style={{ marginTop: 20 }}>
             <button onClick={changPass}>Update</button>
             <button onClick={CancelButton} style={{ backgroundColor: '#D3D3D3', color: 'black', marginLeft: 10 }}>Cancel</button>

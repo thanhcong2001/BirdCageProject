@@ -34,7 +34,7 @@ export const Dashboard = () => {
       })
   }, [])
   const tableHeaders = ['Name', 'Email', 'Gender', 'Phone Number', 'Birth Date', 'Status', 'Action'];
-  const tableProduct = ['ID', 'Name', 'Image', 'Price', 'Price Discount', 'Discount', 'Sku', 'Status', 'Action'];
+  const tableProduct = ['ID', 'Name', 'Image', 'Price', 'Price Discount', 'Sku', 'Status', 'Action'];
   const tableOrder = ['ID', , 'Name Recieved', 'Price', 'Phone', 'Payment Status', 'Order Status', 'Action'];
   const tableVoucher = ['ID', 'Voucher Code', 'Discount Percent', 'start Date', 'Expiration Date', 'Status', 'Action'];
   function convertVND(price) {
@@ -54,62 +54,128 @@ export const Dashboard = () => {
       })
   }
   const handleEditUser = (id) => {
-    apiClient.put(`User/recover/${id}`)
-      .then((response) => {
-        if (response.status === 200) {
-          fetchUsers()
-          swal({
-            title: "Edit Thành Công",
-            icon: "success",
-          })
-        } else {
-          swal({
-            title: "Edit không thành công",
-            icon: "warning",
-          })
-        }
-      })
-      .catch((error) => {
-        console.error('Lỗi kết nối', error);
-      });
-  };
-
-  const handleCopyUserId = async (id) => {
-    try {
-      await navigator.clipboard.writeText(id);
-    } catch (error) {
-      console.error('Failed to copy to clipboard:', error);
+    const token = JSON.parse(localStorage.getItem('token'));
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken.Id;
+      apiClient.get(`User/${userId}`)
+        .then(response => {
+          const role = response.data?.role;
+          if (role === "Manager") {
+            apiClient.put(`User/recover/${id}`, null, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+              .then((response) => {
+                if (response.status === 200) {
+                  fetchUsers();
+                  swal({
+                    title: "Active Thành Công",
+                    icon: "success",
+                  });
+                } else {
+                  swal({
+                    title: "Active Thất Bại",
+                    icon: "warning",
+                  });
+                }
+              })
+              .catch((error) => {
+                console.error('Lỗi kết nối', error);
+              });
+          } else {
+            console.error('Không có quyền xóa sản phẩm');
+          }
+        })
+        .catch((error) => {
+          console.error('Lỗi trong quá trình kiểm tra vai trò', error);
+        });
+    } else {
+      console.log('Token không tồn tại trong localStorage.');
     }
-  }
-
+  };
   const handleDeleteUser = (id) => {
-    deleteClient.delete(`${id}`)
-      .then((response) => {
-        if (response.status === 200) {
-          fetchUsers()
-          swal({
-            title: "Delete Thành Công",
-            icon: "success",
-          })
-        } else {
-          console.error('Xóa không thành công');
-        }
+    const token = JSON.parse(localStorage.getItem('token'));
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken.Id;
+      apiClient.get(`User/${userId}`)
+        .then(response => {
+          setRole(response.data?.role);
+        })
+    } else {
+      console.log('Token không tồn tại trong localStorage.');
+    }
+    if (role === 'Manager') {
+      deleteClient.delete(`${id}`, { 
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .catch((error) => {
-        console.error('Lỗi kết nối', error);
-      });
+        .then((response) => {
+          if (response.status === 200) {
+            fetchUsers()
+            swal({
+              title: "Xóa Thành Công",
+              icon: "success",
+            })
+          } else {
+            swal({
+              title: "Xóa Thất Bại",
+              icon: "warning",
+            })
+          }
+        })
+        .catch((error) => {
+          console.error('Lỗi kết nối', error);
+        });
+    } else {
+      console.error('Không có quyền xóa sản phẩm');
+    }
   };
   const handleEditProduct = (id) => {
-    apiClient.put(`User/recover/${id}`)
-      .then((response) => {
-        if (response.status === 200) {
-        } else {
-          console.error('Edit không thành công');
-        }
-      })
-      .catch((error) => {
-        console.error('Lỗi kết nối', error);
-      });
+    const token = JSON.parse(localStorage.getItem('token'));
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken.Id;
+
+      apiClient.get(`User/${userId}`)
+        .then(response => {
+          const role = response.data?.role;
+          if (role === "Manager") {
+            apiClient.put(`Product/recover/${id}`, null, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+              .then((response) => {
+                if (response.status === 200) {
+                  fetchProduct();
+                  swal({
+                    title: "Active Thành Công",
+                    icon: "success",
+                  });
+                } else {
+                  swal({
+                    title: "Active Thất Bại",
+                    icon: "warning",
+                  });
+                }
+              })
+              .catch((error) => {
+                console.error('Lỗi kết nối', error);
+              });
+          } else {
+            console.error('Không có quyền xóa sản phẩm');
+          }
+        })
+        .catch((error) => {
+          console.error('Lỗi trong quá trình kiểm tra vai trò', error);
+        });
+    } else {
+      console.log('Token không tồn tại trong localStorage.');
+    }
   };
 
   useEffect(() => {
@@ -329,10 +395,10 @@ export const Dashboard = () => {
                     <td>{convertVND(i?.price)}</td>
                     <td>{convertVND(i?.priceAfterDiscount)}</td>
                     <td>{i?.sku}</td>
-                    <td>Iron Cage</td>
                     <td>{i.isDelete ? "Deactive" : "Active"}</td>
                     <td>
-                      <button style={{ marginRight: 20 }} onClick={() => openPopup(i?.id)}>Edit</button>
+                      <button style={{ marginRight: 10, backgroundColor: 'rgb(100, 190, 67)' }} onClick={() => openPopup(i?.id)}>Edit</button>
+                      <button style={{ marginRight: 10 }} onClick={() => handleEditProduct(i.id)}>Active</button>
                       <button style={{ backgroundColor: 'red' }} onClick={() => handleDeleteProduct(i.id)}>Delete</button>
                     </td>
                   </tr>
@@ -353,7 +419,7 @@ export const Dashboard = () => {
                   <input className='inputEdit-Product' type="text" placeholder={idEdit.title} />
                   <input className='inputEdit-Product' type="email" placeholder="Image" />
                   <input className='inputEdit-Product' type="text" placeholder={convertVND(idEdit.price)} />
-                  <input className='inputEdit-Product' type="email" placeholder={convertVND(idEdit.priceAfterDiscount)}  />
+                  <input className='inputEdit-Product' type="email" placeholder={convertVND(idEdit.priceAfterDiscount)} />
                   <input className='inputEdit-Product' type="text" placeholder={idEdit.sku} />
                   <input className='inputEdit-Product' type="email" placeholder="Sku" />
                 </form>

@@ -4,14 +4,12 @@
     flex-wrap: wrap;
 }
 
-.title_home {
-
+h1 {
     color: #3c3451;
     font-size: 32px;
     font-weight: 900;
     line-height: 32px;
     margin-bottom: 16px;
-    margin-left: 95px;
     padding-bottom: 25px;
     position: relative;
     text-align: center;
@@ -20,7 +18,7 @@
     font-family: "Josefin Sans", serif;
 }
 
-.title_home::before {
+h1::before {
     content: "";
     left: 0;
     bottom: 8px;
