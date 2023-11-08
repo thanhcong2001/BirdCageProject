@@ -240,7 +240,7 @@ function Header() {
                     <Link style={{ textDecoration: "none" }} to={"/birdCage"}>
                         <p className="category">Lồng Chim</p>
                     </Link>
-                    <p className="category">Cám Chim</p>
+                    {/* <p className="category">Cám Chim</p> */}
                     <Link style={{ textDecoration: "none" }} to={"/accessory"}>
                         <p className="category">Phụ Kiện</p>
                     </Link>
