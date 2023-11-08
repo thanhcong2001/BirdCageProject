@@ -405,11 +405,11 @@ export const Dashboard = () => {
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <p style={{ fontSize: 23, letterSpacing: 2, marginBottom: 10 }}>Product Management</p>
-            <div>
+            {/* <div>
               <button onClick={openAddNew} style={{ backgroundColor: '#64be43', marginTop: 25 }}>
                 Add Product
               </button>
-            </div>
+            </div> */}
           </div>
           <div className='borderTable-Dashboard'>
             <table>
@@ -673,11 +673,11 @@ export const Dashboard = () => {
             <div>
               <p style={{ fontSize: 23, letterSpacing: 2, marginBottom: 10 }}>Formula Management</p>
             </div>
-            <div>
+            {/* <div>
               <button onClick={openAddNew} style={{ backgroundColor: '#64be43', marginTop: 25 }}>
                 Add Formula
               </button>
-            </div>
+            </div> */}
           </div>
           <div className='borderTable-Dashboard'>
             <table>

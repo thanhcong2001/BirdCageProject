@@ -31,7 +31,7 @@ export const Accessory = () => {
     if (isError) {
         return <h2>{birdCageError.message}</h2>
     }
-    const categoryIdToFilter = 4; // page long chim
+    const categoryIdToFilter = 2; // page long chim
 
     const filteredData = birdCage?.items.filter(item => item.categoryId === categoryIdToFilter);
 
@@ -95,7 +95,7 @@ export const Accessory = () => {
                 </div>
                 {isLoading ? <Box sx={{ display: 'flex', height: '500px', alignItems: 'center' }}>
                     <CircularProgress />
-                </Box> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden', marginLeft: 78 }}>
+                </Box> : <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', overflow: 'hidden' }}>
                     {filteredData?.map(i => (
                         <div key={i?.id} style={{ marginLeft: 20 }}>
                             <Link to={`/details/${i.id}`}>
