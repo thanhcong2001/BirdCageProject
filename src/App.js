@@ -24,6 +24,7 @@ import ResetPassword from 'componets/Auth/components/ResetPassword/ResetPassword
 import VoucherPage from 'componets/Payments/Voucher/VoucherPage';
 import axios from 'axios';
 import CustomCage from 'componets/Customize/CustomCage';
+import apiClient from 'api/apiClient';
 function App() {
   const { jwtDecode } = require('jwt-decode');
   const [authen, setAuthen] = useState(null)
@@ -35,12 +36,11 @@ function App() {
     if (token) {
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.Id;
-      const apiUrl = `http://tainguyen58-001-site1.ftempurl.com/api/User/${userId}`;
-      axios.get(apiUrl)
+      apiClient.get(`User/${userId}`)
         .then(response => {
           setData(response.data);
           localStorage.setItem('role', response.data?.role)
-          if (response.data?.role && response.data?.role == 'Manager') return navigate('/dashboard')
+          if (response.data?.role && (response.data?.role == 'Manager'|| response.data?.role == 'Staff')) return navigate('/dashboard')
           return navigate('/intro')
         })
         .catch(error => {
@@ -50,18 +50,22 @@ function App() {
       console.log('Token không tồn tại trong localStorage.');
     }
   }, [])
-  
+
 
   const CheckAuth = ({ children }) => {
-    const role = localStorage.getItem('role') || ''
-    if (role != 'Manager') return <Navigate to={'/'} />
-    else return children
+    const role = localStorage.getItem('role') || '';
+    if (role !== 'Manager' && role !== 'Staff') {
+      return <Navigate to={'/'} />;
+    } else {
+      return children;
+    }
   }
+
 
   return (
     <div className='App'>
-      {/* {data.role === 'Manager' ? '' : <Header />} */}
-      <Header />
+      {data.role === 'Manager' || data.role === 'Staff' ? '' : <Header />}
+      {/* <Header /> */}
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='/intro' element={<Intro />} />
@@ -84,7 +88,7 @@ function App() {
         <Route path='/compare' element={<Compare />} />
         <Route path='/custom' element={<CustomCage />} />
       </Routes>
-      {data.role === 'Manager' ? '' : <Footer />}
+      {data.role === 'Manager' || data.role === 'Staff' ? '' : <Footer />}
       {/* <Footer /> */}
     </div>
   );

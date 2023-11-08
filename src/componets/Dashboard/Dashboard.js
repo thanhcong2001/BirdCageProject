@@ -20,7 +20,10 @@ export const Dashboard = () => {
   const [productData, setProductData] = useState([])
   const [orderData, setOrderData] = useState([])
   const [voucherData, setVoucherData] = useState([])
-  const [role, setRole] = useState([])
+  const [role, setRole] = useState()
+  const [author, setAuthor] = useState([])
+  const [formula, setFormula] = useState([])
+  const [name, setName] = useState([])
   useEffect(() => {
     fetchUsers()
     fetchProduct()
@@ -32,11 +35,40 @@ export const Dashboard = () => {
       .then(response => {
         setVoucherData(response.data)
       })
+    apiClient.get('Formula/page?pageIndex=0&pageSize=10')
+      .then(response => {
+        setFormula(response.data?.items)
+      })
   }, [])
-  const tableHeaders = ['Name', 'Email', 'Gender', 'Phone Number', 'Birth Date', 'Status', 'Action'];
-  const tableProduct = ['ID', 'Name', 'Image', 'Price', 'Price Discount', 'Sku', 'Status', 'Action'];
+
+
+  useEffect(() => {
+    const token = localStorage.getItem('token') || null
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken.Id;
+      apiClient.get(`User/${userId}`)
+        .then(response => {
+          setAuthor(response.data?.role);
+          setName(response.data)
+          console.log("Role: ", response.data?.role);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    } else {
+      console.log('Token không tồn tại trong localStorage.');
+    }
+  }, [])
+
+
+
+
+  const tableHeaders = ['Name', 'Email', 'Role', 'Gender', 'Phone Number', 'Birth Date', 'Status', 'Action'];
+  const tableProduct = ['ID', 'Name', 'Image', 'Price', 'Price Discount', 'Sku', 'Quantity', 'Status', 'Action'];
   const tableOrder = ['ID', , 'Name Recieved', 'Price', 'Phone', 'Payment Status', 'Order Status', 'Action'];
   const tableVoucher = ['ID', 'Voucher Code', 'Discount Percent', 'start Date', 'Expiration Date', 'Status', 'Action'];
+  const tableFormula = ['ID', 'Type', 'Price', 'Construction', 'Width', 'Height', 'Spoke', 'Material', 'Status', 'Action'];
   function convertVND(price) {
     if (price != null && price !== undefined && price !== '') return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
     else return 0
@@ -108,7 +140,7 @@ export const Dashboard = () => {
       console.log('Token không tồn tại trong localStorage.');
     }
     if (role === 'Manager') {
-      deleteClient.delete(`${id}`, { 
+      deleteClient.delete(`${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -177,12 +209,6 @@ export const Dashboard = () => {
       console.log('Token không tồn tại trong localStorage.');
     }
   };
-
-  useEffect(() => {
-
-  }, [])
-
-
 
   const handleDeleteProduct = (id) => {
     const token = JSON.parse(localStorage.getItem('token'));
@@ -256,6 +282,7 @@ export const Dashboard = () => {
   const [showVoucherForm, setShowVoucherForm] = useState(false);
   const [showAddVoucherForm, setShowAddVoucherForm] = useState(false);
   const [activeOption, setActiveOption] = useState('user');
+  const [showFormulaForm, setShowFormulaForm] = useState(false);
   const toggleUserForm = () => {
     setShowUserForm(true);
     setShowProductForm(false);
@@ -263,6 +290,7 @@ export const Dashboard = () => {
     setShowVoucherForm(false)
     setShowAddVoucherForm(false)
     setActiveOption('user');
+    setShowFormulaForm(false)
   };
   const toggleProductForm = () => {
     setShowOrderForm(false)
@@ -271,6 +299,7 @@ export const Dashboard = () => {
     setShowVoucherForm(false)
     setShowAddVoucherForm(false)
     setActiveOption('product');
+    setShowFormulaForm(false)
   };
   const toggleOrderForm = () => {
     setShowUserForm(false);
@@ -279,6 +308,7 @@ export const Dashboard = () => {
     setShowVoucherForm(false)
     setShowAddVoucherForm(false)
     setActiveOption('order');
+    setShowFormulaForm(false)
   };
   const toggleVoucherForm = () => {
     setShowUserForm(false);
@@ -287,6 +317,7 @@ export const Dashboard = () => {
     setShowVoucherForm(true);
     setShowAddVoucherForm(false)
     setActiveOption('voucher');
+    setShowFormulaForm(false)
   };
 
   const toggleAddVoucherForm = () => {
@@ -296,17 +327,23 @@ export const Dashboard = () => {
     setShowVoucherForm(false);
     setShowAddVoucherForm(true)
     setActiveOption('addVoucher');
+    setShowFormulaForm(false)
+  };
+  const toggleFormulaForm = () => {
+    setShowUserForm(false);
+    setShowProductForm(false);
+    setShowOrderForm(false);
+    setShowVoucherForm(false);
+    setShowAddVoucherForm(false)
+    setActiveOption('formula');
+    setShowFormulaForm(true)
   };
   function UserForm() {
     return (
-      <div style={{ marginLeft: 100 }}>
+      <div style={{ marginLeft: 100, marginTop: 30 }}>
         <div>
-          <p style={{ fontSize: 23, letterSpacing: 2, marginBottom: 10 }}>User Management</p>
           <div style={{ display: 'flex' }}>
-            <input className='inputSearch-Dashboard' placeholder='Tìm kiếm ...' />
-            <button style={{ backgroundColor: '#64be43' }}>
-              <SearchIcon style={{ height: 15 }} />
-            </button>
+            <p style={{ fontSize: 23, letterSpacing: 2, marginBottom: 10 }}>User Management</p>
           </div>
           <div className='borderTable-Dashboard'>
             <table>
@@ -322,6 +359,7 @@ export const Dashboard = () => {
                   <tr key={i.id}>
                     <td>{i.userName}</td>
                     <td>{i.email}</td>
+                    <td>{i.role}</td>
                     <td>{i.gender}</td>
                     <td>{i.phoneNumber ? i.phoneNumber.replace(/'/g, '') : ''}</td>
                     <td>{format(new Date(i.doB), 'dd/MM/yyyy')}</td>
@@ -340,6 +378,8 @@ export const Dashboard = () => {
     );
   }
   function ProductForm() {
+    const [pageIndex, setPageIndex] = useState(0);
+    const [pageSize, setPageSize] = useState(6);
     const [showPopup, setShowPopup] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
     const [idEdit, setIdEdit] = useState([])
@@ -361,18 +401,12 @@ export const Dashboard = () => {
       setShowAdd(false);
     };
     return (
-      <div style={{ marginLeft: 100 }}>
+      <div style={{ marginLeft: 100, marginTop: 30 }}>
         <div>
-          <p style={{ fontSize: 23, letterSpacing: 2, marginBottom: 10 }}>Product Management</p>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <p style={{ fontSize: 23, letterSpacing: 2, marginBottom: 10 }}>Product Management</p>
             <div>
-              <input className='inputSearch-Dashboard' placeholder='Tìm kiếm ...' />
-              <button style={{ backgroundColor: '#64be43' }}>
-                <SearchIcon style={{ height: 15 }} />
-              </button>
-            </div>
-            <div>
-              <button onClick={openAddNew} style={{ backgroundColor: '#64be43' }}>
+              <button onClick={openAddNew} style={{ backgroundColor: '#64be43', marginTop: 25 }}>
                 Add Product
               </button>
             </div>
@@ -387,7 +421,7 @@ export const Dashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {productData.slice(0, 6).map(i => (
+                {productData.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize).map(i => (
                   <tr key={i?.id}>
                     <td>{i?.id}</td>
                     <td style={{ width: 150 }}>{i?.title}</td>
@@ -395,6 +429,7 @@ export const Dashboard = () => {
                     <td>{convertVND(i?.price)}</td>
                     <td>{convertVND(i?.priceAfterDiscount)}</td>
                     <td>{i?.sku}</td>
+                    <td>{i?.quantityInStock}</td>
                     <td>{i.isDelete ? "Deactive" : "Active"}</td>
                     <td>
                       <button style={{ marginRight: 10, backgroundColor: 'rgb(100, 190, 67)' }} onClick={() => openPopup(i?.id)}>Edit</button>
@@ -405,6 +440,14 @@ export const Dashboard = () => {
                 ))}
               </tbody>
             </table>
+          </div>
+          <div style={{ textAlign: 'center', marginTop: 30 }}>
+            <button style={{ marginRight: 30 }} onClick={() => setPageIndex(pageIndex - 1)} disabled={pageIndex === 0}>
+              Previous
+            </button>
+            <button style={{ paddingRight: 25, paddingLeft: 25 }} onClick={() => setPageIndex(pageIndex + 1)}>
+              Next
+            </button>
           </div>
         </div>
         <div className="App-dash">
@@ -421,7 +464,7 @@ export const Dashboard = () => {
                   <input className='inputEdit-Product' type="text" placeholder={convertVND(idEdit.price)} />
                   <input className='inputEdit-Product' type="email" placeholder={convertVND(idEdit.priceAfterDiscount)} />
                   <input className='inputEdit-Product' type="text" placeholder={idEdit.sku} />
-                  <input className='inputEdit-Product' type="email" placeholder="Sku" />
+                  <input className='inputEdit-Product' type="email" placeholder={idEdit.quantityInStock} />
                 </form>
                 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
                   <button style={{ marginRight: 30 }} type="submit">Submit</button>
@@ -441,11 +484,14 @@ export const Dashboard = () => {
                 <h2 style={{ marginBottom: 30 }}>Create Product</h2>
                 <form className='formEdit-Product'>
                   <input className='inputEdit-Product' type="text" placeholder="Name" />
-                  <input className='inputEdit-Product' type="email" placeholder="Image" />
-                  <input className='inputEdit-Product' type="text" placeholder="Price" />
-                  <input className='inputEdit-Product' type="email" placeholder="Price Discount" />
-                  <input className='inputEdit-Product' type="text" placeholder="Discount" />
-                  <input className='inputEdit-Product' type="email" placeholder="Sku" />
+                  <input className='inputEdit-Product' type="text" placeholder="Description" />
+                  <input className='inputEdit-Product' type="number" placeholder="CategoryId " />
+                  <input className='inputEdit-Product' type="number" placeholder="BirdCageTypeId " />
+                  <input className='inputEdit-Product' type="number" placeholder="Price " />
+                  <input className='inputEdit-Product' type="text" placeholder="Sku" />
+                  <input className='inputEdit-Product' type="number" placeholder="Quantity" />
+                  <input className='inputEdit-Product' type="number" placeholder="PercentDiscount " />
+                  <input className='inputEdit-Product' type="text" placeholder="Image" />
                 </form>
                 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
                   <button style={{ marginRight: 30 }} type="submit">Submit</button>
@@ -461,18 +507,12 @@ export const Dashboard = () => {
 
   function VoucherForm() {
     return (
-      <div style={{ marginLeft: 100 }}>
+      <div style={{ marginLeft: 100, marginTop: 30 }}>
         <div>
-          <p style={{ fontSize: 23, letterSpacing: 2, marginBottom: 10 }}>Voucher Management</p>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <p style={{ fontSize: 23, letterSpacing: 2, marginBottom: 10 }}>Voucher Management</p>
             <div>
-              <input className='inputSearch-Dashboard' placeholder='Tìm kiếm ...' />
-              <button style={{ backgroundColor: '#64be43' }}>
-                <SearchIcon style={{ height: 15 }} />
-              </button>
-            </div>
-            <div>
-              <button style={{ backgroundColor: '#64be43' }} onClick={toggleAddVoucherForm}>
+              <button style={{ backgroundColor: '#64be43', marginTop: 25 }} onClick={toggleAddVoucherForm}>
                 Add Voucher
               </button>
             </div>
@@ -601,12 +641,128 @@ export const Dashboard = () => {
     )
   }
 
+
+  function FormulaForm() {
+    const [showPopup, setShowPopup] = useState(false);
+    const [showAdd, setShowAdd] = useState(false);
+    const [idEdit, setIdEdit] = useState([])
+    const openPopup = (id) => {
+      apiClient.get(`Product/${id}`)
+        .then(response => {
+          setIdEdit(response.data)
+          console.log("Dung dep trai: ", response.data);
+        })
+      setShowPopup(true);
+    };
+    const closePopup = () => {
+      setShowPopup(false);
+    };
+    const openAddNew = () => {
+      setShowAdd(true);
+    };
+    const closeAddNew = () => {
+      setShowAdd(false);
+    };
+
+    const [pageIndex, setPageIndex] = useState(0);
+    const [pageSize, setPageSize] = useState(6);
+    return (
+      <div style={{ marginLeft: 100, marginTop: 30 }}>
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div>
+              <p style={{ fontSize: 23, letterSpacing: 2, marginBottom: 10 }}>Formula Management</p>
+            </div>
+            <div>
+              <button onClick={openAddNew} style={{ backgroundColor: '#64be43', marginTop: 25 }}>
+                Add Formula
+              </button>
+            </div>
+          </div>
+          <div className='borderTable-Dashboard'>
+            <table>
+              <thead>
+                <tr>
+                  {tableFormula.map((header, index) => (
+                    <th key={index}>{header}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {formula.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize).map(i => (
+                  <tr key={i.id}>
+                    <td>{i.id}</td>
+                    <td>{i.code}</td>
+                    <td>{i.price}</td>
+                    <td>{i.constructionTime} days</td>
+                    <td>{i.minWidth} - {i.maxWidth} cm</td>
+                    <td>{i.minHeight} - {i.maxHeight} cm</td>
+                    <td>{i.minBars} - {i.maxBars}</td>
+                    <td>{i.specifications[0]?.specificationValue}</td>
+                    <td>{i.isDelete ? "Deactive" : "Active"}</td>
+                    <td>
+                      <button style={{ marginRight: 5, backgroundColor: 'rgb(100, 190, 67)' }} onClick={() => handleEditUser(i.id)}>Edit</button>
+                      <button style={{ marginRight: 5 }} onClick={() => handleEditUser(i.id)}>Active</button>
+                      <button style={{ backgroundColor: 'red', marginRight: 5 }} onClick={() => handleDeleteUser(i.id)}>Delete</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div style={{ textAlign: 'center', marginTop: 30 }}>
+            <button style={{ marginRight: 20 }} onClick={() => setPageIndex(pageIndex - 1)} disabled={pageIndex === 0}>
+              Previous
+            </button>
+            <button style={{ paddingRight: 25, paddingLeft: 25 }} onClick={() => setPageIndex(pageIndex + 1)}>
+              Next
+            </button>
+          </div>
+          <div className="App-dash">
+            {showAdd && (
+              <div className="popup">
+                <div className="popup-content">
+                  <span className="close" onClick={closeAddNew}>
+                    &times;
+                  </span>
+                  <h2 style={{ marginBottom: 30 }}>Create Formura</h2>
+                  <form className='formEdit-Product'>
+                    <input className='inputEdit-Product' type="text" placeholder="Code" />
+                    <input className='inputEdit-Product' type="text" placeholder="Min-Width" />
+                    <input className='inputEdit-Product' type="number" placeholder="Max-Width " />
+                    <input className='inputEdit-Product' type="number" placeholder="Min-Height " />
+                    <input className='inputEdit-Product' type="number" placeholder="Max-Height " />
+                    <input className='inputEdit-Product' type="text" placeholder="Price" />
+                    <input className='inputEdit-Product' type="number" placeholder="Min-Bars" />
+                    <input className='inputEdit-Product' type="number" placeholder="Max-Bars" />
+                    <input className='inputEdit-Product' type="text" placeholder="ConstructionTime" />
+                    <input className='inputEdit-Product' type="number" placeholder="Specifications" />
+                  </form>
+                  <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
+                    <button style={{ marginRight: 30 }} type="submit">Submit</button>
+                    <button style={{ backgroundColor: 'red' }} onClick={closeAddNew} type="submit">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const navigate = useNavigate();
+  const handleLogoutClick = () => {
+    localStorage.removeItem('token');
+    navigate('/intro')
+    window.location.reload();
+  }
   return (
     <div style={{ display: 'flex' }}>
       <div style={{ backgroundColor: 'rgb(100, 190, 67)', height: '100vh' }}>
         <div className='ContainInfo-Dashboard'>
           <img className='avatarAdmin-Dashboard' src='https://i.pinimg.com/564x/01/c7/51/01c751482ef7c4f5e93f3539efd27f6f.jpg' />
-          <p style={{ fontSize: 18, color: 'white', fontWeight: 'bold' }}>Admin</p>
+          <p style={{ fontSize: 18, color: 'white', fontWeight: 'bold' }}>{name?.role}</p>
         </div>
         <div className='lineAdmin-Dashboard'></div>
         <div>
@@ -638,6 +794,16 @@ export const Dashboard = () => {
             <img style={{ width: 40, height: 45 }} src='https://cdn-icons-png.flaticon.com/128/10218/10218090.png' />
             <p style={{ fontSize: 18, marginLeft: 35, color: 'white' }}>Voucher</p>
           </div>
+          <div className='Option-Dashboard' onClick={toggleFormulaForm} style={{
+            backgroundColor: activeOption === 'formula' ? 'lightBlue' : 'initial',
+            color: activeOption === 'voucher' ? '#fff' : 'initial',
+          }}>
+            <img style={{ width: 40, height: 40 }} src='https://cdn-icons-png.flaticon.com/128/6989/6989999.png' />
+            <p style={{ fontSize: 18, marginLeft: 35, color: 'white' }}>Formula</p>
+          </div>
+          <div onClick={handleLogoutClick} style={{marginTop:100,marginLeft:70}}>
+            <img style={{width:40,height:40}} src='https://cdn-icons-png.flaticon.com/128/10405/10405584.png'/>
+          </div>
         </div>
       </div>
       {showUserForm && <UserForm />}
@@ -645,6 +811,7 @@ export const Dashboard = () => {
       {showOrderForm && <OrderForm tableOrder={tableOrder} />}
       {showVoucherForm && <VoucherForm />}
       {showAddVoucherForm && <AddVoucherForm />}
+      {showFormulaForm && <FormulaForm />}
     </div>
   )
 }
