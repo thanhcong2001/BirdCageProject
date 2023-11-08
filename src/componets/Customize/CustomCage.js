@@ -1,6 +1,7 @@
 import apiClient from 'api/apiClient'
 import React, { useState, useEffect } from 'react'
 import '../Customize/CustomCage.css'
+import useAddBirdCustom from './useAddBirdCustom';
 
 export default function CustomCage() {
     const [data, setdata] = useState([])
@@ -16,7 +17,6 @@ export default function CustomCage() {
                 setImgCage(response.data?.data)
             })
     };
-
     const [selectedMaterials, setSelectedMaterials] = useState([]);
     const [detail, setDetail] = useState([])
     useEffect(() => {
@@ -85,6 +85,17 @@ export default function CustomCage() {
             setIsNan(true);
         }
     };
+    const {addCustom, addCustomPending} = useAddBirdCustom()
+    const handleAddToCartCustom = async () => {
+        await addCustom({id: 1, dataCustom: {
+            Model: selectedCode,
+            Width: inputWidth,
+            Height: inputValue,
+            Material: selectedMaterials,
+            Bars: inputNan,
+            PriceDesign: detail?.price
+        }})
+    }
 
     return (
         <div>
@@ -168,7 +179,9 @@ export default function CustomCage() {
                                 <p>- Giá ước tính: <span style={{ color: 'red', fontSize: 25, fontWeight: 'bold' }}>{convertVND(detail?.price)}</span></p>
                             </div>
                         </div>
-                        <button style={{ width: 400, marginTop: 10, borderRadius: 10, backgroundColor: 'rgb(100, 190, 67)', height: 50 }}>Thêm vào giỏ
+                        <button style={{ width: 400, marginTop: 10, borderRadius: 10, backgroundColor: 'rgb(100, 190, 67)', height: 50 }} onClick={handleAddToCartCustom}>
+                            {addCustomPending ? 'Đang thêm...' : 'Thêm vào giỏ'}
+                          
                         </button>
                     </div>
                 </div>
