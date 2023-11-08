@@ -2,6 +2,7 @@ import apiClient from 'api/apiClient'
 import React, { useState, useEffect } from 'react'
 import '../Customize/CustomCage.css'
 import useAddBirdCustom from './useAddBirdCustom';
+import { jwtDecode } from 'jwt-decode';
 
 export default function CustomCage() {
     const [data, setdata] = useState([])
@@ -9,6 +10,7 @@ export default function CustomCage() {
     const [imgCage, setImgCage] = useState([]);
     const [cageType, setcageType] = useState([])
     const [selectedCode, setSelectedCode] = useState('');
+    const [specValue, setSpecValue] = useState('')
     const [active, setActive] = useState(null)
     const handleButtonClick = (buttonId) => {
         setActive(buttonId);
@@ -48,6 +50,11 @@ export default function CustomCage() {
     const handleOptionChange = (event) => {
         setSelectedCode(event.target.value);
     };
+
+    const handleSpeChange = (event) => {
+        console.log(event.target.value)
+        setSpecValue(event.target.value)
+    }
     function convertVND(price) {
         if (price != null && price !== undefined && price !== '') return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
         else return 0
@@ -87,14 +94,21 @@ export default function CustomCage() {
     };
     const {addCustom, addCustomPending} = useAddBirdCustom()
     const handleAddToCartCustom = async () => {
-        await addCustom({id: 1, dataCustom: {
-            Model: selectedCode,
-            Width: inputWidth,
-            Height: inputValue,
-            Material: selectedMaterials,
-            Bars: inputNan,
-            PriceDesign: detail?.price
-        }})
+        const token = JSON.parse(localStorage.getItem('token'));
+        if (token) {
+          const decodedToken = jwtDecode(token);
+          const userId = decodedToken.Id;
+          await addCustom({
+            model: selectedCode,
+            width: inputWidth,
+            height: inputValue,
+            material: specValue,
+            bars: inputNan,
+            priceDesign: detail?.price,
+            applicationUserId: userId,
+            birdCageTypeId: active
+        })
+        }
     }
 
     return (
@@ -127,7 +141,7 @@ export default function CustomCage() {
                             </form>
                             <form>
                                 <label>Chất Liệu:</label>
-                                <select className='select-optionCutom' style={{ marginLeft: 12 }}>
+                                <select className='select-optionCutom' style={{ marginLeft: 12 }} onChange={handleSpeChange}>
                                     {selectedMaterials.map(spec => (
                                         <option key={spec.id} value={spec.specificationValue}>
                                             <span>{spec.specificationValue}</span>

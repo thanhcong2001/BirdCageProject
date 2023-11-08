@@ -37,6 +37,9 @@ const usePayment = (data) => {
                 queryClient.invalidateQueries({ queryKey: ['cartItem'] });
                 nav('/intro')
             }
+        },
+        onError: () => {
+            enqueueSnackbar("Xảy ra lỗi trong quá trình thanh toán", { variant: 'error' })
         }
     })
     return { checkout: checkoutMutation.mutate, isLoading: checkoutMutation.isPending }

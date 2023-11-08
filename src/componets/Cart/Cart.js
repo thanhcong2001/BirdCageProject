@@ -8,10 +8,14 @@ import CartItem from './CartItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearProductWithId, updateToCartArr } from 'componets/ProductCompare/productSlice';
 import useUpdateCart from './useUpdateCart';
+import useGetCustomProduct from './useGetCustomProduct';
+import { jwtDecode } from 'jwt-decode';
+import { useState } from 'react';
+import usePushToShoppingCart from './usePushToShoppingCart';
 export const Cart = () => {
     const token = localStorage.getItem('token');
     const formattedToken = token?.replace(/"/g, '');
-    console.log(formattedToken)
+ 
     const { cartItem } = useBirdCart(formattedToken)
     const cartItems = cartItem?.shoppingCarts
     const totalPrice = cartItems?.reduce((total, item) => total + item.productViewModel.priceAfterDiscount * item.count, 0);
@@ -60,6 +64,55 @@ export const Cart = () => {
         if (price != null && price !== undefined && price !== '') return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
         else return 0
     }
+    const {customData} = useGetCustomProduct()
+    const data = customData?.data
+    const {pushCustom} = usePushToShoppingCart()
+    
+const handlePushToCart = async () => {
+    const pushdata = {
+        Model: data[0]?.model,
+        Width: data[0]?.width,
+        Height: data[0]?.height,
+        Material: data[0]?.material,
+        Bars: data[0]?.bars,
+        PriceDesign: data[0]?.priceDesign
+    }
+    await pushCustom(pushdata)
+}
+      const DetailCustom = ({i}) => {
+        const [showAdd, setShowAdd] = useState(false);
+
+        const openAddNew = () => {
+            setShowAdd(true);
+          };
+          const closeAddNew = () => {
+            setShowAdd(false);
+          };
+    
+        return (
+            <>
+            <button onClick={openAddNew}>
+                Detail
+            </button>
+            <div className="App-dash" >
+          {showAdd && (
+            <div className="popup-2">
+              <div className="popup-content-2">
+                <span className="close" onClick={closeAddNew}>
+                  &times;
+                </span>
+                <h2 style={{ marginBottom: 30 }}>Detail Product</h2>
+                <div style={{color: 'black'}}>Bars: {i.bars}</div>
+                <div>Height: {i.height}</div>
+                <div>Width: {i.width}</div>
+                <div>Material: {i.material}</div>
+              </div>
+            </div>
+          )}
+        </div>
+            </>
+        )
+      }
 
     return (
         <div>
@@ -100,6 +153,30 @@ export const Cart = () => {
                                     </tbody>
                                 </table>}
 
+                                    <table>
+                                        <thead>
+                                            <td>SẢN PHẨM CUSTOM</td>
+                                            <td>CHI TIẾT</td>
+                                            <td>TỔNG CỘNG</td>
+                                            <td></td>
+                                        </thead>
+                                        <tbody>
+                                            {data?.map((i)=> (
+                                            <tr>
+                                                <td>{i.model}</td>
+                                                <td>
+                                                       <DetailCustom i ={i}/>
+                                                </td>
+                                                <td>{i.priceDesign}</td>
+                                            </tr>
+                                            ))}
+                                            
+                                        </tbody>
+                                        <button onClick={handlePushToCart}>
+                                            Shop now
+                                        </button>
+                                    </table>
+
 
                         </div>
                         <div className='cart-total'>
@@ -124,14 +201,7 @@ export const Cart = () => {
                                         <button disabled={true} style={{ width: '100%', height: '60px', marginTop: '10px', fontSize: '20px', opacity: 0.5 }}>TIẾN HÀNH THANH TOÁN</button>
                                     }
                                 </div>
-                                {/* <div>
-                                <h5><DiscountIcon /> Mã ưu đãi</h5>
-                                <div style={{ borderTop: '3px solid #d8d8d8' }}>
- 
-                                </div>
-                                <input style={{ width: '97%', height: '30px', marginTop: '15px' }} type="text" placeholder="Mã ưu đãi" />
-                                <button style={{ width: '100%', height: '60px', marginTop: '10px', fontSize: '20px' }}>Áp dụng Voucher</button>
-                            </div> */}
+                                
                             </div>
                         </div>
                     </> : <div style={{
