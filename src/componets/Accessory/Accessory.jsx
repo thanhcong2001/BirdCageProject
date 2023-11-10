@@ -101,7 +101,7 @@ export const Accessory = () => {
                             <Link to={`/details/${i.id}`}>
                                 <div className='card'>
                                     <img className='img-birdCage' src={i.productImages[0]?.imageUrl} alt={`hinh cua id ${i.id}`} />
-                                    <p className='nameAccessory'>{i.title}</p>
+                                    <p title={i.title} className='truncate-cus1'>{i.title}</p>
                                     <h4>{convertVND(i.price)}</h4>
                                 </div>
                             </Link>

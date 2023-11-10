@@ -162,7 +162,7 @@ function Header() {
                     <Link style={{ textDecoration: "none" }} to={"/intro"}>
                         <p className="category">Giới Thiệu</p>
                     </Link>
-                    <ul class="navbar">
+                    {/* <ul class="navbar">
                         <li className="bridge">
                             <p
                                 className="category"
@@ -172,71 +172,11 @@ function Header() {
                             >
                                 Thiết Kế Lồng
                             </p>
-                            {/* <ul className="list1">
-                                <li className="parent2">
-                                    <a href="">Lồng Chim Vẹt</a>
-                                    <div className='line-cage'></div>
-                                    <ul className='list2'>
-                                        <li><a onClick={() => navigate('/designCage')}>Lồng bầu chạm</a></li>
-                                        <div className='line-cage'></div>
-                                        <li><a onClick={() => navigate('/custom')}>Lồng Chim Lực</a></li>
-                                        <div className='line-cage'></div>
-                                        <li><a href="#">Lồng Chim Sing</a></li>
-                                    </ul>
-                                </li>
-                                <li className="parent2">
-                                    <a href="">Lồng Chim Sáo</a>
-                                    <div className="line-cage"></div>
-                                    <ul className="list2">
-                                        <li>
-                                            <a href="#">Lồng Chim Lực</a>
-                                        </li>
-                                        <div className="line-cage"></div>
-                                        <li>
-                                            <a href="#">Lồng Chim Sing</a>
-                                        </li>
-                                        <div className="line-cage"></div>
-                                        <li>
-                                            <a href="#">Lồng Chim Inox</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li className="parent2">
-                                    <a href="">Lồng Chim Khuyên</a>
-                                    <div className="line-cage"></div>
-                                    <ul className="list2">
-                                        <li>
-                                            <a href="#">Lồng Chim Sing</a>
-                                        </li>
-                                        <div className="line-cage"></div>
-                                        <li>
-                                            <a href="#">Lồng Chim Inox</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li className="parent2">
-                                    <a href="">Lồng Chim Khướu</a>
-                                    <ul className="list2">
-                                        <li>
-                                            <a href="#">Lồng Lực</a>
-                                        </li>
-                                        <div className="line-cage"></div>
-                                        <li>
-                                            <a href="#">Lồng Chim Vuông</a>
-                                        </li>
-                                        <div className="line-cage"></div>
-                                        <li>
-                                            <a href="#">Lồng Chim Tròn</a>
-                                        </li>
-                                        <div className="line-cage"></div>
-                                        <li>
-                                            <a href="#">Lồng Chim Bẫy</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul> */}
                         </li>
-                    </ul>
+                    </ul> */}
+                    <Link style={{ textDecoration: "none" }} to={"/custom"}>
+                        <p className="category">Thiết Kế Lồng</p>
+                    </Link>
                     <Link style={{ textDecoration: "none" }} to={"/birdCage"}>
                         <p className="category">Lồng Chim</p>
                     </Link>
@@ -287,7 +227,7 @@ function Header() {
                                                 ))}
                                         </div>
                                     ) : (
-                                        <div className="search-value"></div>
+                                        <div className="search-value" style={{ height: '0' }}></div>
                                     )}
                                 </div>
                             ) : null}

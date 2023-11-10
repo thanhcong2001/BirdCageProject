@@ -110,7 +110,7 @@ function Details() {
             </div>
             {birdIdLoading ? <Box sx={{ display: 'flex', height: '500px', justifyContent: 'center', alignItems: 'center' }}>
                 <CircularProgress />
-            </Box> : <div>
+            </Box> : <div style={{marginLeft:38}}>
                 <div style={{ display: 'flex' }}>
                     <div>
                         <img className='picProduct' src={bird.productImages[0]?.imageUrl} alt={`hinh anh ${bird?.id}`} />

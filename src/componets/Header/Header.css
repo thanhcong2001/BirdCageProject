@@ -121,6 +121,8 @@
   width: 108%;
   z-index: 30;
   color: black;
+  height: 500px;
+  overflow-y: scroll;
 }
 
 .search-item {

@@ -60,10 +60,6 @@ export const Dashboard = () => {
       console.log('Token không tồn tại trong localStorage.');
     }
   }, [])
-
-
-
-
   const tableHeaders = ['Name', 'Email', 'Role', 'Gender', 'Phone Number', 'Birth Date', 'Status', 'Action'];
   const tableProduct = ['ID', 'Name', 'Image', 'Price', 'Price Discount', 'Sku', 'Quantity', 'Status', 'Action'];
   const tableOrder = ['ID', , 'Name Recieved', 'Price', 'Phone', 'Payment Status', 'Order Status', 'Action'];
@@ -83,6 +79,7 @@ export const Dashboard = () => {
     apiClient.get('Product/page?pageIndex=0&pageSize=10')
       .then(response => {
         setProductData(response.data?.items)
+        console.log("Cong Dev: ", response.data?.items);
       })
   }
   const handleEditUser = (id) => {
@@ -283,6 +280,7 @@ export const Dashboard = () => {
   const [showAddVoucherForm, setShowAddVoucherForm] = useState(false);
   const [activeOption, setActiveOption] = useState('user');
   const [showFormulaForm, setShowFormulaForm] = useState(false);
+
   const toggleUserForm = () => {
     setShowUserForm(true);
     setShowProductForm(false);
@@ -405,11 +403,11 @@ export const Dashboard = () => {
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <p style={{ fontSize: 23, letterSpacing: 2, marginBottom: 10 }}>Product Management</p>
-            {/* <div>
+            <div>
               <button onClick={openAddNew} style={{ backgroundColor: '#64be43', marginTop: 25 }}>
                 Add Product
               </button>
-            </div> */}
+            </div>
           </div>
           <div className='borderTable-Dashboard'>
             <table>
@@ -460,11 +458,17 @@ export const Dashboard = () => {
                 <h2 style={{ marginBottom: 30 }}>Edit Product</h2>
                 <form className='formEdit-Product'>
                   <input className='inputEdit-Product' type="text" placeholder={idEdit.title} />
-                  <input className='inputEdit-Product' type="email" placeholder="Image" />
-                  <input className='inputEdit-Product' type="text" placeholder={convertVND(idEdit.price)} />
-                  <input className='inputEdit-Product' type="email" placeholder={convertVND(idEdit.priceAfterDiscount)} />
+                  <input className='inputEdit-Product' type="text" placeholder="Image" />
+                  <input className='inputEdit-Product' type="number" placeholder={convertVND(idEdit.price)} />
+                  <input className='inputEdit-Product' type="number" placeholder={convertVND(idEdit.priceAfterDiscount)} />
                   <input className='inputEdit-Product' type="text" placeholder={idEdit.sku} />
-                  <input className='inputEdit-Product' type="email" placeholder={idEdit.quantityInStock} />
+                  <input className='inputEdit-Product' type="number" placeholder={idEdit.quantityInStock} />
+                  <input className='inputEdit-Product' type="text" placeholder={idEdit.CategoryId} />
+                  <input className='inputEdit-Product' type="text" placeholder={idEdit.BirdCageTypeId} />
+                  <input className='inputEdit-Product' type="number" placeholder={convertVND(idEdit.EditedBy)} />
+                  <input className='inputEdit-Product' type="number" placeholder={convertVND(idEdit.priceAfterDiscount)} />
+                  <input className='inputEdit-Product' type="text" placeholder={idEdit.sku} />
+                  <input className='inputEdit-Product' type="number" placeholder={idEdit.quantityInStock} />
                 </form>
                 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
                   <button style={{ marginRight: 30 }} type="submit">Submit</button>
@@ -646,17 +650,27 @@ export const Dashboard = () => {
     const [showPopup, setShowPopup] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
     const [idEdit, setIdEdit] = useState([])
-    const openPopup = (id) => {
-      apiClient.get(`Product/${id}`)
-        .then(response => {
-          setIdEdit(response.data)
-          console.log("Dung dep trai: ", response.data);
-        })
-      setShowPopup(true);
+    const [formulaInput, setFormulaInput] = useState('');
+    const [error, setError] = useState('');
+    const validateInput = () => {
+      const formulaInputNumber = parseFloat(formulaInput);
+      if (formulaInputNumber > 0 && formulaInputNumber < 100) {
+        setError('');
+      } else {
+        setError('Số không hợp lệ');
+      }
     };
-    const closePopup = () => {
-      setShowPopup(false);
-    };
+
+    // const openPopup = (id) => {
+    //   apiClient.get(`Product/${id}`)
+    //     .then(response => {
+    //       setIdEdit(response.data)
+    //     })
+    //   setShowPopup(true);
+    // };
+    // const closePopup = () => {
+    //   setShowPopup(false);
+    // };
     const openAddNew = () => {
       setShowAdd(true);
     };
@@ -673,11 +687,11 @@ export const Dashboard = () => {
             <div>
               <p style={{ fontSize: 23, letterSpacing: 2, marginBottom: 10 }}>Formula Management</p>
             </div>
-            {/* <div>
+            <div>
               <button onClick={openAddNew} style={{ backgroundColor: '#64be43', marginTop: 25 }}>
                 Add Formula
               </button>
-            </div> */}
+            </div>
           </div>
           <div className='borderTable-Dashboard'>
             <table>
@@ -728,15 +742,20 @@ export const Dashboard = () => {
                   <h2 style={{ marginBottom: 30 }}>Create Formura</h2>
                   <form className='formEdit-Product'>
                     <input className='inputEdit-Product' type="text" placeholder="Code" />
-                    <input className='inputEdit-Product' type="text" placeholder="Min-Width" />
+                    <div style={{ marginBottom: 20 }}>
+                      <input className='inputEdit-Product' type="number" placeholder="Min-Width" value={formulaInput}
+                        onChange={(e) => setFormulaInput(e.target.value)}
+                        onBlur={validateInput} />
+                      {error && <div style={{ color: 'red',fontSize :10,textAlign:'left'}}>{error}</div>}
+                    </div>
                     <input className='inputEdit-Product' type="number" placeholder="Max-Width " />
                     <input className='inputEdit-Product' type="number" placeholder="Min-Height " />
                     <input className='inputEdit-Product' type="number" placeholder="Max-Height " />
-                    <input className='inputEdit-Product' type="text" placeholder="Price" />
+                    <input className='inputEdit-Product' type="number" placeholder="Price" />
                     <input className='inputEdit-Product' type="number" placeholder="Min-Bars" />
                     <input className='inputEdit-Product' type="number" placeholder="Max-Bars" />
-                    <input className='inputEdit-Product' type="text" placeholder="ConstructionTime" />
-                    <input className='inputEdit-Product' type="number" placeholder="Specifications" />
+                    <input className='inputEdit-Product' type="number" placeholder="ConstructionTime" />
+                    <input className='inputEdit-Product' type="text" placeholder="Specifications" />
                   </form>
                   <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
                     <button style={{ marginRight: 30 }} type="submit">Submit</button>
@@ -801,8 +820,8 @@ export const Dashboard = () => {
             <img style={{ width: 40, height: 40 }} src='https://cdn-icons-png.flaticon.com/128/6989/6989999.png' />
             <p style={{ fontSize: 18, marginLeft: 35, color: 'white' }}>Formula</p>
           </div>
-          <div onClick={handleLogoutClick} style={{marginTop:100,marginLeft:70}}>
-            <img style={{width:40,height:40}} src='https://cdn-icons-png.flaticon.com/128/10405/10405584.png'/>
+          <div onClick={handleLogoutClick} style={{ marginTop: 100, marginLeft: 70 }}>
+            <img style={{ width: 40, height: 40 }} src='https://cdn-icons-png.flaticon.com/128/10405/10405584.png' />
           </div>
         </div>
       </div>

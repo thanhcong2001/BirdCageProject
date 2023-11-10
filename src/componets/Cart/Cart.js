@@ -130,7 +130,7 @@ const handlePushToCart = async () => {
                                     <td></td>
                                 </thead>
                                 <tbody>
-                                    {cartItems?.map((i, index) => (
+                                    {data?.map((i, index) => (
                                         <CartItem key={index} i={i} onChange={onChange} handleDelete={handleDelete} deleteItemCart={deleteItemCart} quantityEdit={true} />
                                     ))}
                                     <tr>
