@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react'
-import '../Accessory/Accessory.css'
-import axios from 'axios';
-import useProduct from 'api/apiProduct/useProduct';
 import { Box, CircularProgress } from '@mui/material';
-import { Link } from 'react-router-dom';
-import apiClient from 'api/apiClient';
 import { Pagination } from 'antd';
+import apiClient from 'api/apiClient';
+import useGetProdById from 'api/apiProduct/useGetProdById';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import '../Accessory/Accessory.css';
 export const Accessory = () => {
     const [myCar, setMyCar] = useState("Thứ tự mặc định");
     const [list, setList] = useState([])
-    const [pageIndex, setPageIndex] = useState(1)
-    const { birdCage, isLoading, isError, birdCageError } = useProduct({ pageIndex: pageIndex });
+    const [pageIndex, setPageIndex] = useState(0)
+    const categoryIdToFilter = 2; // page long chim
 
+    const { data, isLoading, isError, error } = useGetProdById({ pageIndex, id: categoryIdToFilter })
     useEffect(() => {
         apiClient.get('Product/page?pageIndex=0&pageSize=10')
             .then(response => {
@@ -29,12 +29,10 @@ export const Accessory = () => {
     }
 
     if (isError) {
-        return <h2>{birdCageError.message}</h2>
+        return <h2>{error.message}</h2>
     }
-    const categoryIdToFilter = 2; // page long chim
 
-    const filteredData = birdCage?.items.filter(item => item.categoryId === categoryIdToFilter);
-
+    const filteredData = data?.items
     const handleChangePage = (e) => {
         setPageIndex(() => e - 1)
     }
@@ -108,7 +106,7 @@ export const Accessory = () => {
                         </div>
                     ))}
                 </div>}
-                <Pagination style={{ textAlign: 'center', marginTop: 20 }} defaultCurrent={1} pageSize={10} total={50} onChange={handleChangePage} />
+                <Pagination style={{ textAlign: 'center', marginTop: 20 }} defaultCurrent={1} pageSize={10} total={filteredData?.length} onChange={handleChangePage} />
             </div>
         </div>
     )

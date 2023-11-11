@@ -1,18 +1,17 @@
 import { Box, CircularProgress } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
-import { clear } from '@testing-library/user-event/dist/clear';
-import apiClient from 'api/apiClient';
-import useProduct from 'api/apiProduct/useProduct';
-import { useEffect, useState } from 'react';
-import '../BirdCage/BirdCage.css';
 import { Pagination } from 'antd';
+import apiClient from 'api/apiClient';
+import useGetProdById from 'api/apiProduct/useGetProdById';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../BirdCage/BirdCage.css';
 export const BirdCage = () => {
   const navigate = useNavigate()
   const [myCar, setMyCar] = useState("Thứ tự mặc định");
   const [list, setList] = useState([])
   const [compareList, setCompareList] = useState([])
   const [pageIndex, setPageIndex] = useState(0)
-  const { birdCage, isLoading, isError, birdCageError } = useProduct({pageIndex: pageIndex});
+  // const { birdCage, isLoading, isError, birdCageError } = useProduct({pageIndex: pageIndex});
   const [tmpList, setTmpList] = useState([1, 2, 3])
   const [disabledButtons, setDisabledButtons] = useState([]);
   useEffect(() => {
@@ -32,12 +31,14 @@ export const BirdCage = () => {
     else return 0
   }
 
-  if (isError) {
-    return <h2>{birdCageError.message}</h2>
-  }
   const categoryIdToFilter = 1; // page long chim
+  const {data,isLoading,isError, error} = useGetProdById({pageIndex, id:categoryIdToFilter })
 
-  const filteredData = birdCage?.items.filter(item => item.categoryId === categoryIdToFilter);
+  if (isError) {
+    return <h2>{error.message}</h2>
+  }
+
+  const filteredData = data?.items
 
   const addItemToCompareList = (i) => {
     if (compareList.length === 3 || disabledButtons.includes(i.id)) return
