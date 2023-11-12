@@ -14,14 +14,14 @@ const CartItem = ({ i, onChange, handleDelete, quantityEdit }) => {
                 {/* <HighlightOffIcon /> */}
                 <img className='img_cart' src={imgCartItem} alt="" />
             </td>
-            <td>{i?.model}</td>
-            <td>{convertVND(i?.priceDesign)}</td>
+            <td>{i.productViewModel.title}</td>
+            <td>{convertVND(i?.productViewModel.priceAfterDiscount)}</td>
             {quantityEdit ? <td><InputNumber min={0}
                 defaultValue={i?.count}
                 onChange={(value) => onChange(value, i?.productViewModel?.id)} /></td> : <td>{i?.count}</td>}
-            <td>{convertVND(i?.priceDesign*2)}</td>
+            <td>{convertVND(i?.productViewModel.priceAfterDiscount * i.count)}</td>
             <td>
-                <Button color="error" onClick={() => handleDelete(i?.applicationUserId)}>Xóa</Button>
+                <Button color="error" onClick={() => handleDelete(i?.productViewModel.id)}>Xóa</Button>
             </td>
         </tr>
     )

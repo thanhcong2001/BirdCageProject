@@ -2,26 +2,27 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useBirdCart from 'api/apiProduct/useBirdCart';
 import axios from 'axios';
+import { clearProductWithId, updateToCartArr } from 'componets/ProductCompare/productSlice';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import '../Cart/Cart.css';
 import CartItem from './CartItem';
-import { useDispatch, useSelector } from 'react-redux';
-import { clearProductWithId, updateToCartArr } from 'componets/ProductCompare/productSlice';
-import useUpdateCart from './useUpdateCart';
 import useGetCustomProduct from './useGetCustomProduct';
-import { jwtDecode } from 'jwt-decode';
-import { useState } from 'react';
+import useGetEmptyCage from './useGetEmptyCage';
 import usePushToShoppingCart from './usePushToShoppingCart';
+import useUpdateCart from './useUpdateCart';
 export const Cart = () => {
     const token = localStorage.getItem('token');
     const formattedToken = token?.replace(/"/g, '');
- 
     const { cartItem } = useBirdCart(formattedToken)
     const cartItems = cartItem?.shoppingCarts
     const totalPrice = cartItems?.reduce((total, item) => total + item.productViewModel.priceAfterDiscount * item.count, 0);
     const shippingFee = 30000
     const queryClient = useQueryClient()
     const nav = useNavigate()
+
+    const {data: emptyCage} = useGetEmptyCage()
     async function deleteItem(itemId) {
         const headers = {
             Authorization: `Bearer ${formattedToken}`
@@ -69,15 +70,18 @@ export const Cart = () => {
     const {pushCustom} = usePushToShoppingCart()
     
 const handlePushToCart = async () => {
-    const pushdata = {
-        Model: data[0]?.model,
-        Width: data[0]?.width,
-        Height: data[0]?.height,
-        Material: data[0]?.material,
-        Bars: data[0]?.bars,
-        PriceDesign: data[0]?.priceDesign
+    if(emptyCage) {
+        const pushdata = {
+            Model: data[0]?.model,
+            Width: data[0]?.width,
+            Height: data[0]?.height,
+            Material: data[0]?.material,
+            Bars: data[0]?.bars,
+            PriceDesign: data[0]?.priceDesign
+        }
+        await pushCustom({pushdata, id: emptyCage[0]?.id})
     }
-    await pushCustom(pushdata)
+   
 }
       const DetailCustom = ({i}) => {
         const [showAdd, setShowAdd] = useState(false);
@@ -130,7 +134,7 @@ const handlePushToCart = async () => {
                                     <td></td>
                                 </thead>
                                 <tbody>
-                                    {data?.map((i, index) => (
+                                    {cartItems?.map((i, index) => (
                                         <CartItem key={index} i={i} onChange={onChange} handleDelete={handleDelete} deleteItemCart={deleteItemCart} quantityEdit={true} />
                                     ))}
                                     <tr>
