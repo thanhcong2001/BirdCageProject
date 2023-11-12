@@ -12,7 +12,7 @@ const getDataFromCart = async (token) => {
 }
 
 const useBirdCart = (token) => {
-    const { data: cartItem, isLoading, isError, error } = useQuery({ queryKey: ['cartItem'], queryFn: () => getDataFromCart(token) });
+    const { data: cartItem } = useQuery({ queryKey: ['cartItem'], queryFn: () => getDataFromCart(token) });
     return { cartItem }
 }
 

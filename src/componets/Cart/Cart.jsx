@@ -11,12 +11,7 @@ Cart.propTypes = {
 function Cart({ initialQuantity, onQuantityChange }) {
     const { cartItem } = useBirdCart()
     console.log(cartItem)
-
-    const [data, setdata] = useState([])
     const [quantity, setQuantity] = useState(initialQuantity || 1);
-    const [list, setList] = useState([])
-
-
     const handleIncrease = () => {
         setQuantity(quantity + 1);
     };
