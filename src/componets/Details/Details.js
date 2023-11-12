@@ -123,7 +123,7 @@ function Details() {
                         {/* title here */}
                         <h1 style={{ fontSize: 27 }}>{bird?.title}<br /> MSP: {bird?.sku}</h1>
                         {/* price here */}
-                        <p className='priceProduct' style={{ fontSize: 27,paddingTop:0,textAlign:'center'}}>{convertVND(bird?.price)} ₫</p>
+                        <p className='priceProduct' style={{ fontSize: 27,paddingTop:0,textAlign:'center'}}>{convertVND(bird?.priceAfterDiscount)}</p>
                         {/* descipriton here */}
                         {/* <p style={{ color: '#353535', fontSize: 18 }}>{bird?.description}</p> */}
                         <p style={{ color: '#353535', lineHeight: 2.2, fontSize: 18, marginTop: 2, marginBottom: 0 }}>– Phù hợp với nuôi chào mào có tật bu lồng, ngoái, lộn.

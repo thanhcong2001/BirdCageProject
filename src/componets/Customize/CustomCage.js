@@ -14,7 +14,7 @@ export default function CustomCage() {
     const [active, setActive] = useState(null)
     const handleButtonClick = (buttonId) => {
         setActive(buttonId);
-        apiClient.get(`Formula/${buttonId}`)
+        apiClient.get(`Formula/get-by-birdcagetypeId/${buttonId}`)
             .then(response => {
                 setImgCage(response.data?.data)
             })
@@ -67,7 +67,7 @@ export default function CustomCage() {
         if (value > detail?.maxHeight || value < detail?.minHeight) {
             setIsValid(false);
         } else {
-            setIsValid(true);
+            setIsValid(true); 
         }
     };
 

@@ -114,7 +114,10 @@ export const Dashboard = () => {
                 console.error('Lỗi kết nối', error);
               });
           } else {
-            console.error('Không có quyền xóa sản phẩm');
+            swal({
+              title: "Không có quyền cập nhật !",
+              icon: "warning",
+            })
           }
         })
         .catch((error) => {
@@ -136,9 +139,9 @@ export const Dashboard = () => {
     } else {
       console.log('Token không tồn tại trong localStorage.');
     }
-    if (role === 'Manager') {
+    if (role === 'Manager' || role === 'Staff') {
       deleteClient.delete(`${id}`, {
-        headers: {
+        headers: { 
           Authorization: `Bearer ${token}`,
         },
       })
@@ -160,7 +163,10 @@ export const Dashboard = () => {
           console.error('Lỗi kết nối', error);
         });
     } else {
-      console.error('Không có quyền xóa sản phẩm');
+      swal({
+        title: "Không có quyền xóa !",
+        icon: "warning",
+      })
     }
   };
   const handleEditProduct = (id) => {
@@ -172,7 +178,7 @@ export const Dashboard = () => {
       apiClient.get(`User/${userId}`)
         .then(response => {
           const role = response.data?.role;
-          if (role === "Manager") {
+          if (role === "Manager" || role === "Staff" ) {
             apiClient.put(`Product/recover/${id}`, null, {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -196,7 +202,10 @@ export const Dashboard = () => {
                 console.error('Lỗi kết nối', error);
               });
           } else {
-            console.error('Không có quyền xóa sản phẩm');
+            swal({
+              title: "Không có quyền cập nhật !",
+              icon: "warning",
+            })
           }
         })
         .catch((error) => {
@@ -243,7 +252,10 @@ export const Dashboard = () => {
           console.error('Lỗi kết nối', error);
         });
     } else {
-      console.error('Không có quyền xóa sản phẩm');
+      swal({
+        title: "Không có quyền xóa !",
+        icon: "warning",
+      })
     }
   };
 
@@ -385,7 +397,6 @@ export const Dashboard = () => {
       apiClient.get(`Product/${id}`)
         .then(response => {
           setIdEdit(response.data)
-          console.log("Dung dep trai: ", response.data);
         })
       setShowPopup(true);
     };
@@ -459,16 +470,18 @@ export const Dashboard = () => {
                 <form className='formEdit-Product'>
                   <input className='inputEdit-Product' type="text" placeholder={idEdit.title} />
                   <input className='inputEdit-Product' type="text" placeholder="Image" />
+                  <input className='inputEdit-Product' type="number" placeholder="CategoryId " />
+                  <input className='inputEdit-Product' type="number" placeholder="BirdCageTypeId " />
                   <input className='inputEdit-Product' type="number" placeholder={convertVND(idEdit.price)} />
-                  <input className='inputEdit-Product' type="number" placeholder={convertVND(idEdit.priceAfterDiscount)} />
                   <input className='inputEdit-Product' type="text" placeholder={idEdit.sku} />
                   <input className='inputEdit-Product' type="number" placeholder={idEdit.quantityInStock} />
-                  <input className='inputEdit-Product' type="text" placeholder={idEdit.CategoryId} />
-                  <input className='inputEdit-Product' type="text" placeholder={idEdit.BirdCageTypeId} />
-                  <input className='inputEdit-Product' type="number" placeholder={convertVND(idEdit.EditedBy)} />
-                  <input className='inputEdit-Product' type="number" placeholder={convertVND(idEdit.priceAfterDiscount)} />
-                  <input className='inputEdit-Product' type="text" placeholder={idEdit.sku} />
-                  <input className='inputEdit-Product' type="number" placeholder={idEdit.quantityInStock} />
+                  <input className='inputEdit-Product' type="number" placeholder={idEdit.percentDiscount} />
+                  <input className='inputEdit-Product' type="number" placeholder="Specifications" />
+                  <textarea
+                    style={{ width: 659, paddingBottom: 200 }}
+                    className='inputEdit-Product'
+                    value={idEdit.description}
+                  ></textarea>
                 </form>
                 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
                   <button style={{ marginRight: 30 }} type="submit">Submit</button>
@@ -488,16 +501,23 @@ export const Dashboard = () => {
                 <h2 style={{ marginBottom: 30 }}>Create Product</h2>
                 <form className='formEdit-Product'>
                   <input className='inputEdit-Product' type="text" placeholder="Name" />
-                  <input className='inputEdit-Product' type="text" placeholder="Description" />
+                  <input className='inputEdit-Product' type="text" placeholder="Image" />
                   <input className='inputEdit-Product' type="number" placeholder="CategoryId " />
                   <input className='inputEdit-Product' type="number" placeholder="BirdCageTypeId " />
                   <input className='inputEdit-Product' type="number" placeholder="Price " />
                   <input className='inputEdit-Product' type="text" placeholder="Sku" />
                   <input className='inputEdit-Product' type="number" placeholder="Quantity" />
                   <input className='inputEdit-Product' type="number" placeholder="PercentDiscount " />
-                  <input className='inputEdit-Product' type="text" placeholder="Image" />
+                  <input className='inputEdit-Product' type="number" placeholder="Specifications" />
+                  <input className='inputEdit-Product' type="text" placeholder="Feature" />
+                  <input className='inputEdit-Product' type="text" placeholder="Status" />
+                  <textarea
+                    style={{ width: 659, paddingBottom: 200 }}
+                    className='inputEdit-Product'
+                    placeholder="Description"
+                  ></textarea>
                 </form>
-                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
+                <div style={{ display: 'flex', marginBottom: 20, justifyContent: 'center' }}>
                   <button style={{ marginRight: 30 }} type="submit">Submit</button>
                   <button style={{ backgroundColor: 'red' }} onClick={closePopup} type="submit">Cancel</button>
                 </div>
@@ -649,9 +669,13 @@ export const Dashboard = () => {
   function FormulaForm() {
     const [showPopup, setShowPopup] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
-    const [idEdit, setIdEdit] = useState([])
+    const [idFormula, setIdFormula] = useState([])
     const [formulaInput, setFormulaInput] = useState('');
     const [error, setError] = useState('');
+    const [birdCageType, setBirdCageType] = useState([]);
+    const [selectedBirdType, setSelectedBirdType] = useState('');
+    const [specifications, setSpecifications] = useState([]);
+    const [selectedSpecification, setSelectedSpecification] = useState('');
     const validateInput = () => {
       const formulaInputNumber = parseFloat(formulaInput);
       if (formulaInputNumber > 0 && formulaInputNumber < 100) {
@@ -661,16 +685,30 @@ export const Dashboard = () => {
       }
     };
 
-    // const openPopup = (id) => {
-    //   apiClient.get(`Product/${id}`)
-    //     .then(response => {
-    //       setIdEdit(response.data)
-    //     })
-    //   setShowPopup(true);
-    // };
-    // const closePopup = () => {
-    //   setShowPopup(false);
-    // };
+    useEffect(() => {
+      apiClient.get('Specification/get-all')
+        .then(response => {
+          setSpecifications(response.data?.data)
+        })
+      apiClient.get('BirdCageType/get-all')
+        .then(response => {
+          setBirdCageType(response.data?.data)
+          console.log("Bird: ", response.data?.data);
+        })
+    }, []); // Chỉ gọi API một lần khi component mount
+
+
+    const openPopup = (id) => {
+      apiClient.get(`Formula/get-by-formulaId/${id}`)
+        .then(response => {
+          setIdFormula(response.data?.data)
+          console.log("Formula: ",response.data?.data);
+        })
+      setShowPopup(true);
+    };
+    const closePopup = () => {
+      setShowPopup(false);
+    };
     const openAddNew = () => {
       setShowAdd(true);
     };
@@ -681,7 +719,7 @@ export const Dashboard = () => {
     const [pageIndex, setPageIndex] = useState(0);
     const [pageSize, setPageSize] = useState(6);
     return (
-      <div style={{ marginLeft: 100, marginTop: 30 }}>
+      <div style={{ marginLeft: 69, marginTop: 30 }}>
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div>
@@ -707,7 +745,7 @@ export const Dashboard = () => {
                   <tr key={i.id}>
                     <td>{i.id}</td>
                     <td>{i.code}</td>
-                    <td>{i.price}</td>
+                    <td>{convertVND(i.price)}</td>
                     <td>{i.constructionTime} days</td>
                     <td>{i.minWidth} - {i.maxWidth} cm</td>
                     <td>{i.minHeight} - {i.maxHeight} cm</td>
@@ -715,7 +753,7 @@ export const Dashboard = () => {
                     <td>{i.specifications[0]?.specificationValue}</td>
                     <td>{i.isDelete ? "Deactive" : "Active"}</td>
                     <td>
-                      <button style={{ marginRight: 5, backgroundColor: 'rgb(100, 190, 67)' }} onClick={() => handleEditUser(i.id)}>Edit</button>
+                      <button style={{ marginRight: 5, backgroundColor: 'rgb(100, 190, 67)' }} onClick={() => openPopup(i.id)}>Edit</button>
                       <button style={{ marginRight: 5 }} onClick={() => handleEditUser(i.id)}>Active</button>
                       <button style={{ backgroundColor: 'red', marginRight: 5 }} onClick={() => handleDeleteUser(i.id)}>Delete</button>
                     </td>
@@ -733,6 +771,58 @@ export const Dashboard = () => {
             </button>
           </div>
           <div className="App-dash">
+            {showPopup && (
+              <div className="popup">
+                <div className="popup-content">
+                  <span className="close" onClick={closePopup}>
+                    &times;
+                  </span>
+                  <h2 style={{ marginBottom: 30 }}>Edit Formula</h2>
+                  <form className='formEdit-Product'>
+                    <input className='inputEdit-Formula' type="text" placeholder={idFormula?.code} />
+                    <input className='inputEdit-Formula' type="number" placeholder={idFormula?.minWidth} />
+                    <input className='inputEdit-Formula' type="number" placeholder={idFormula?.maxWidth} />
+                    <input className='inputEdit-Formula' type="number" placeholder={idFormula?.minHeight} />
+                    <input className='inputEdit-Formula' type="number" placeholder={idFormula?.maxHeight} />
+                    <input className='inputEdit-Formula' type="number" placeholder={convertVND(idFormula?.price)} />
+                    <input className='inputEdit-Formula' type="number" placeholder={idFormula?.minBars} />
+                    <input className='inputEdit-Formula' type="number" placeholder={idFormula?.maxBars} />
+                    <select
+                      id="birdCageType"
+                      style={{ width: 205, height: 33 }}
+                      value={selectedBirdType}
+                      onChange={(e) => setSelectedBirdType(e.target.value)}
+                    >
+                      <option value="" disabled></option>
+                      {birdCageType.map(i => (
+                        <option key={i.id} value={i.id}>
+                          {i.typeName}
+                        </option>
+                      ))}
+                    </select>
+                    <input className='inputEdit-Formula' type="number" placeholder={idFormula.constructionTime} />
+                    <select style={{ width: 205, height: 33 }}
+                      id="specifications"
+                      value={selectedSpecification}
+                      onChange={(e) => setSelectedSpecification(Array.from(e.target.selectedOptions, option => option.value))}
+                    >
+                      <option value="" disabled>Select a specification</option>
+                      {specifications.map(spec => (
+                        <option key={spec.id} value={spec.specificationValue}>
+                          {spec.specificationValue}
+                        </option>
+                      ))}
+                    </select>
+                  </form>
+                  <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
+                    <button style={{ marginRight: 30 }} type="submit">Submit</button>
+                    <button style={{ backgroundColor: 'red' }} onClick={closePopup} type="submit">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="App-dash">
             {showAdd && (
               <div className="popup">
                 <div className="popup-content">
@@ -741,24 +831,31 @@ export const Dashboard = () => {
                   </span>
                   <h2 style={{ marginBottom: 30 }}>Create Formura</h2>
                   <form className='formEdit-Product'>
-                    <input className='inputEdit-Product' type="text" placeholder="Code" />
-                    <div style={{ marginBottom: 20 }}>
-                      <input className='inputEdit-Product' type="number" placeholder="Min-Width" value={formulaInput}
-                        onChange={(e) => setFormulaInput(e.target.value)}
-                        onBlur={validateInput} />
-                      {error && <div style={{ color: 'red',fontSize :10,textAlign:'left'}}>{error}</div>}
-                    </div>
-                    <input className='inputEdit-Product' type="number" placeholder="Max-Width " />
-                    <input className='inputEdit-Product' type="number" placeholder="Min-Height " />
-                    <input className='inputEdit-Product' type="number" placeholder="Max-Height " />
-                    <input className='inputEdit-Product' type="number" placeholder="Price" />
-                    <input className='inputEdit-Product' type="number" placeholder="Min-Bars" />
-                    <input className='inputEdit-Product' type="number" placeholder="Max-Bars" />
-                    <input className='inputEdit-Product' type="number" placeholder="ConstructionTime" />
-                    <input className='inputEdit-Product' type="text" placeholder="Specifications" />
+                    <input className='inputEdit-Formula' type="text" placeholder="Code" />
+                    <input className='inputEdit-Formula' type="number" placeholder="Min-Width " />
+                    <input className='inputEdit-Formula' type="number" placeholder="Max-Width " />
+                    <input className='inputEdit-Formula' type="number" placeholder="Min-Height " />
+                    <input className='inputEdit-Formula' type="number" placeholder="Max-Height " />
+                    <input className='inputEdit-Formula' type="number" placeholder="Price" />
+                    <input className='inputEdit-Formula' type="number" placeholder="Min-Bars" />
+                    <input className='inputEdit-Formula' type="number" placeholder="Max-Bars" />
+                    <input className='inputEdit-Formula' type="number" placeholder="BirdCageTypeId" />
+                    <input className='inputEdit-Formula' type="number" placeholder="ConstructionTime" />
+                    <select style={{ width: 205, height: 33 }}
+                      id="specifications"
+                      value={selectedSpecification}
+                      onChange={(e) => setSelectedSpecification(Array.from(e.target.selectedOptions, option => option.value))}
+                    >
+                      <option value="" disabled>Select a specification</option>
+                      {specifications.map(spec => (
+                        <option key={spec.id} value={spec.specificationValue}>
+                          {spec.specificationValue}
+                        </option>
+                      ))}
+                    </select>
                   </form>
                   <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
-                    <button style={{ marginRight: 30 }} type="submit">Submit</button>
+                    <button style={{ marginRight: 20 }} type="submit">Submit</button>
                     <button style={{ backgroundColor: 'red' }} onClick={closeAddNew} type="submit">Cancel</button>
                   </div>
                 </div>
