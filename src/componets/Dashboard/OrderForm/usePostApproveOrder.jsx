@@ -11,7 +11,7 @@ const approveOrder = async (id) => {
         Authorization: `Bearer ${formattedToken}`
     }
     try {
-        const response = await axios.put(`http://tainguyen58-001-site1.ftempurl.com/api/Order/updateStatusToApproved/${id}`, {}, { headers })
+        const response = await axios.put(`https://tainguyen58-001-site1.ftempurl.com/api/Order/updateStatusToApproved/${id}`, {}, { headers })
         return response.data
     } catch (error) {
         throw error

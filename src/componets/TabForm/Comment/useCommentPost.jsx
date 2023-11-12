@@ -11,7 +11,7 @@ const commentPost = async (obj) => {
         Authorization: `Bearer ${formattedToken}`
     };
     try {
-        const response = await axios.post(`http://tainguyen58-001-site1.ftempurl.com/api/Product/review-product/${id}`, { rating, reviewText }, { headers })
+        const response = await axios.post(`https://tainguyen58-001-site1.ftempurl.com/api/Product/review-product/${id}`, { rating, reviewText }, { headers })
         return response.data
     } catch (error) {
         throw error

@@ -9,7 +9,7 @@ const headers = {
 };
 const postWishlist = async (id) => {
     try {
-        const response = await axios.post(`http://tainguyen58-001-site1.ftempurl.com/api/Product/add-to-wishlist/${id}`, {}, { headers })
+        const response = await axios.post(`https://tainguyen58-001-site1.ftempurl.com/api/Product/add-to-wishlist/${id}`, {}, { headers })
         return response.data
     } catch (error) {
         throw error

@@ -3,7 +3,7 @@ import axios from "axios"
 import { useSnackbar } from "notistack"
 import { useNavigate } from "react-router-dom"
 
-const registerUrl = 'http://tainguyen58-001-site1.ftempurl.com/api/User/register'
+const registerUrl = 'https://tainguyen58-001-site1.ftempurl.com/api/User/register'
 
 const registerQuery = async (data) => {
     try {

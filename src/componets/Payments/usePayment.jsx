@@ -5,7 +5,7 @@ import { useSnackbar } from "notistack"
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const checkoutURL = 'http://tainguyen58-001-site1.ftempurl.com/api/ShoppingCart/checkout'
+const checkoutURL = 'https://tainguyen58-001-site1.ftempurl.com/api/ShoppingCart/checkout'
 
 const checkoutQuery = async (data) => {
     const token = localStorage.getItem('token');

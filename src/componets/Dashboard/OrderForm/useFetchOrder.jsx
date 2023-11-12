@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const orderUserUrl = 'http://tainguyen58-001-site1.ftempurl.com/api/Order/page?pageIndex=0&pageSize=50'
+const orderUserUrl = 'https://tainguyen58-001-site1.ftempurl.com/api/Order/page?pageIndex=0&pageSize=50'
 
 const fetchOrderUrl = async () => {
     try {

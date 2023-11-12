@@ -14,12 +14,12 @@ const Wishlist = () => {
     const token = localStorage.getItem('token');
     const formattedToken = token?.replace(/"/g, '');
     const queryClient = useQueryClient()
-    //http://tainguyen58-001-site1.ftempurl.com/api/Product/remove-product-from-wishlist/1
+    //https://tainguyen58-001-site1.ftempurl.com/api/Product/remove-product-from-wishlist/1
     async function deleteItem(itemId) {
         const headers = {
             Authorization: `Bearer ${formattedToken}`
         };
-        return axios.delete(`http://tainguyen58-001-site1.ftempurl.com/api/Product/remove-product-from-wishlist/${itemId}`, { headers })
+        return axios.delete(`https://tainguyen58-001-site1.ftempurl.com/api/Product/remove-product-from-wishlist/${itemId}`, { headers })
     }
     const deleteItemCart = useMutation({
         mutationFn: deleteItem,
@@ -39,7 +39,7 @@ const Wishlist = () => {
         const headers = {
             Authorization: `Bearer ${formattedToken}`
         };
-        return axios.post(`http://tainguyen58-001-site1.ftempurl.com/api/Product/add-to-cart-from-wishlist`, {}, { headers })
+        return axios.post(`https://tainguyen58-001-site1.ftempurl.com/api/Product/add-to-cart-from-wishlist`, {}, { headers })
     }
     const handleCart = useMutation({
         mutationFn: addItemToCart,

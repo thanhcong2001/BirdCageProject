@@ -4,12 +4,12 @@ import axios from "axios";
 // const fetchBirdCageUrl = ''
 
 const fetchBirdCage = async (pageIndex) => {
-    const response = await axios.get(`http://tainguyen58-001-site1.ftempurl.com/api/Product/page?pageIndex=${pageIndex}&pageSize=10`);
+    const response = await axios.get(`https://tainguyen58-001-site1.ftempurl.com/api/Product/page?pageIndex=${pageIndex}&pageSize=10`);
     return response.data;
 };
 
 const fetchBirdCageById = async (id) => {
-    const response = await axios.get(`http://tainguyen58-001-site1.ftempurl.com/api/Product/${id}`);
+    const response = await axios.get(`https://tainguyen58-001-site1.ftempurl.com/api/Product/${id}`);
     return response.data;
 }
 

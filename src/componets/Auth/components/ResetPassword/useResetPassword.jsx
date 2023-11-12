@@ -5,7 +5,7 @@ import { useSnackbar } from "notistack";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const resetUrl = 'http://tainguyen58-001-site1.ftempurl.com/api/Authentication/reset-password'
+const resetUrl = 'https://tainguyen58-001-site1.ftempurl.com/api/Authentication/reset-password'
 
 const resetQuery = async (value) => {
 
