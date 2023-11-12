@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { useSnackbar } from "notistack"
 
-const updateCartUrl = 'http://tainguyen58-001-site1.ftempurl.com/api/ShoppingCart/updatecart'
+const updateCartUrl = 'https://tainguyen58-001-site1.ftempurl.com/api/ShoppingCart/updatecart'
 
 const updateCartQuery = async (value) => {
     try {

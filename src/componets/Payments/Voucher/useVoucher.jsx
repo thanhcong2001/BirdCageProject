@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const fetchVoucherCode = async () => {
     try {
-        const response = await axios.get('http://tainguyen58-001-site1.ftempurl.com/api/Voucher');
+        const response = await axios.get('https://tainguyen58-001-site1.ftempurl.com/api/Voucher');
         console.log(response.data)
         return response.data;
     } catch (error) {

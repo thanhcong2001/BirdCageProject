@@ -8,7 +8,7 @@ const fetchOrderUrl = async (info) => {
         Authorization: `Bearer ${formattedToken}`
     }
     try {
-        const response = await axios.get(`http://tainguyen58-001-site1.ftempurl.com/api/User/order-history?pageIndex=${info}&pageSize=10`, { headers });
+        const response = await axios.get(`https://tainguyen58-001-site1.ftempurl.com/api/User/order-history?pageIndex=${info}&pageSize=10`, { headers });
         return response.data;
     } catch (error) {
 

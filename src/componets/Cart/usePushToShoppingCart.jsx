@@ -11,7 +11,7 @@ const addToCartCustomProduct = async (data) => {
         Authorization: `Bearer ${formattedToken}`
     }
     try {
-        const response = await axios.post(`http://tainguyen58-001-site1.ftempurl.com/api/ShoppingCart/update-cart/1?count=1`, data, { headers })
+        const response = await axios.post(`https://tainguyen58-001-site1.ftempurl.com/api/ShoppingCart/update-cart/1?count=1`, data, { headers })
         return response.data
     } catch (error) {
         throw error

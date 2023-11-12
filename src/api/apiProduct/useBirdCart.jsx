@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const cartUrl = 'http://tainguyen58-001-site1.ftempurl.com/api/ShoppingCart'
+const cartUrl = 'https://tainguyen58-001-site1.ftempurl.com/api/ShoppingCart'
 
 const getDataFromCart = async (token) => {
     const headers = {

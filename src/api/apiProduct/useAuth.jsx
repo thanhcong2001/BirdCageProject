@@ -2,13 +2,13 @@ import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { useSnackbar } from "notistack"
 
-const loginURL = 'http://tainguyen58-001-site1.ftempurl.com/api/Authentication/login'
+const loginURL = 'https://tainguyen58-001-site1.ftempurl.com/api/Authentication/login'
 
 const loginQuery = async ({ username, password }) => {
     try {
         const response = await axios.post(loginURL, { username, password })
         const { token } = response.data
-        console.log("login: ",response.data);  
+        console.log("login: ", response.data);
         localStorage.setItem('token', JSON.stringify(token));
         return response.data
     } catch (error) {

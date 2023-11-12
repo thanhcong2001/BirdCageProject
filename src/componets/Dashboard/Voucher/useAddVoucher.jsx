@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
-const postVoucherURL = 'http://tainguyen58-001-site1.ftempurl.com/api/Voucher'
+const postVoucherURL = 'https://tainguyen58-001-site1.ftempurl.com/api/Voucher'
 
 const addVoucher = async (data) => {
     try {

@@ -12,7 +12,7 @@ const emailAccountQuery = async (value) => {
     try {
         const { email } = value
         const newEmail = await encodeAtSymbol(email)
-        const response = await axios.post(`http://tainguyen58-001-site1.ftempurl.com/api/Authentication/forgot-password?email=${newEmail}`)
+        const response = await axios.post(`https://tainguyen58-001-site1.ftempurl.com/api/Authentication/forgot-password?email=${newEmail}`)
         return response.data
     } catch (error) {
         throw error

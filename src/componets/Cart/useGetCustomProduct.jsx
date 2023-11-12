@@ -12,7 +12,7 @@ const fetch = async () => {
         }
         const decodedToken = jwtDecode(formattedToken);
         const userId = decodedToken.Id;
-        const response = await axios.get(`http://tainguyen58-001-site1.ftempurl.com/api/Design/${userId}`, { headers })
+        const response = await axios.get(`https://tainguyen58-001-site1.ftempurl.com/api/Design/${userId}`, { headers })
         return response.data
     } catch (error) {
         throw error

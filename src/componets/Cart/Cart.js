@@ -26,7 +26,7 @@ export const Cart = () => {
         const headers = {
             Authorization: `Bearer ${formattedToken}`
         };
-        return axios.delete(`http://tainguyen58-001-site1.ftempurl.com/api/ShoppingCart/remove-from-cart/${itemId}`, { headers })
+        return axios.delete(`https://tainguyen58-001-site1.ftempurl.com/api/ShoppingCart/remove-from-cart/${itemId}`, { headers })
     }
     const deleteItemCart = useMutation({
         mutationFn: deleteItem,

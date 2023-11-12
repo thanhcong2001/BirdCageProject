@@ -40,7 +40,7 @@ const OrderDetailUser = () => {
         }
     };
     const deleteFunc = (id) => {
-        return axios.put(`http://tainguyen58-001-site1.ftempurl.com/api/User/cancel-order/${id}`, {}, { headers })
+        return axios.put(`https://tainguyen58-001-site1.ftempurl.com/api/User/cancel-order/${id}`, {}, { headers })
     }
     const { enqueueSnackbar } = useSnackbar();
 

@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-// const orderUserUrl = 'http://tainguyen58-001-site1.ftempurl.com/api/User/order-history?pageIndex=0&pageSize=10'
+// const orderUserUrl = 'https://tainguyen58-001-site1.ftempurl.com/api/User/order-history?pageIndex=0&pageSize=10'
 
-const fetchWishlistUrl = 'http://tainguyen58-001-site1.ftempurl.com/api/Product/from-wishlist'
+const fetchWishlistUrl = 'https://tainguyen58-001-site1.ftempurl.com/api/Product/from-wishlist'
 
 const fetchWishlist = async () => {
     const token = localStorage.getItem('token');

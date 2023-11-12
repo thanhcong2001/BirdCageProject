@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 import axios from "axios";
 
 const fetOrderDetailById = async (orderId) => {
-    const response = await axios.get(`http://tainguyen58-001-site1.ftempurl.com/api/Order/${orderId}`);
+    const response = await axios.get(`https://tainguyen58-001-site1.ftempurl.com/api/Order/${orderId}`);
     return response.data;
 }
 
