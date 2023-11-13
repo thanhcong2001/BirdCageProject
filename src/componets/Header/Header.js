@@ -161,7 +161,7 @@ function Header() {
                             src="http://mauweb.monamedia.net/birdshop/wp-content/uploads/2018/04/logo-robin-white.png"
                         />
                     </Link>
-                    <div style={{display: 'flex', marginLeft: 100}}>
+                    <div style={{display: 'flex', marginLeft: 70,gap:24}}>
                         <Link style={{ textDecoration: "none" }} to={"/intro"}>
                             <p className="category">Giới Thiệu</p>
                         </Link>
@@ -193,7 +193,7 @@ function Header() {
                     <p className="category">Liên Hệ</p> */}
                     </div>
 
-                    <div style={{ marginLeft: 140, display: "flex" }}>
+                    <div style={{ marginLeft: 43, display: "flex" }}>
                         <div
                             style={{ width: "200px", position: "relative", marginRight: 15 }}
                         >
