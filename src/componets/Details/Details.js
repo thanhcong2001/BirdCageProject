@@ -75,7 +75,7 @@ function Details() {
                 <p className='listProduct'>SẢN PHẨM</p>
                 <div className='lineCircleOne'></div>
                 <div className='borderBlogOne'>
-                    {list.slice(0, 7).map(i => (
+                    {list.slice(0, 4).map(i => (
                         <div className='box-birdCage' key={i?.id}>
                             <Link to={`/details/${i.id}`}>
                                 <div className='blog' >
@@ -93,20 +93,7 @@ function Details() {
                         </div>
                     ))}
                 </div>
-                <p className='listProduct'>BÀI VIẾT MỚI NHẤT</p>
-                <div className='lineCircleOne'></div>
-                <div className='borderBlogOne'>
-                    {borderBlogOne?.slice(0, 4).map((i, index) => (
-                        <div key={index}>
-                            <div style={{ display: 'flex' }} key={i?.id}>
-                                <img className='imgCircle' src={i.img} alt='hinh anh cam' />
-                                <p className='test'>
-                                    {i.title}</p>
-                            </div>
-                            <div className='lineCircle'></div>
-                        </div>
-                    ))}
-                </div>
+                
             </div>
             {birdIdLoading ? <Box sx={{ display: 'flex', height: '500px', justifyContent: 'center', alignItems: 'center' }}>
                 <CircularProgress />
@@ -127,7 +114,7 @@ function Details() {
                         {/* descipriton here */}
                         {/* <p style={{ color: '#353535', fontSize: 18 }}>{bird?.description}</p> */}
                         <p style={{ color: '#353535', lineHeight: 2.2, fontSize: 18, marginTop: 2, marginBottom: 0 }}>
-                            - {bird?.description}
+                            {bird?.description}
                         </p>
                         <div>
                             <AddToCartForm isLoading={isPending} onSubmit={handleAddToCartSubmit} token={token} id={id} handleAddToWishlist={handleAddToWishlist} wishlistLoading={wishlistLoading} />

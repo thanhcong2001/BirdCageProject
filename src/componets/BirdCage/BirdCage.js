@@ -78,7 +78,7 @@ export const BirdCage = () => {
           <p className='lineCage'></p>
         </div>
         <div className='borderBlogOne' style={{ height: 489 }}>
-          {list.slice(0, 7).map(i => (
+          {list.slice(0, 5).map(i => (
             <div className='box-birdCage' key={i?.id}>
               <Link to={`/details/${i.id}`}>
                 <div className='blog' >
@@ -99,7 +99,7 @@ export const BirdCage = () => {
       </div>
       <div>
         <div className='result-BirdCage'>
-          <div style={{ fontSize: 16, paddingTop: 20, marginRight: 20 }}>Xem tất cả 9 kết quả</div>
+          {/* <div style={{ fontSize: 16, paddingTop: 20, marginRight: 20 }}>Xem tất cả 9 kết quả</div>
           <div>
             <form>
               <select className='select' value={myCar} onChange={handleChange}>
@@ -111,7 +111,7 @@ export const BirdCage = () => {
                 <option value="6">Thứ tự theo giá: cao xuống thấp</option>
               </select>
             </form>
-          </div>
+          </div> */}
         </div>
         {isLoading ? <Box sx={{ display: 'flex', height: '500px', alignItems: 'center' }}>
           <CircularProgress />

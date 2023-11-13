@@ -41,7 +41,7 @@ const CageCard = () => {
                         <div key={i?.id}>
                             <div className='card'>
                                 <img className='img-birdCage' src={i.productImages[0]?.imageUrl} alt={`hinh cua id ${i.id}`} onClick={() => navigate(`/details/${i.id}`)} />
-                                <p className='nameBirdCage'>{i.title}</p>
+                                <p title={i.title} className='truncate-cus1'>{i.title}</p>
                                 <h3 className='discount'>{convertVND(i.price)}</h3>
                                 <h4 className='price'>{convertVND(i.priceAfterDiscount)}</h4>
                                 {/* <button onClick={() => addItemToCompareList(i)} disabled={disabledButtons.includes(i.id)}>So sánh</button> */}

@@ -20,6 +20,8 @@ const OrderForm = ({ tableOrder }) => {
     }
     const orderData = order.items
 
+    console.log('history: ' + orderData);
+
     const getStatusTagColor = (orderStatus) => {
         switch (orderStatus) {
             case 'Pending':
@@ -58,10 +60,7 @@ const OrderForm = ({ tableOrder }) => {
             <div>
                 <p style={{ fontSize: 23, letterSpacing: 2, marginBottom: 10 }}>Order Management</p>
                 <div style={{ display: 'flex' }}>
-                    <input className='inputSearch-Dashboard' placeholder='Tìm kiếm ...' />
-                    <button style={{ backgroundColor: '#64be43' }}>
-                        <SearchIcon style={{ height: 15 }} />
-                    </button>
+                    
                 </div>
                 <div>
                     <div style={{ width: '100%', overflow: 'scroll', height: '85vh' }}>
@@ -193,6 +192,7 @@ const OrderForm = ({ tableOrder }) => {
                                                     <td>{convertVND(i.totalPrice + shippingFee)}</td>
                                                     <td>{i.phoneNumber}</td>
                                                     <td>{i.paymentStatus}</td>
+                                                    
                                                     <td>
                                                         <Tag color={getStatusTagColor(i.orderStatus)} key={i.orderStatus}>
                                                             {i.orderStatus}
