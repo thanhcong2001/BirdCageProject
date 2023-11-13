@@ -49,7 +49,7 @@ const CageCard = () => {
                         </div>
                     ))}
                 </div>}
-                <Pagination style={{ textAlign: 'center', marginTop: 20 }} defaultCurrent={1} pageSize={10} total={50} onChange={handleChangePage} />
+                {/* <Pagination style={{ textAlign: 'center', marginTop: 20 }} defaultCurrent={1} pageSize={10} total={50} onChange={handleChangePage} /> */}
             </div>
         </div>
     );

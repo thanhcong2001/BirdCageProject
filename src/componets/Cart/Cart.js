@@ -17,12 +17,13 @@ export const Cart = () => {
     const formattedToken = token?.replace(/"/g, '');
     const { cartItem } = useBirdCart(formattedToken)
     const cartItems = cartItem?.shoppingCarts
+    console.log('CartItems: ', cartItems);
     const totalPrice = cartItems?.reduce((total, item) => total + item.productViewModel.priceAfterDiscount * item.count, 0);
     const shippingFee = 30000
     const queryClient = useQueryClient()
     const nav = useNavigate()
 
-    const {data: emptyCage} = useGetEmptyCage()
+    const { data: emptyCage } = useGetEmptyCage()
     async function deleteItem(itemId) {
         const headers = {
             Authorization: `Bearer ${formattedToken}`
@@ -65,58 +66,61 @@ export const Cart = () => {
         if (price != null && price !== undefined && price !== '') return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
         else return 0
     }
-    const {customData} = useGetCustomProduct()
+    const { customData } = useGetCustomProduct()
     const data = customData?.data
-    const {pushCustom} = usePushToShoppingCart()
-    
-const handlePushToCart = async () => {
-    if(emptyCage) {
-        const pushdata = {
-            Model: data[0]?.model,
-            Width: data[0]?.width,
-            Height: data[0]?.height,
-            Material: data[0]?.material,
-            Bars: data[0]?.bars,
-            PriceDesign: data[0]?.priceDesign
+    console.log('Fomular: ', customData);
+    const { pushCustom } = usePushToShoppingCart()
+
+    const handlePushToCart = async () => {
+        if (emptyCage) {
+            const pushdata = {
+                Model: data[0]?.model,
+                Width: data[0]?.width,
+                Height: data[0]?.height,
+                Material: data[0]?.material,
+                Bars: data[0]?.bars,
+                PriceDesign: data[0]?.priceDesign
+            }
+            await pushCustom({ pushdata, id: emptyCage[0]?.id })
         }
-        await pushCustom({pushdata, id: emptyCage[0]?.id})
+
     }
-   
-}
-      const DetailCustom = ({i}) => {
+    const DetailCustom = ({ i }) => {
         const [showAdd, setShowAdd] = useState(false);
 
         const openAddNew = () => {
             setShowAdd(true);
-          };
-          const closeAddNew = () => {
+        };
+        const closeAddNew = () => {
             setShowAdd(false);
-          };
-    
+        };
+
+        console.log('design: ', i);
+
         return (
             <>
-            <button onClick={openAddNew}>
-                Detail
-            </button>
-            <div className="App-dash" >
-          {showAdd && (
-            <div className="popup-2">
-              <div className="popup-content-2">
-                <span className="close" onClick={closeAddNew}>
-                  &times;
-                </span>
-                <h2 style={{ marginBottom: 30 }}>Detail Product</h2>
-                <div style={{color: 'black'}}>Bars: {i.bars}</div>
-                <div>Height: {i.height}</div>
-                <div>Width: {i.width}</div>
-                <div>Material: {i.material}</div>
-              </div>
-            </div>
-          )}
-        </div>
+                <button onClick={openAddNew}>
+                    Detail
+                </button>
+                <div className="App-dash" >
+                    {showAdd && (
+                        <div className="popup-2">
+                            <div className="popup-content-2">
+                                <span className="close" onClick={closeAddNew}>
+                                    &times;
+                                </span>
+                                <h2 style={{ marginBottom: 30 }}>Detail Product</h2>
+                                <div style={{ color: 'black' }}>Bars: {i.bars}</div>
+                                <div>Height: {i.height}</div>
+                                <div>Width: {i.width}</div>
+                                <div>Material: {i.material}</div>
+                            </div>
+                        </div>
+                    )}
+                </div>
             </>
         )
-      }
+    }
 
     return (
         <div>
@@ -157,29 +161,29 @@ const handlePushToCart = async () => {
                                     </tbody>
                                 </table>}
 
-                                    <table>
-                                        <thead>
-                                            <td>SẢN PHẨM CUSTOM</td>
-                                            <td>CHI TIẾT</td>
-                                            <td>TỔNG CỘNG</td>
-                                            <td></td>
-                                        </thead>
-                                        <tbody>
-                                            {data?.map((i)=> (
-                                            <tr>
-                                                <td>{i.model}</td>
-                                                <td>
-                                                       <DetailCustom i ={i}/>
-                                                </td>
-                                                <td>{i.priceDesign}</td>
-                                            </tr>
-                                            ))}
-                                            
-                                        </tbody>
-                                        <button onClick={handlePushToCart}>
-                                            Shop now
-                                        </button>
-                                    </table>
+                            <table>
+                                <thead>
+                                    <td>SẢN PHẨM CUSTOM</td>
+                                    <td>CHI TIẾT</td>
+                                    <td>TỔNG CỘNG</td>
+                                    <td></td>
+                                </thead>
+                                <tbody>
+                                    {data?.map((i) => (
+                                        <tr>
+                                            <td>{i.model}</td>
+                                            <td>
+                                                <DetailCustom i={i} />
+                                            </td>
+                                            <td>{i.priceDesign}</td>
+                                        </tr>
+                                    ))}
+
+                                </tbody>
+                                <button onClick={handlePushToCart}>
+                                    Shop now
+                                </button>
+                            </table>
 
 
                         </div>
@@ -205,7 +209,7 @@ const handlePushToCart = async () => {
                                         <button disabled={true} style={{ width: '100%', height: '60px', marginTop: '10px', fontSize: '20px', opacity: 0.5 }}>TIẾN HÀNH THANH TOÁN</button>
                                     }
                                 </div>
-                                
+
                             </div>
                         </div>
                     </> : <div style={{

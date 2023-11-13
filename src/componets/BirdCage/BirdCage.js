@@ -3,7 +3,7 @@ import { Pagination } from 'antd';
 import apiClient from 'api/apiClient';
 import useGetProdById from 'api/apiProduct/useGetProdById';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../BirdCage/BirdCage.css';
 export const BirdCage = () => {
   const navigate = useNavigate()
@@ -18,7 +18,7 @@ export const BirdCage = () => {
     apiClient.get('Product/page?pageIndex=0&pageSize=10')
       .then(response => {
         setList(response.data?.items)
-        console.log("Cong: ",response.data?.items);
+        console.log("Cong: ", response.data?.items);
       })
   }, [])
 
@@ -32,7 +32,7 @@ export const BirdCage = () => {
   }
 
   const categoryIdToFilter = 1; // page long chim
-  const {data,isLoading,isError, error} = useGetProdById({pageIndex, id:categoryIdToFilter })
+  const { data, isLoading, isError, error } = useGetProdById({ pageIndex, id: categoryIdToFilter })
 
   if (isError) {
     return <h2>{error.message}</h2>
@@ -54,7 +54,7 @@ export const BirdCage = () => {
   }
 
   const handleChangePage = (e) => {
-    setPageIndex(()=> e-1)
+    setPageIndex(() => e - 1)
   }
   return (
     <div className='all'>
@@ -67,29 +67,32 @@ export const BirdCage = () => {
             <p style={{ padding: 15, marginTop: 9, fontWeight: '100', fontSize: 14 }}>CHIM CẢNH</p>
           </div>
         </div>
-        <div>
+        {/* <div>
           <p style={{ fontWeight: 600, color: '#353535', fontSize: 16 }}>LỌC THEO GIÁ</p>
           <p className='lineCage'></p>
           <input style={{ width: 210 }} type="range" min="0" max="5" id="customRange2"></input>
           <button style={{ borderRadius: 20, height: 30, width: 53, fontSize: 14, paddingBottom: 22 }}>Lọc</button>
-        </div>
+        </div> */}
         <div>
           <p style={{ fontWeight: 600, color: '#353535', fontSize: 16 }}>SẢN PHẨM</p>
           <p className='lineCage'></p>
         </div>
         <div className='borderBlogOne' style={{ height: 489 }}>
-          {list.slice(1,7).map(i => (
-            <div className='box-birdCage' key={i?.id}>  
-              <div className='blog' >
-                <div>
-                  <img className='imgList' src={i?.productImages[0]?.imageUrl} alt='hinh anh' />
+          {list.slice(0, 7).map(i => (
+            <div className='box-birdCage' key={i?.id}>
+              <Link to={`/details/${i.id}`}>
+                <div className='blog' >
+                  <div>
+                    <img className='imgList' src={i?.productImages[0]?.imageUrl} alt='hinh anh' />
+                  </div>
+                  <div style={{ justifyContent: 'space-around' }}>
+                    <span title={i?.title} className='nameList'>{i?.title}</span>
+                    <br />
+                    <p className='priceProduct'>{convertVND(i?.priceAfterDiscount)}</p>
+                  </div>
                 </div>
-                <div style={{ justifyContent: 'space-around' }}>
-                  <span title={i?.title} className='nameList'>{i?.title}</span>
-                  <br />
-                  <p className='priceProduct'>{convertVND(i?.price)}</p>
-                </div>
-              </div>
+              </Link>
+
             </div>
           ))}
         </div>
@@ -112,7 +115,7 @@ export const BirdCage = () => {
         </div>
         {isLoading ? <Box sx={{ display: 'flex', height: '500px', alignItems: 'center' }}>
           <CircularProgress />
-        </Box> : <div style={{ display: 'flex', flexWrap: 'wrap',overflow: 'hidden',marginLeft:64 }}>
+        </Box> : <div style={{ display: 'flex', flexWrap: 'wrap', overflow: 'hidden', marginLeft: 64 }}>
           {filteredData?.map(i => (
             <div key={i?.id}>
               <div className='card'>
@@ -125,7 +128,7 @@ export const BirdCage = () => {
             </div>
           ))}
         </div>}
-          <Pagination style={{textAlign:'center',marginTop:20}} defaultCurrent={1} pageSize={10} total={50} onChange={handleChangePage}/>
+        <Pagination style={{ textAlign: 'center', marginTop: 20 }} defaultCurrent={1} pageSize={10} total={50} onChange={handleChangePage} />
       </div>
       {compareList.length > 0 ? <div className='bottomList'>
         <div style={{ display: 'flex' }}>
@@ -151,7 +154,7 @@ export const BirdCage = () => {
             </div>
           ))}
         </div>
-        <div style={{ marginTop: 60,paddingLeft:30,paddingRight:30,textAlign:'center' }}>
+        <div style={{ marginTop: 60, paddingLeft: 30, paddingRight: 30, textAlign: 'center' }}>
           <button onClick={() => navigate('/compare', { state: { compareList } })}>So sánh ngay</button>
           <p className='closeTxT-compare' onClick={() => clear()}>Xóa tất cả sản phẩm</p>
         </div>

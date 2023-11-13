@@ -4,7 +4,7 @@ import useProduct from 'api/apiProduct/useProduct';
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import '../Details/Details.css';
 import TabForm from '../TabForm/TabForm';
 import AddToCartForm from './../Cart/AddToCartForm';
@@ -19,7 +19,8 @@ function Details() {
 
     const { id } = useParams()
 
-    const { bird, birdIdLoading } = useProduct({id})
+    const { bird, birdIdLoading } = useProduct({ id })
+    console.log('details: ', bird);
     const { enqueueSnackbar } = useSnackbar();
     const token = localStorage.getItem('token');
     const formattedToken = token?.replace(/"/g, '');
@@ -62,13 +63,10 @@ function Details() {
     }
 
     useEffect(() => {
-        axios.get('https://6507a9f63a38daf4803fa131.mockapi.io/api/v1/birdCage')
+        apiClient.get('Product/page?pageIndex=0&pageSize=10')
             .then(response => {
-                setBorderBlogOne(response.data)
-            })
-        axios.get('https://6509117cf6553137159aecfc.mockapi.io/api/v1/Cage')
-            .then(response => {
-                setList(response.data)
+                setList(response.data?.items)
+                console.log("Cong: ", response.data?.items);
             })
     }, [])
     return (
@@ -77,19 +75,21 @@ function Details() {
                 <p className='listProduct'>SẢN PHẨM</p>
                 <div className='lineCircleOne'></div>
                 <div className='borderBlogOne'>
-                    {list?.slice(0, 5).map((i, index) => (
-                        <div className='box' key={index}>
-                            <div className='blog'>
-                                <div>
-                                    <img className='imgList' src={i.img} alt={`hinh anh`} />
+                    {list.slice(0, 7).map(i => (
+                        <div className='box-birdCage' key={i?.id}>
+                            <Link to={`/details/${i.id}`}>
+                                <div className='blog' >
+                                    <div>
+                                        <img className='imgList' src={i?.productImages[0]?.imageUrl} alt='hinh anh' />
+                                    </div>
+                                    <div style={{ justifyContent: 'space-around' }}>
+                                        <span title={i?.title} className='nameList'>{i?.title}</span>
+                                        <br />
+                                        <p className='priceProduct'>{convertVND(i?.priceAfterDiscount)}</p>
+                                    </div>
                                 </div>
-                                <div style={{ marginTop: 2 }}>
-                                    <span className='nameList'>{i.name}</span>
-                                    <br />
-                                    <p className='priceProduct'>{convertVND(i.price)}</p>
-                                </div>
-                            </div>
-                            {/* <div className='lineList'></div> */}
+                            </Link>
+
                         </div>
                     ))}
                 </div>
@@ -110,7 +110,7 @@ function Details() {
             </div>
             {birdIdLoading ? <Box sx={{ display: 'flex', height: '500px', justifyContent: 'center', alignItems: 'center' }}>
                 <CircularProgress />
-            </Box> : <div style={{marginLeft:38}}>
+            </Box> : <div style={{ marginLeft: 38 }}>
                 <div style={{ display: 'flex' }}>
                     <div>
                         <img className='picProduct' src={bird.productImages[0]?.imageUrl} alt={`hinh anh ${bird?.id}`} />
@@ -123,21 +123,12 @@ function Details() {
                         {/* title here */}
                         <h1 style={{ fontSize: 27 }}>{bird?.title}<br /> MSP: {bird?.sku}</h1>
                         {/* price here */}
-                        <p className='priceProduct' style={{ fontSize: 27,paddingTop:0,textAlign:'center'}}>{convertVND(bird?.priceAfterDiscount)}</p>
+                        <p className='priceProduct' style={{ fontSize: 27, paddingTop: 0, textAlign: 'center' }}>{convertVND(bird?.priceAfterDiscount)}</p>
                         {/* descipriton here */}
                         {/* <p style={{ color: '#353535', fontSize: 18 }}>{bird?.description}</p> */}
-                        <p style={{ color: '#353535', lineHeight: 2.2, fontSize: 18, marginTop: 2, marginBottom: 0 }}>– Phù hợp với nuôi chào mào có tật bu lồng, ngoái, lộn.
-                            <br />
-                            – Móc lồng bằng tre, cứng, đẹp.
-                            <br />
-
-                            – Thanh lồng mảnh, cứng tuyệt đối.
-                            <br />
-
-                            – Đi kèm bộ nan cao cấp.
-                            <br />
-
-                            – Đáy lồng làm bằng tre, đẹp, sang trọng.</p>
+                        <p style={{ color: '#353535', lineHeight: 2.2, fontSize: 18, marginTop: 2, marginBottom: 0 }}>
+                            - {bird?.description}
+                        </p>
                         <div>
                             <AddToCartForm isLoading={isPending} onSubmit={handleAddToCartSubmit} token={token} id={id} handleAddToWishlist={handleAddToWishlist} wishlistLoading={wishlistLoading} />
                         </div>

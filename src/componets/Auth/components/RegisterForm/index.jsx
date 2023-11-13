@@ -25,7 +25,7 @@ function RegisterForm(props) {
     const { registerPending } = props
     const schema = yup.object().shape({
         fullName: yup.string()
-            .required('Please enter your full name.'),
+            .required('Please enter your  name.'),
         email: yup.string()
             .required('Please enter your email.')
             .email('Please enter an valid email address.'),
@@ -79,7 +79,7 @@ function RegisterForm(props) {
                     <form onSubmit={form.handleSubmit(handleSubmit)}>
                         <Grid container spacing={1}>
                             <Grid item xs={12}>
-                                <InputField name="fullName" label="Full Name" form={form}></InputField>
+                                <InputField name="fullName" label="User Name" form={form}></InputField>
                             </Grid>
                             <Grid item xs={12}>
                                 <InputField name="email" label="Email" form={form}></InputField>
