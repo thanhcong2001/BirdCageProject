@@ -70,16 +70,22 @@ export const Dashboard = () => {
     else return 0
   }
   const fetchUsers = () => {
-    apiClient.get('User')
+    apiClient.get('User?pageIndex=0&pageSize=10')
       .then(response => {
-        setdata(response.data)
+        setdata(response.data?.items)
       })
   }
   const fetchProduct = () => {
-    apiClient.get('Product/page?pageIndex=0&pageSize=10')
+    apiClient.get('Product/get-all-product/page?pageIndex=0&pageSize=10')
       .then(response => {
         setProductData(response.data?.items)
         console.log("Cong Dev: ", response.data?.items);
+      })
+  }
+  const fetchFormula = () => {
+    apiClient.get('Formula/page?pageIndex=0&pageSize=10')
+      .then(response => {
+        setFormula(response.data?.items)
       })
   }
   const handleEditUser = (id) => {
@@ -141,7 +147,7 @@ export const Dashboard = () => {
     }
     if (role === 'Manager' || role === 'Staff') {
       deleteClient.delete(`${id}`, {
-        headers: { 
+        headers: {
           Authorization: `Bearer ${token}`,
         },
       })
@@ -160,7 +166,10 @@ export const Dashboard = () => {
           }
         })
         .catch((error) => {
-          console.error('Lỗi kết nối', error);
+          swal({
+            title: "Không có quyền xóa !",
+            icon: "warning",
+          })
         });
     } else {
       swal({
@@ -178,7 +187,7 @@ export const Dashboard = () => {
       apiClient.get(`User/${userId}`)
         .then(response => {
           const role = response.data?.role;
-          if (role === "Manager" || role === "Staff" ) {
+          if (role === "Manager" || role === "Staff") {
             apiClient.put(`Product/recover/${id}`, null, {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -199,7 +208,10 @@ export const Dashboard = () => {
                 }
               })
               .catch((error) => {
-                console.error('Lỗi kết nối', error);
+                swal({
+                  title: "Không có quyền cập nhật !",
+                  icon: "warning",
+                })
               });
           } else {
             swal({
@@ -249,7 +261,10 @@ export const Dashboard = () => {
           }
         })
         .catch((error) => {
-          console.error('Lỗi kết nối', error);
+          swal({
+            title: "Không có quyền xóa !",
+            icon: "warning",
+          })
         });
     } else {
       swal({
@@ -284,6 +299,99 @@ export const Dashboard = () => {
       .catch((error) => {
         console.error('Lỗi kết nối', error);
       });
+  };
+
+  const handleDeleteFormula = (id) => {
+    const token = JSON.parse(localStorage.getItem('token'));
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken.Id;
+      apiClient.get(`User/${userId}`)
+        .then(response => {
+          setRole(response.data?.role);
+        })
+    } else {
+      console.log('Token không tồn tại trong localStorage.');
+    }
+    if (role === 'Manager') {
+      apiClient.delete(`Formula/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            fetchFormula()
+            swal({
+              title: "Xóa Thành Công",
+              icon: "success",
+            })
+          } else {
+            swal({
+              title: "Xóa Thất Bại",
+              icon: "warning",
+            })
+          }
+        })
+        .catch((error) => {
+          console.error('Lỗi kết nối', error);
+        });
+    } else {
+      swal({
+        title: "Không có quyền xóa !",
+        icon: "warning",
+      })
+    }
+  };
+
+  const handleEditFormula = (id) => {
+    const token = JSON.parse(localStorage.getItem('token'));
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken.Id;
+
+      apiClient.get(`User/${userId}`)
+        .then(response => {
+          const role = response.data?.role;
+          if (role === "Manager" || role === "Staff") {
+            apiClient.put(`Formula/recover-formula/${id}`, null, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+              .then((response) => {
+                if (response.status === 200) {
+                  fetchFormula();
+                  swal({
+                    title: "Active Thành Công",
+                    icon: "success",
+                  });
+                } else {
+                  swal({
+                    title: "Active Thất Bại",
+                    icon: "warning",
+                  });
+                }
+              })
+              .catch((error) => {
+                swal({
+                  title: "Không có quyền cập nhật !",
+                  icon: "warning",
+                })
+              });
+          } else {
+            swal({
+              title: "Không có quyền cập nhật !",
+              icon: "warning",
+            })
+          }
+        })
+        .catch((error) => {
+          console.error('Lỗi trong quá trình kiểm tra vai trò', error);
+        });
+    } else {
+      console.log('Token không tồn tại trong localStorage.');
+    }
   };
   const [showUserForm, setShowUserForm] = useState(true);
   const [showProductForm, setShowProductForm] = useState(false);
@@ -393,6 +501,16 @@ export const Dashboard = () => {
     const [showPopup, setShowPopup] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
     const [idEdit, setIdEdit] = useState([])
+    const [title, setTitle] = useState(''); // Sử dụng giá trị mặc định nếu có
+    const [image, setImage] = useState('');
+    const [categoryId, setCategoryId] = useState('');
+    const [birdCageTypeId, setBirdCageTypeId] = useState('');
+    const [price, setPrice] = useState(''); // Sử dụng giá trị mặc định nếu có
+    const [sku, setSku] = useState('');
+    const [quantityInStock, setQuantityInStock] = useState('');
+    const [percentDiscount, setPercentDiscount] = useState('');
+    const [specifications, setSpecifications] = useState('');
+    const [description, setDescription] = useState('');
     const openPopup = (id) => {
       apiClient.get(`Product/${id}`)
         .then(response => {
@@ -409,6 +527,28 @@ export const Dashboard = () => {
     const closeAddNew = () => {
       setShowAdd(false);
     };
+    const handleInputChange = (e, setStateFunction) => {
+      setStateFunction(e.target.value);
+    };
+    const product = {
+      Title: title,
+      Description :description,
+      CategoryId:categoryId,
+      BirdCageTypeId: birdCageTypeId,
+      Price:price,
+      SKU: sku,
+      QuantityInStock: quantityInStock,
+      PercentDiscount: percentDiscount,
+      ProductSpecifications: specifications,
+      files:image 
+    };
+    const createProduct = () => {
+      apiClient.post(`Product/create`, { product })
+        .then(res => {
+          console.log(res.data); 
+        })
+    }
+
     return (
       <div style={{ marginLeft: 100, marginTop: 30 }}>
         <div>
@@ -500,25 +640,78 @@ export const Dashboard = () => {
                 </span>
                 <h2 style={{ marginBottom: 30 }}>Create Product</h2>
                 <form className='formEdit-Product'>
-                  <input className='inputEdit-Product' type="text" placeholder="Name" />
-                  <input className='inputEdit-Product' type="text" placeholder="Image" />
-                  <input className='inputEdit-Product' type="number" placeholder="CategoryId " />
-                  <input className='inputEdit-Product' type="number" placeholder="BirdCageTypeId " />
-                  <input className='inputEdit-Product' type="number" placeholder="Price " />
-                  <input className='inputEdit-Product' type="text" placeholder="Sku" />
-                  <input className='inputEdit-Product' type="number" placeholder="Quantity" />
-                  <input className='inputEdit-Product' type="number" placeholder="PercentDiscount " />
-                  <input className='inputEdit-Product' type="number" placeholder="Specifications" />
-                  <input className='inputEdit-Product' type="text" placeholder="Feature" />
-                  <input className='inputEdit-Product' type="text" placeholder="Status" />
+                  <input
+                    className='inputEdit-Product'
+                    type="text"
+                    placeholder="Name"
+                    value={title}
+                    onChange={(e) => handleInputChange(e, setTitle)}
+                  />
+                  <input
+                    className='inputEdit-Product'
+                    type="text"
+                    placeholder="Image"
+                    value={image}
+                    onChange={(e) => handleInputChange(e, setImage)}
+                  />
+                  <input
+                    className='inputEdit-Product'
+                    type="number"
+                    placeholder="CategoryId"
+                    value={categoryId}
+                    onChange={(e) => handleInputChange(e, setCategoryId)}
+                  />
+                  <input
+                    className='inputEdit-Product'
+                    type="number"
+                    placeholder="BirdCageTypeId"
+                    value={birdCageTypeId}
+                    onChange={(e) => handleInputChange(e, setBirdCageTypeId)}
+                  />
+                  <input
+                    className='inputEdit-Product'
+                    type="number"
+                    placeholder="Price"
+                    value={price}
+                    onChange={(e) => handleInputChange(e, setPrice)}
+                  />
+                  <input
+                    className='inputEdit-Product'
+                    type="text"
+                    placeholder="Sku"
+                    value={sku}
+                    onChange={(e) => handleInputChange(e, setSku)}
+                  />
+                  <input
+                    className='inputEdit-Product'
+                    type="number"
+                    placeholder="Quantity"
+                    value={quantityInStock}
+                    onChange={(e) => handleInputChange(e, setQuantityInStock)}
+                  />
+                  <input
+                    className='inputEdit-Product'
+                    type="number"
+                    placeholder="Discount"
+                    value={percentDiscount}
+                    onChange={(e) => handleInputChange(e, setPercentDiscount)}
+                  />
+                  <input
+                    className='inputEdit-Product'
+                    type="number"
+                    placeholder="Specifications"
+                    value={specifications}
+                    onChange={(e) => handleInputChange(e, setSpecifications)}
+                  />
                   <textarea
                     style={{ width: 659, paddingBottom: 200 }}
                     className='inputEdit-Product'
-                    placeholder="Description"
+                    value={description}
+                    onChange={(e) => handleInputChange(e, setDescription)}
                   ></textarea>
                 </form>
                 <div style={{ display: 'flex', marginBottom: 20, justifyContent: 'center' }}>
-                  <button style={{ marginRight: 30 }} type="submit">Submit</button>
+                  <button style={{ marginRight: 30 }} onClick={createProduct} type="submit">Submit</button>
                   <button style={{ backgroundColor: 'red' }} onClick={closePopup} type="submit">Cancel</button>
                 </div>
               </div>
@@ -695,14 +888,13 @@ export const Dashboard = () => {
           setBirdCageType(response.data?.data)
           console.log("Bird: ", response.data?.data);
         })
-    }, []); // Chỉ gọi API một lần khi component mount
+    }, []);
 
 
     const openPopup = (id) => {
       apiClient.get(`Formula/get-by-formulaId/${id}`)
         .then(response => {
           setIdFormula(response.data?.data)
-          console.log("Formula: ",response.data?.data);
         })
       setShowPopup(true);
     };
@@ -754,8 +946,8 @@ export const Dashboard = () => {
                     <td>{i.isDelete ? "Deactive" : "Active"}</td>
                     <td>
                       <button style={{ marginRight: 5, backgroundColor: 'rgb(100, 190, 67)' }} onClick={() => openPopup(i.id)}>Edit</button>
-                      <button style={{ marginRight: 5 }} onClick={() => handleEditUser(i.id)}>Active</button>
-                      <button style={{ backgroundColor: 'red', marginRight: 5 }} onClick={() => handleDeleteUser(i.id)}>Delete</button>
+                      <button style={{ marginRight: 5 }} onClick={() => handleEditFormula(i.id)}>Active</button>
+                      <button style={{ backgroundColor: 'red', marginRight: 5 }} onClick={() => handleDeleteFormula(i.id)}>Delete</button>
                     </td>
                   </tr>
                 ))}
@@ -787,7 +979,7 @@ export const Dashboard = () => {
                     <input className='inputEdit-Formula' type="number" placeholder={convertVND(idFormula?.price)} />
                     <input className='inputEdit-Formula' type="number" placeholder={idFormula?.minBars} />
                     <input className='inputEdit-Formula' type="number" placeholder={idFormula?.maxBars} />
-                    <select
+                    {/* <select
                       id="birdCageType"
                       style={{ width: 205, height: 33 }}
                       value={selectedBirdType}
@@ -799,9 +991,11 @@ export const Dashboard = () => {
                           {i.typeName}
                         </option>
                       ))}
-                    </select>
+                    </select> */}
+                    <input className='inputEdit-Formula' type="number" placeholder={idFormula.birdCageTypeId} />
                     <input className='inputEdit-Formula' type="number" placeholder={idFormula.constructionTime} />
-                    <select style={{ width: 205, height: 33 }}
+                    <input className='inputEdit-Formula' type="number" placeholder={idFormula?.specifications?.id} />
+                    {/* <select style={{ width: 205, height: 33 }}
                       id="specifications"
                       value={selectedSpecification}
                       onChange={(e) => setSelectedSpecification(Array.from(e.target.selectedOptions, option => option.value))}
@@ -812,7 +1006,7 @@ export const Dashboard = () => {
                           {spec.specificationValue}
                         </option>
                       ))}
-                    </select>
+                    </select> */}
                   </form>
                   <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
                     <button style={{ marginRight: 30 }} type="submit">Submit</button>

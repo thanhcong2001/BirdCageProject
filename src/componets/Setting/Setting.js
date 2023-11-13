@@ -139,7 +139,6 @@ function Setting() {
         </div>
         <div>
           <p>Date of birth</p>
-          <input type="date" id="birthdaytime" name="birthdaytime"></input>
         </div>
         <div style={{ marginTop: 20 }}>
           <button onClick={updateProfile}>Update</button>
