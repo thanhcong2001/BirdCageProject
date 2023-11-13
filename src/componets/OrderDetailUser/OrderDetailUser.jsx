@@ -117,7 +117,7 @@ const OrderDetailUser = () => {
                             </tr>
                             <tr style={{ height: '50px' }}>
                                 <th style={{ padding: '5px', textAlign: 'left', borderRight: '2px solid #E4E1E1' }}>Địa chỉ nhận hàng</th>
-                                <td style={{ padding: '5px', textAlign: 'left' }}>{orderDetail.streetAddress}</td>
+                                <td style={{ padding: '5px', textAlign: 'left' }}>{orderDetail.streetAddress}, {orderDetail.city}</td>
                             </tr>
                             <tr style={{ height: '50px' }}>
                                 <th style={{ padding: '5px', textAlign: 'left', borderRight: '2px solid #E4E1E1' }}>Phương thức thanh toán</th>

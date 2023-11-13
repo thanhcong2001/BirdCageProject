@@ -150,7 +150,7 @@ function Header() {
                     backgroundColor: "#64BE43",
                     height: 100,
                     justifyContent: "center",
-                    paddingLeft: 120,
+                    paddingLeft: 160,
                 }}
             >
                 <Toolbar variant="dense">
@@ -161,10 +161,11 @@ function Header() {
                             src="http://mauweb.monamedia.net/birdshop/wp-content/uploads/2018/04/logo-robin-white.png"
                         />
                     </Link>
-                    <Link style={{ textDecoration: "none" }} to={"/intro"}>
-                        <p className="category">Giới Thiệu</p>
-                    </Link>
-                    {/* <ul class="navbar">
+                    <div style={{display: 'flex', marginLeft: 100}}>
+                        <Link style={{ textDecoration: "none" }} to={"/intro"}>
+                            <p className="category">Giới Thiệu</p>
+                        </Link>
+                        {/* <ul class="navbar">
                         <li className="bridge">
                             <p
                                 className="category"
@@ -176,21 +177,23 @@ function Header() {
                             </p>
                         </li>
                     </ul> */}
-                    <Link style={{ textDecoration: "none" }} to={"/custom"}>
-                        <p className="category">Thiết Kế Lồng</p>
-                    </Link>
-                    <Link style={{ textDecoration: "none" }} to={"/birdCage"}>
-                        <p className="category">Lồng Chim</p>
-                    </Link>
-                    {/* <p className="category">Cám Chim</p> */}
-                    <Link style={{ textDecoration: "none" }} to={"/accessory"}>
-                        <p className="category">Phụ Kiện</p>
-                    </Link>
-                    <Link style={{ textDecoration: "none" }} to={"/news"}>
+                        <Link style={{ textDecoration: "none" }} to={"/custom"}>
+                            <p className="category">Thiết Kế Lồng</p>
+                        </Link>
+                        <Link style={{ textDecoration: "none" }} to={"/birdCage"}>
+                            <p className="category">Lồng Chim</p>
+                        </Link>
+                        {/* <p className="category">Cám Chim</p> */}
+                        <Link style={{ textDecoration: "none" }} to={"/accessory"}>
+                            <p className="category">Phụ Kiện</p>
+                        </Link>
+                        {/* <Link style={{ textDecoration: "none" }} to={"/news"}>
                         <p className="category">Tin Tức</p>
                     </Link>
-                    <p className="category">Liên Hệ</p>
-                    <div style={{ marginLeft: 50, display: "flex" }}>
+                    <p className="category">Liên Hệ</p> */}
+                    </div>
+
+                    <div style={{ marginLeft: 140, display: "flex" }}>
                         <div
                             style={{ width: "200px", position: "relative", marginRight: 15 }}
                         >

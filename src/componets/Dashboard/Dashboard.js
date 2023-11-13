@@ -63,7 +63,7 @@ export const Dashboard = () => {
   const tableHeaders = ['Name', 'Email', 'Role', 'Gender', 'Phone Number', 'Birth Date', 'Status', 'Action'];
   const tableProduct = ['ID', 'Name', 'Image', 'Price', 'Price Discount', 'Sku', 'Quantity', 'Status', 'Action'];
   const tableOrder = ['ID', , 'Name Recieved', 'Price', 'Phone', 'Payment Status', 'Order Status', 'Action'];
-  const tableVoucher = ['ID', 'Voucher Code', 'Discount Percent', 'start Date', 'Expiration Date', 'Status', 'Action'];
+  const tableVoucher = ['ID', 'Voucher Code', 'Discount Percent', 'start Date', 'Expiration Date', 'Status'];
   const tableFormula = ['ID', 'Type', 'Price', 'Construction', 'Width', 'Height', 'Spoke', 'Material', 'Status', 'Action'];
   function convertVND(price) {
     if (price != null && price !== undefined && price !== '') return price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
@@ -824,10 +824,10 @@ export const Dashboard = () => {
                     <td>{format(new Date(i.startDate), 'dd/MM/yyyy')}</td>
                     <td>{format(new Date(i.expirationDate), 'dd/MM/yyyy')}</td>
                     <td>Active</td>
-                    <td>
+                    {/* <td>
                       <button style={{ marginRight: 20 }} onClick={() => handleEditVoucher(i.id)}>Active</button>
                       <button style={{ backgroundColor: 'red' }} onClick={() => handleDeleteVoucher(i.id)}>Delete</button>
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
               </tbody>
@@ -876,7 +876,7 @@ export const Dashboard = () => {
       <div style={{
         width: '100%'
       }}>
-        <h2 style={{ marginBottom: 30 }}>Add voucher</h2>
+        <h2 style={{ marginBottom: 30, textAlign: 'center' }}>Add voucher</h2>
         <form style={{
           display: 'flex',
           flexDirection: 'column',

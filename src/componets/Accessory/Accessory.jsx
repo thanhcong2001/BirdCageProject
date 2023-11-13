@@ -77,7 +77,7 @@ export const Accessory = () => {
             </div>
             <div>
                 <div className='result'>
-                    <div style={{ fontSize: 16, paddingTop: 20, marginRight: 20 }}>Xem tất cả 9 kết quả</div>
+                    {/* <div style={{ fontSize: 16, paddingTop: 20, marginRight: 20 }}>Xem tất cả 9 kết quả</div>
                     <div>
                         <form >
                             <select className='select' value={myCar} onChange={handleChange}>
@@ -89,7 +89,7 @@ export const Accessory = () => {
                                 <option value="6">Thứ tự theo giá: cao xuống thấp</option>
                             </select>
                         </form>
-                    </div>
+                    </div> */}
                 </div>
                 {isLoading ? <Box sx={{ display: 'flex', height: '500px', alignItems: 'center' }}>
                     <CircularProgress />
