@@ -24,7 +24,7 @@ const usePostWishlist = () => {
             enqueueSnackbar("add wishlist success", { variant: 'info' })
         },
         onError: (error) => {
-            enqueueSnackbar("add wishlist failed" + error, { variant: 'error', preventDuplicate: true })
+            enqueueSnackbar("Product is already in your wishlist", { variant: 'error', preventDuplicate: true })
         }
     })
     return { wishlist: postWish.mutate, wishlistLoading: postWish.isPending }

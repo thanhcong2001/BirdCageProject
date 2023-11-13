@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import '../TabForm/TabForm.css'
 import CommentSection from './Comment/CommentSection';
+import apiClient from 'api/apiClient';
+import useProduct from 'api/apiProduct/useProduct';
 
-function TabForm({id,reviews}) {
+function TabForm({ id, reviews }) {
     const [selectedTab, setSelectedTab] = useState(0);
+    const [list, setList] = useState([])
+
+    const { bird, birdIdLoading } = useProduct({ id })
 
     return (
         <div>
@@ -17,37 +22,22 @@ function TabForm({id,reviews}) {
                 </TabList>
                 <div className='form'>
                     <TabPanel>
-                        {<p className='description'>– Phù hợp với nuôi chào mào có tật bu lồng, ngoái, lộn.
-                            <br />
-                            – Móc lồng bằng tre, cứng, đẹp.
-                            <br />
-
-                            – Thanh lồng mảnh, cứng tuyệt đối.
-                            <br />
-
-                            – Đi kèm bộ nan cao cấp.
-                            <br />
-
-                            – Đáy lồng làm bằng tre, đẹp, sang trọng.</p>}
+                        {<p className='description'>
+                            – {bird?.description}</p>}
                     </TabPanel>
                     <TabPanel>
                         {
-                            <CommentSection id={id} reviews={reviews}/>
+                            <CommentSection id={id} reviews={reviews} />
                         }
                     </TabPanel>
                     <TabPanel>
-                        {<p className='description'>– Chính sách bảo hành của riêng mỗi hãng:
+                        {<p className='description'>– GIAO HÀNG COD TOÀN QUỐC
                             <br />
-                            – CASIO: Bảo hành chính hãng máy 1 năm, pin 1,5 năm
-                            <br />
-
-                            – CITIZEN: Bảo hành chính hãng toàn cầu máy 1 năm, pin 1 năm
+                            – HOÀN TRẢ LẠI TIỀN
                             <br />
 
-                            – SEIKO: Bảo hành chính hãng toàn cầu máy 1 năm, pin 1 năm
-                            <br />
-
-                            – ORIENT: Bảo hành chính hãng toàn cầu máy 1 năm, pin 1 năm</p>}
+                            – HỖ TRỢ 24/7
+                            <br /></p>}
                     </TabPanel>
                 </div>
             </Tabs>

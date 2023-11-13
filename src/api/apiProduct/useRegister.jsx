@@ -30,7 +30,7 @@ const useRegister = () => {
             nav('/')
         },
         onError: () => {
-            enqueueSnackbar("Some thing wrong", { variant: 'error', preventDuplicate: true })
+            enqueueSnackbar("User or email already exists", { variant: 'error', preventDuplicate: true })
         }
     })
     return { registerMona: registerMutation.mutate, registerPending: registerMutation.isPending }

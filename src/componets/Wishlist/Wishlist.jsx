@@ -48,7 +48,7 @@ const Wishlist = () => {
             queryClient.invalidateQueries({ queryKey: ['wishlistItem'] });
         },
         onError: (error) => {
-            enqueueSnackbar(error, { variant: 'error', preventDuplicate: true })
+            enqueueSnackbar('This product already in your Shopping cart', { variant: 'error', preventDuplicate: true })
         }
     });
 
