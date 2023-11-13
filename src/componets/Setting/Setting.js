@@ -53,10 +53,6 @@ function Setting() {
 
   function AccountForm() {
 
-    const [selectedDate, setSelectedDate] = useState(null);
-    const handleDateChange = (date) => {
-      setSelectedDate(date);
-    };
     const [selectedName, setSelectedName] = useState(null);
     const handleNameChange = (name) => {
       setSelectedName(name);
@@ -71,7 +67,7 @@ function Setting() {
     };
     const [selectedGender, setSelectedGender] = useState(null);
     const handleGenderChange = (gender) => {
-      setSelectedPhone(gender);
+      setSelectedGender(gender);
     };
 
     const updateProfile = () => {
@@ -82,7 +78,6 @@ function Setting() {
           email: selectedEmail,
           phoneNumber: selectedPhone,
           gender: selectedGender,
-          doB: selectedDate
         }
         apiClient.put('User/update-profile', data, {
           headers: {
@@ -129,7 +124,7 @@ function Setting() {
           <div>
             <form>
               <p>Gender</p>
-              <select className='select-optionGender' onChange={setSelectedGender}>
+              <select className='select-optionGender' onChange={handleGenderChange}>
                 <option disabled selected defaultValue={data?.gender}>{data?.gender}</option >
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -137,11 +132,8 @@ function Setting() {
             </form>
           </div>
         </div>
-        <div>
-          <p>Date of birth</p>
-        </div>
         <div style={{ marginTop: 20 }}>
-          <button onClick={updateProfile}>Update</button>
+          <button>Update</button>
           <button style={{ backgroundColor: '#D3D3D3', color: 'black', marginLeft: 10 }}>Cancel</button>
         </div>
       </div>
@@ -329,7 +321,7 @@ function Setting() {
       <div className='Container-Setting'>
         <div className='borderInfo-Setting'>
           <div style={{ padding: 15, textAlign: 'center' }}>
-            <img src='https://scontent.fsgn2-4.fna.fbcdn.net/v/t39.30808-6/324736014_1240215329893369_5490209580249412603_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=5f2048&_nc_ohc=WeT9xi_5yuYAX_VIJng&_nc_ht=scontent.fsgn2-4.fna&oh=00_AfDp4Nhh_oMUBofQckZ_lNaqYZk307GkCbjm6zRyj2dQRg&oe=653B976F' className='Setting-Image' />
+            <img src='https://cdn-icons-png.flaticon.com/128/506/506185.png' />
             <p style={{ textTransform: 'uppercase', textAlign: 'center', fontWeight: 'bold' }}>{data.userName}</p>
           </div>
           <div className='line-Setting'></div>

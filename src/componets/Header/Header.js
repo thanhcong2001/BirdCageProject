@@ -48,7 +48,9 @@ function Header() {
     const checkRole = () => {
 
         if (role == 'Manager') setIsValid(true)
-        else setIsValid(false)
+        else if (role == 'Customer') {
+            setIsValid(false)
+        }
     }
 
     const handleTotalProd = (count) => {

@@ -37,7 +37,7 @@ export const Dashboard = () => {
       })
     apiClient.get('Formula/page?pageIndex=0&pageSize=10')
       .then(response => {
-        setFormula(response.data?.items)
+        setFormula(response.data?.items.reverse())
       })
   }, [])
 
@@ -79,13 +79,13 @@ export const Dashboard = () => {
     apiClient.get('Product/get-all-product/page?pageIndex=0&pageSize=10')
       .then(response => {
         setProductData(response.data?.items)
-        console.log("Cong Dev: ", response.data?.items);
+        console.log("Cong Dev: ", response.data?.items.reverse());
       })
   }
   const fetchFormula = () => {
     apiClient.get('Formula/page?pageIndex=0&pageSize=10')
       .then(response => {
-        setFormula(response.data?.items)
+        setFormula(response.data?.items.reverse())
       })
   }
   const handleEditUser = (id) => {
@@ -141,41 +141,41 @@ export const Dashboard = () => {
       apiClient.get(`User/${userId}`)
         .then(response => {
           setRole(response.data?.role);
-        })
-    } else {
-      console.log('Token không tồn tại trong localStorage.');
-    }
-    if (role === 'Manager' || role === 'Staff') {
-      deleteClient.delete(`${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => {
-          if (response.status === 200) {
-            fetchUsers()
-            swal({
-              title: "Xóa Thành Công",
-              icon: "success",
+          if (response.data?.role === 'Manager') {
+            deleteClient.delete(`${id}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             })
+              .then((response) => {
+                if (response.status === 200) {
+                  fetchUsers()
+                  swal({
+                    title: "Xóa Thành Công",
+                    icon: "success",
+                  })
+                } else {
+                  swal({
+                    title: "Xóa Thất Bại",
+                    icon: "warning",
+                  })
+                }
+              })
+              .catch((error) => {
+                swal({
+                  title: "Không có quyền xóa !",
+                  icon: "warning",
+                })
+              });
           } else {
             swal({
-              title: "Xóa Thất Bại",
+              title: "Không có quyền xóa !",
               icon: "warning",
             })
           }
         })
-        .catch((error) => {
-          swal({
-            title: "Không có quyền xóa !",
-            icon: "warning",
-          })
-        });
     } else {
-      swal({
-        title: "Không có quyền xóa !",
-        icon: "warning",
-      })
+      console.log('Token không tồn tại trong localStorage.');
     }
   };
   const handleEditProduct = (id) => {
@@ -236,41 +236,39 @@ export const Dashboard = () => {
       apiClient.get(`User/${userId}`)
         .then(response => {
           setRole(response.data?.role);
-        })
-    } else {
-      console.log('Token không tồn tại trong localStorage.');
-    }
-    if (role === 'Manager') {
-      apiClient.delete(`Product/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => {
-          if (response.status === 200) {
-            fetchProduct()
-            swal({
-              title: "Xóa Thành Công",
-              icon: "success",
+          if (response.data?.role === 'Manager') {
+            apiClient.delete(`Product/${id}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             })
+              .then((response) => {
+                if (response.status === 200) {
+                  fetchProduct()
+                  swal({
+                    title: "Xóa Thành Công",
+                    icon: "success",
+                  })
+                } else {
+                  swal({
+                    title: "Xóa Thất Bại",
+                    icon: "warning",
+                  })
+                }
+              })
+              .catch((error) => {
+                swal({
+                  title: "Không có quyền xóa !",
+                  icon: "warning",
+                })
+              });
           } else {
             swal({
-              title: "Xóa Thất Bại",
+              title: "Không có quyền xóa !",
               icon: "warning",
             })
           }
         })
-        .catch((error) => {
-          swal({
-            title: "Không có quyền xóa !",
-            icon: "warning",
-          })
-        });
-    } else {
-      swal({
-        title: "Không có quyền xóa !",
-        icon: "warning",
-      })
     }
   };
 
@@ -511,6 +509,16 @@ export const Dashboard = () => {
     const [percentDiscount, setPercentDiscount] = useState('');
     const [specifications, setSpecifications] = useState('');
     const [description, setDescription] = useState('');
+    const [feature, setFeature] = useState('');
+    const [Empty, setIsEmpty] = useState(false);
+    const [file, setFile] = useState();
+    function handleChange(e) {
+      const selectedFile = e.target.files[0];
+      if (selectedFile) {
+        const formattedFile = new File([selectedFile], selectedFile.name, { type: selectedFile.type });
+        setFile(formattedFile);
+      }
+    }
     const openPopup = (id) => {
       apiClient.get(`Product/${id}`)
         .then(response => {
@@ -530,24 +538,36 @@ export const Dashboard = () => {
     const handleInputChange = (e, setStateFunction) => {
       setStateFunction(e.target.value);
     };
-    const product = {
-      Title: title,
-      Description :description,
-      CategoryId:categoryId,
-      BirdCageTypeId: birdCageTypeId,
-      Price:price,
-      SKU: sku,
-      QuantityInStock: quantityInStock,
-      PercentDiscount: percentDiscount,
-      ProductSpecifications: specifications,
-      files:image 
-    };
     const createProduct = () => {
-      apiClient.post(`Product/create`, { product })
+      const formData = new FormData();
+      formData.append('isEmpty', Empty);
+      formData.append('PercentDiscount', percentDiscount);
+      formData.append('QuantityInStock', quantityInStock);
+      formData.append('ProductFeature', feature);
+      formData.append('Price', price);
+      formData.append('BirdCageTypeId', birdCageTypeId);
+      formData.append('files', file);
+      formData.append('Title', title);
+      formData.append('CategoryId', categoryId);
+      formData.append('Description', description);
+      formData.append('SKU', sku);
+      formData.append('ProductSpecifications', specifications);
+      apiClient.post('Product/create', formData, {
+        headers: {
+          'accept': '*/*',
+          'Content-Type': 'multipart/form-data',
+        },
+      })
         .then(res => {
-          console.log(res.data); 
+          swal({
+            title: "Tạo Thành Công",
+            icon: "success",
+          });
         })
-    }
+        .catch(error => {
+          console.error('Error creating product:', error);
+        });
+    };
 
     return (
       <div style={{ marginLeft: 100, marginTop: 30 }}>
@@ -581,7 +601,7 @@ export const Dashboard = () => {
                     <td>{i?.quantityInStock}</td>
                     <td>{i.isDelete ? "Deactive" : "Active"}</td>
                     <td>
-                      <button style={{ marginRight: 10, backgroundColor: 'rgb(100, 190, 67)' }} onClick={() => openPopup(i?.id)}>Edit</button>
+                      {/* <button style={{ marginRight: 10, backgroundColor: 'rgb(100, 190, 67)' }} onClick={() => openPopup(i?.id)}>Edit</button> */}
                       <button style={{ marginRight: 10 }} onClick={() => handleEditProduct(i.id)}>Active</button>
                       <button style={{ backgroundColor: 'red' }} onClick={() => handleDeleteProduct(i.id)}>Delete</button>
                     </td>
@@ -608,19 +628,68 @@ export const Dashboard = () => {
                 </span>
                 <h2 style={{ marginBottom: 30 }}>Edit Product</h2>
                 <form className='formEdit-Product'>
-                  <input className='inputEdit-Product' type="text" placeholder={idEdit.title} />
-                  <input className='inputEdit-Product' type="text" placeholder="Image" />
-                  <input className='inputEdit-Product' type="number" placeholder="CategoryId " />
-                  <input className='inputEdit-Product' type="number" placeholder="BirdCageTypeId " />
-                  <input className='inputEdit-Product' type="number" placeholder={convertVND(idEdit.price)} />
-                  <input className='inputEdit-Product' type="text" placeholder={idEdit.sku} />
-                  <input className='inputEdit-Product' type="number" placeholder={idEdit.quantityInStock} />
-                  <input className='inputEdit-Product' type="number" placeholder={idEdit.percentDiscount} />
-                  <input className='inputEdit-Product' type="number" placeholder="Specifications" />
+                  <input
+                    className='inputEdit-Product'
+                    type="text"
+                    value={idEdit.title}
+                    onChange={(e) => handleInputChange(e, setTitle)}
+                  />
+                  <input type="file" onChange={handleChange}
+                    style={{ borderWidth: 1, borderStyle: 'solid', height: 20, width: 188, marginRight: 30, borderRadius: 5, padding: 7 }}
+                    placeholder="Image" />
+                  <input
+                    className='inputEdit-Product'
+                    type="number"
+                    value={idEdit.categoryId}
+                    onChange={(e) => handleInputChange(e, setCategoryId)}
+                  />
+                  <input
+                    className='inputEdit-Product'
+                    type="number"
+                    value={idEdit.birdCageTypeId}
+                    onChange={(e) => handleInputChange(e, setBirdCageTypeId)}
+                  />
+                  <input
+                    className='inputEdit-Product'
+                    type="number"
+                    value={idEdit.price}
+                    onChange={(e) => handleInputChange(e, setPrice)}
+                  />
+                  <input
+                    className='inputEdit-Product'
+                    type="text"
+                    value={idEdit.sku}
+                    onChange={(e) => handleInputChange(e, setSku)}
+                  />
+                  <input
+                    className='inputEdit-Product'
+                    type="number"
+                    value={idEdit.quantityInStock}
+                    onChange={(e) => handleInputChange(e, setQuantityInStock)}
+                  />
+                  <input
+                    className='inputEdit-Product'
+                    type="number"
+                    value={idEdit.percentDiscount}
+                    onChange={(e) => handleInputChange(e, setPercentDiscount)}
+                  />
+                  <input
+                    className='inputEdit-Product'
+                    type="text"
+                    value={idEdit.specifications && idEdit.specifications.length > 0 ? idEdit.specifications[0].specificationValue : "Select Specification"}
+                    onChange={(e) => handleInputChange(e, setSpecifications)}
+                  />
+                  <input
+                    className='inputEdit-Product'
+                    type="text"
+                    value={idEdit.features && idEdit.features.length > 0 ? idEdit.features[0].featureName : "Select Specification"}
+                    onChange={(e) => handleInputChange(e, setFeature)}
+                  />
                   <textarea
                     style={{ width: 659, paddingBottom: 200 }}
                     className='inputEdit-Product'
                     value={idEdit.description}
+                    onChange={(e) => handleInputChange(e, setDescription)}
                   ></textarea>
                 </form>
                 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
@@ -647,13 +716,9 @@ export const Dashboard = () => {
                     value={title}
                     onChange={(e) => handleInputChange(e, setTitle)}
                   />
-                  <input
-                    className='inputEdit-Product'
-                    type="text"
-                    placeholder="Image"
-                    value={image}
-                    onChange={(e) => handleInputChange(e, setImage)}
-                  />
+                  <input type="file" onChange={handleChange}
+                    style={{ borderWidth: 1, borderStyle: 'solid', height: 20, width: 188, marginRight: 30, borderRadius: 5, padding: 7 }}
+                    placeholder="Image" />
                   <input
                     className='inputEdit-Product'
                     type="number"
@@ -702,6 +767,13 @@ export const Dashboard = () => {
                     placeholder="Specifications"
                     value={specifications}
                     onChange={(e) => handleInputChange(e, setSpecifications)}
+                  />
+                  <input
+                    className='inputEdit-Product'
+                    type="number"
+                    placeholder="Feature"
+                    value={feature}
+                    onChange={(e) => handleInputChange(e, setFeature)}
                   />
                   <textarea
                     style={{ width: 659, paddingBottom: 200 }}
@@ -866,9 +938,17 @@ export const Dashboard = () => {
     const [formulaInput, setFormulaInput] = useState('');
     const [error, setError] = useState('');
     const [birdCageType, setBirdCageType] = useState([]);
-    const [selectedBirdType, setSelectedBirdType] = useState('');
-    const [specifications, setSpecifications] = useState([]);
-    const [selectedSpecification, setSelectedSpecification] = useState('');
+    const [code, setCode] = useState('');
+    const [minWidth, setMinWidth] = useState('');
+    const [maxWidth, setMaxWidth] = useState('');
+    const [minHeight, setMinHeight] = useState('');
+    const [maxHeight, setMaxHeight] = useState('');
+    const [price, setPrice] = useState('');
+    const [minBars, setMinBars] = useState('');
+    const [maxBars, setMaxBars] = useState('');
+    const [birdCageTypeId, setBirdCageTypeId] = useState('');
+    const [constructionTime, setConstructionTime] = useState('');
+    const [specifications, setSpecifications] = useState('');
     const validateInput = () => {
       const formulaInputNumber = parseFloat(formulaInput);
       if (formulaInputNumber > 0 && formulaInputNumber < 100) {
@@ -877,18 +957,51 @@ export const Dashboard = () => {
         setError('Số không hợp lệ');
       }
     };
+    const handleInputChange = (e, setStateFunction) => {
+      setStateFunction(e.target.value);
+    };
 
-    useEffect(() => {
-      apiClient.get('Specification/get-all')
-        .then(response => {
-          setSpecifications(response.data?.data)
+    // useEffect(() => {
+    //   apiClient.get('Specification/get-all')
+    //     .then(response => {
+    //       setSpecifications(response.data?.data)
+    //     })
+    //   apiClient.get('BirdCageType/get-all')
+    //     .then(response => {
+    //       setBirdCageType(response.data?.data)
+    //       console.log("Bird: ", response.data?.data);
+    //     })
+    // }, []);
+
+    const createFormula = () => {
+      const formData = new FormData();
+      formData.append('Code', code);
+      formData.append('MinWidth', minWidth);
+      formData.append('MaxWidth', maxWidth);
+      formData.append('MinHeight', minHeight);
+      formData.append('MaxHeight', maxHeight);
+      formData.append('MinBars', minBars);
+      formData.append('MaxBars', maxBars);
+      formData.append('Price', price);
+      formData.append('BirdCageTypeId', birdCageTypeId);
+      formData.append('ConstructionTime', constructionTime);
+      formData.append('Specifications', specifications);
+      apiClient.post('Formula/create', formData, {
+        headers: {
+          'accept': '*/*',
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+        .then(res => {
+          swal({
+            title: "Tạo Thành Công",
+            icon: "success",
+          });
         })
-      apiClient.get('BirdCageType/get-all')
-        .then(response => {
-          setBirdCageType(response.data?.data)
-          console.log("Bird: ", response.data?.data);
-        })
-    }, []);
+        .catch(error => {
+          console.error('Error creating product:', error);
+        });
+    };
 
 
     const openPopup = (id) => {
@@ -945,7 +1058,7 @@ export const Dashboard = () => {
                     <td>{i.specifications[0]?.specificationValue}</td>
                     <td>{i.isDelete ? "Deactive" : "Active"}</td>
                     <td>
-                      <button style={{ marginRight: 5, backgroundColor: 'rgb(100, 190, 67)' }} onClick={() => openPopup(i.id)}>Edit</button>
+                      {/* <button style={{ marginRight: 5, backgroundColor: 'rgb(100, 190, 67)' }} onClick={() => openPopup(i.id)}>Edit</button> */}
                       <button style={{ marginRight: 5 }} onClick={() => handleEditFormula(i.id)}>Active</button>
                       <button style={{ backgroundColor: 'red', marginRight: 5 }} onClick={() => handleDeleteFormula(i.id)}>Delete</button>
                     </td>
@@ -979,34 +1092,9 @@ export const Dashboard = () => {
                     <input className='inputEdit-Formula' type="number" placeholder={convertVND(idFormula?.price)} />
                     <input className='inputEdit-Formula' type="number" placeholder={idFormula?.minBars} />
                     <input className='inputEdit-Formula' type="number" placeholder={idFormula?.maxBars} />
-                    {/* <select
-                      id="birdCageType"
-                      style={{ width: 205, height: 33 }}
-                      value={selectedBirdType}
-                      onChange={(e) => setSelectedBirdType(e.target.value)}
-                    >
-                      <option value="" disabled></option>
-                      {birdCageType.map(i => (
-                        <option key={i.id} value={i.id}>
-                          {i.typeName}
-                        </option>
-                      ))}
-                    </select> */}
                     <input className='inputEdit-Formula' type="number" placeholder={idFormula.birdCageTypeId} />
                     <input className='inputEdit-Formula' type="number" placeholder={idFormula.constructionTime} />
                     <input className='inputEdit-Formula' type="number" placeholder={idFormula?.specifications?.id} />
-                    {/* <select style={{ width: 205, height: 33 }}
-                      id="specifications"
-                      value={selectedSpecification}
-                      onChange={(e) => setSelectedSpecification(Array.from(e.target.selectedOptions, option => option.value))}
-                    >
-                      <option value="" disabled>Select a specification</option>
-                      {specifications.map(spec => (
-                        <option key={spec.id} value={spec.specificationValue}>
-                          {spec.specificationValue}
-                        </option>
-                      ))}
-                    </select> */}
                   </form>
                   <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
                     <button style={{ marginRight: 30 }} type="submit">Submit</button>
@@ -1025,31 +1113,20 @@ export const Dashboard = () => {
                   </span>
                   <h2 style={{ marginBottom: 30 }}>Create Formura</h2>
                   <form className='formEdit-Product'>
-                    <input className='inputEdit-Formula' type="text" placeholder="Code" />
-                    <input className='inputEdit-Formula' type="number" placeholder="Min-Width " />
-                    <input className='inputEdit-Formula' type="number" placeholder="Max-Width " />
-                    <input className='inputEdit-Formula' type="number" placeholder="Min-Height " />
-                    <input className='inputEdit-Formula' type="number" placeholder="Max-Height " />
-                    <input className='inputEdit-Formula' type="number" placeholder="Price" />
-                    <input className='inputEdit-Formula' type="number" placeholder="Min-Bars" />
-                    <input className='inputEdit-Formula' type="number" placeholder="Max-Bars" />
-                    <input className='inputEdit-Formula' type="number" placeholder="BirdCageTypeId" />
-                    <input className='inputEdit-Formula' type="number" placeholder="ConstructionTime" />
-                    <select style={{ width: 205, height: 33 }}
-                      id="specifications"
-                      value={selectedSpecification}
-                      onChange={(e) => setSelectedSpecification(Array.from(e.target.selectedOptions, option => option.value))}
-                    >
-                      <option value="" disabled>Select a specification</option>
-                      {specifications.map(spec => (
-                        <option key={spec.id} value={spec.specificationValue}>
-                          {spec.specificationValue}
-                        </option>
-                      ))}
-                    </select>
+                    <input className='inputEdit-Formula' type="text" placeholder="Code" value={code} onChange={(e) => handleInputChange(e, setCode)} />
+                    <input className='inputEdit-Formula' type="number" placeholder="Min-Width" value={minWidth} onChange={(e) => handleInputChange(e, setMinWidth)} />
+                    <input className='inputEdit-Formula' type="number" placeholder="Max-Width" value={maxWidth} onChange={(e) => handleInputChange(e, setMaxWidth)} />
+                    <input className='inputEdit-Formula' type="number" placeholder="Min-Height" value={minHeight} onChange={(e) => handleInputChange(e, setMinHeight)} />
+                    <input className='inputEdit-Formula' type="number" placeholder="Max-Height" value={maxHeight} onChange={(e) => handleInputChange(e, setMaxHeight)} />
+                    <input className='inputEdit-Formula' type="number" placeholder="Price" value={price} onChange={(e) => handleInputChange(e, setPrice)} />
+                    <input className='inputEdit-Formula' type="number" placeholder="Min-Bars" value={minBars} onChange={(e) => handleInputChange(e, setMinBars)} />
+                    <input className='inputEdit-Formula' type="number" placeholder="Max-Bars" value={maxBars} onChange={(e) => handleInputChange(e, setMaxBars)} />
+                    <input className='inputEdit-Formula' type="number" placeholder="BirdCageTypeId" value={birdCageTypeId} onChange={(e) => handleInputChange(e, setBirdCageTypeId)} />
+                    <input className='inputEdit-Formula' type="number" placeholder="ConstructionTime" value={constructionTime} onChange={(e) => handleInputChange(e, setConstructionTime)} />
+                    <input className='inputEdit-Formula' type="number" placeholder="Specifications" value={specifications} onChange={(e) => handleInputChange(e, setSpecifications)} />
                   </form>
                   <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
-                    <button style={{ marginRight: 20 }} type="submit">Submit</button>
+                    <button style={{ marginRight: 20 }} onClick={createFormula} type="submit">Submit</button>
                     <button style={{ backgroundColor: 'red' }} onClick={closeAddNew} type="submit">Cancel</button>
                   </div>
                 </div>
