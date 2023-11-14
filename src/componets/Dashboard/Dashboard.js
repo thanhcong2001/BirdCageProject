@@ -76,7 +76,7 @@ export const Dashboard = () => {
       })
   }
   const fetchProduct = () => {
-    apiClient.get('Product/get-all-product/page?pageIndex=0&pageSize=10')
+    apiClient.get('Product/get-all-product/page?pageIndex=1&pageSize=15')
       .then(response => {
         setProductData(response.data?.items)
         console.log("Cong Dev: ", response.data?.items.reverse());
